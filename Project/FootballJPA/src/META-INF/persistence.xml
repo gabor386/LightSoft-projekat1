@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="FootballJPA" transaction-type="RESOURCE_LOCAL">
+		<class>model.Assist</class>
+		<class>model.Awayteam</class>
+		<class>model.Bet</class>
+		<class>model.Bookmaker</class>
+		<class>model.Career</class>
+		<class>model.Coach</class>
+		<class>model.Comparison</class>
+		<class>model.Country</class>
+		<class>model.Event</class>
+		<class>model.Fixture</class>
+		<class>model.Fixturestat</class>
+		<class>model.Hometeam</class>
+		<class>model.Label</class>
+		<class>model.Lastfivestat</class>
+		<class>model.League</class>
+		<class>model.Lineup</class>
+		<class>model.Odd</class>
+		<class>model.Player</class>
+		<class>model.Playerfixstat</class>
+		<class>model.Playerstatistic</class>
+		<class>model.Prediction</class>
+		<class>model.Round</class>
+		<class>model.Score</class>
+		<class>model.Season</class>
+		<class>model.Sideline</class>
+		<class>model.Stading</class>
+		<class>model.Standingstat</class>
+		<class>model.Startxi</class>
+		<class>model.Substitute</class>
+		<class>model.Team</class>
+		<class>model.Teamin</class>
+		<class>model.Teamout</class>
+		<class>model.Teamplayer</class>
+		<class>model.Teamstatistic</class>
+		<class>model.Timezona</class>
+		<class>model.Topscorer</class>
+		<class>model.Transfer</class>
+		<class>model.Trophy</class>
+		<class>model.Winner</class>
+		<properties>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/fudbal"/>
+			<property name="javax.persistence.jdbc.user" value="root"/>
+			<property name="javax.persistence.jdbc.password" value="admin"/>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+		</properties>
+	</persistence-unit>
+</persistence>
