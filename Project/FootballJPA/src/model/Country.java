@@ -21,8 +21,11 @@ public class Country implements Serializable {
 	private String code;
 
 	private String flag;
-
+	
+	
 	private String name;
+	
+	
 
 	//bi-directional many-to-one association to Coach
 	@OneToMany(mappedBy="country")
