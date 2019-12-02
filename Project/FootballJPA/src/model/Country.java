@@ -45,7 +45,8 @@ public class Country implements Serializable {
 	public int getIdCountry() {
 		return this.idCountry;
 	}
-
+	
+	
 	public void setIdCountry(int idCountry) {
 		this.idCountry = idCountry;
 	}
@@ -139,5 +140,6 @@ public class Country implements Serializable {
 
 		return team;
 	}
-
+	
+	
 }
