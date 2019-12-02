@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -15,7 +16,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import football.repository.CountryRepo;
 import model.Country;
-
+@RestController
 public class CountryController {
 	@Autowired
 	CountryRepo cr;
