@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -20,7 +21,10 @@ public class CountryController {
 	CountryRepo cr;
 
 	// Dodavanje drzava u bazu
+	//jednom mesecno
+	@Scheduled(cron="0 0 0 1 1-12 *")
 	public void apiCountry() {
+		System.out.println("Dodavanje drzava u bazu..");
 		String json = null;
 		try {
 			HttpResponse<String> response = Unirest.get("http://www.api-football.com/demo/api/v2/countries")
