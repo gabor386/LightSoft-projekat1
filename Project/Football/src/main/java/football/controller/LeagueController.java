@@ -80,10 +80,11 @@ public class LeagueController {
 								jsonToken = parser.nextToken();
 								Season s =null;
 								try {
-									sr.findBySeason(parser.getIntValue());
+									s=sr.findBySeason(parser.getIntValue());
 								}catch (Exception e) {
 									e.printStackTrace();
 								}	
+								l.setSeasonBean(s);
 								 // Ovde treba povezati sa sezonm...
 								jsonToken = parser.nextToken();
 								jsonToken = parser.nextToken();
