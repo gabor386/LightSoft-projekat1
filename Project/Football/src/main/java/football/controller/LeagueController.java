@@ -20,7 +20,7 @@ import model.Season;
 public class LeagueController {
 
 	private Param param=new Param();
-	
+
 	@Autowired
 	LeagueRepo lr;
 	@Autowired
@@ -100,10 +100,11 @@ public class LeagueController {
 								for (int j=0; j<31; j++) {
 									jsonToken = parser.nextToken();
 								}
-								System.out.println("***************************************");
-								System.out.println(l);
-								System.out.println("***************************************");
-								lr.save(l);
+								if (lr.getOne(l.getIdLeague())==null) {
+									lr.save(l);
+									
+								}
+								
 							}
 						}
 					}
