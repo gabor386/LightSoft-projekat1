@@ -27,8 +27,6 @@ public class CountryController {
 	// Dodavanje drzava u bazu
 	//jednom mesecno
 	@Scheduled(cron="0 0 0 1 1-12 *")
-	
-	@RequestMapping(value = "/tryc")
 	public void apiCountry() {
 		System.out.println("Dodavanje drzava u bazu..");
 		String json = null;
