@@ -26,7 +26,6 @@ public class RoundController {
 	@Autowired
 	RoundRepo rr;
 
-	@RequestMapping(value ="tryr")
 	public void apiRaund() {
 		List<League> leagues = lr.findAll();
 		
