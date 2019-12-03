@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -18,19 +19,23 @@ import football.repository.CountryRepo;
 import model.Country;
 @RestController
 public class CountryController {
+
+	private Param param=new Param();
 	@Autowired
 	CountryRepo cr;
 
 	// Dodavanje drzava u bazu
 	//jednom mesecno
 	@Scheduled(cron="0 0 0 1 1-12 *")
+	
+	@RequestMapping(value = "/tryc")
 	public void apiCountry() {
 		System.out.println("Dodavanje drzava u bazu..");
 		String json = null;
 		try {
-			HttpResponse<String> response = Unirest.get("http://www.api-football.com/demo/api/v2/countries")
-					.header("x-rapidapi-host", "api-football-v1.p.rapidapi.com")
-					.header("x-rapidapi-key", "SIGN-UP-FOR-KEY").asString();
+			HttpResponse<String> response = Unirest.get(param.getAdd()+"/countries")
+					.header("x-rapidapi-host", param.getH1())
+					.header("x-rapidapi-key", param.getH2()).asString();
 			json = response.getBody();
 
 		} catch (UnirestException e) {

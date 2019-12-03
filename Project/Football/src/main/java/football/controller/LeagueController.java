@@ -19,6 +19,8 @@ import model.Season;
 @RestController
 public class LeagueController {
 
+	private Param param=new Param();
+	
 	@Autowired
 	LeagueRepo lr;
 	@Autowired
@@ -26,15 +28,15 @@ public class LeagueController {
 	@Autowired
 	SeasonRepo sr;
 	
-	@RequestMapping (value = "/try3")
+	
 	public void apiLeague() {
 
 		String json = null;
 
 		try {
-			HttpResponse<String> response = Unirest.get("http://www.api-football.com/demo/api/v2/leagues")
-					.header("x-rapidapi-host", "api-football-v1.p.rapidapi.com")
-					.header("x-rapidapi-key", "SIGN-UP-FOR-KEY").asString();
+			HttpResponse<String> response = Unirest.get(param.getAdd()+"/leagues")
+					.header("x-rapidapi-host", param.getH1())
+					.header("x-rapidapi-key", param.getH2()).asString();
 			json = response.getBody();
 		} catch (Exception e) {
 			e.printStackTrace();
