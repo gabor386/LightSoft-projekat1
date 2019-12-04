@@ -90,7 +90,6 @@ public class LeagueController {
 									e.printStackTrace();
 								}	
 								l.setSeasonBean(s);
-								 // Ovde treba povezati sa sezonm...
 								jsonToken = parser.nextToken();
 								jsonToken = parser.nextToken();
 								l.setSeasonStart(parser.getValueAsString());
@@ -105,7 +104,7 @@ public class LeagueController {
 								}
 								System.out.println("trying");
 								System.out.println(l);
-								if (lr.getOne(l.getIdLeague())==null) {
+								if (!lr.existsById(l.getIdLeague())) {
 									lr.save(l);
 									
 								}
