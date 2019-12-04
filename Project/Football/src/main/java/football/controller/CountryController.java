@@ -26,7 +26,8 @@ public class CountryController {
 
 	// Dodavanje drzava u bazu
 	//jednom mesecno
-	@Scheduled(cron="0 0 0 1 1-12 *")
+	//@Scheduled(cron="0 0 0 1 1-12 *")
+	
 	public void apiCountry() {
 		System.out.println("Dodavanje drzava u bazu..");
 		String json = null;

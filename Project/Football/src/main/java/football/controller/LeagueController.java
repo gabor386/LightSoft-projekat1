@@ -29,6 +29,8 @@ public class LeagueController {
 	SeasonRepo sr;
 	
 	
+	
+	@RequestMapping (value = "try")
 	public void apiLeague() {
 
 		String json = null;
@@ -38,6 +40,7 @@ public class LeagueController {
 					.header("x-rapidapi-host", param.getH1())
 					.header("x-rapidapi-key", param.getH2()).asString();
 			json = response.getBody();
+			System.out.println(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,6 +103,8 @@ public class LeagueController {
 								for (int j=0; j<31; j++) {
 									jsonToken = parser.nextToken();
 								}
+								System.out.println("trying");
+								System.out.println(l);
 								if (lr.getOne(l.getIdLeague())==null) {
 									lr.save(l);
 									
@@ -113,6 +118,7 @@ public class LeagueController {
 				e.printStackTrace();
 			}
 		}
+		json=null;
 	}
 
 }

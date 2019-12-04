@@ -25,6 +25,7 @@ public class BookmakerController {
 	BookmakerRepo bkr;
 	
 	// dodaavanje bookmaker-a u bazu
+	@RequestMapping (value = "try3")
 		public void apiLabel() {
 			String json = null;
 

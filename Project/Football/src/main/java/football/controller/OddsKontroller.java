@@ -43,7 +43,7 @@ public class OddsKontroller {
 	FixtureRepo fr;
 	
 	// dodavanje odds-a, pomozi boze... :/
-	@RequestMapping(value = "try")
+	
 	public void apiOdds() {
 		String json = null;
 		List<Fixture> fs = fr.findAll();

@@ -25,7 +25,7 @@ public class LabelController {
 	
 	
 	// dodaavanje labela u bazu
-
+	@RequestMapping (value = "try4")
 	public void apiLabel() {
 		String json = null;
 

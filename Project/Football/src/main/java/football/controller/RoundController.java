@@ -25,7 +25,9 @@ public class RoundController {
 	LeagueRepo lr;
 	@Autowired
 	RoundRepo rr;
-
+	
+	
+	@RequestMapping (value = "try2")
 	public void apiRaund() {
 		List<League> leagues = lr.findAll();
 		
@@ -72,6 +74,7 @@ public class RoundController {
 						e.printStackTrace();
 					}
 				}
+				json=null;
 			}
 		}
 	}
