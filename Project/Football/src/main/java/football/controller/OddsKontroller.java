@@ -113,6 +113,7 @@ public class OddsKontroller {
 												b.setOdd(parser.getValueAsString());
 												b.setBookmaker(bm);
 												b.setLabel(l);
+												b=betr.save(b);
 												// dodavanje beta u odds;  mozda ce biti potrebno da se pravi kobija objekta "b"
 												b.setOddBean(o);
 												jsonToken = parser.nextToken();
