@@ -6,6 +6,7 @@ public class Param {
 	private String h2;
 	
 	public Param() {
+
 //		add="https://server1.api-football.com";
 //		h1= "https://server1.api-football.com";
 //		h2="2437ee009238740cb9bf18ba3efd23ed";
@@ -13,6 +14,7 @@ public class Param {
 		add = "http://www.api-football.com/demo/api/v2";
 		h1 = "api-football-v1.p.rapidapi.com";
 		h2 = "SIGN-UP-FOR-KEY";
+
 	}
 	
 	public String getAdd() {

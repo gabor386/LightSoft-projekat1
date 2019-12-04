@@ -18,6 +18,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import football.repository.AwayteamRepo;
+
 import football.repository.CountryRepo;
 import football.repository.FixtureRepo;
 import football.repository.HometeamRepo;
@@ -67,6 +68,7 @@ public class FixturesController {
    CountryRepo cr;
 	
 	
+
 	
 	@RequestMapping(value="/saveFixture", produces = MediaType.APPLICATION_JSON_VALUE,  method = RequestMethod.GET)
 	public String saveFixture() {
@@ -87,6 +89,7 @@ public class FixturesController {
 		
 
 		try {
+
 			HttpResponse<String> response = Unirest.get(param.getAdd()+"/fixtures/league/357")
 					.header("x-rapidapi-host", param.getH1())
 					.header("x-rapidapi-key", param.getH2()).asString();
@@ -109,6 +112,7 @@ public class FixturesController {
 				
 				Fixture fixture = new Fixture();
 				
+
 				//System.out.println( "Cao da li radis " +  o2.get("fixture_id"));
 			
 				
@@ -212,6 +216,7 @@ public class FixturesController {
 //			  fixture.setHometeam(homeTeam);
 //			  fixture.setAwayteam(awayTeam);
 			 
+			  
 			  
 			  retFixture.add(fixture);
 				
