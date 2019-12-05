@@ -74,6 +74,7 @@ public class OddsApi extends Thread {
 								for (int i = 0; i < br; i++) {
 									Odd o = new Odd();
 									o.setFixture(f);
+									o=or.save(o);
 									for (int j = 0; j < 12; j++) {
 										jsonToken = parser.nextToken();
 									}
@@ -110,10 +111,10 @@ public class OddsApi extends Thread {
 												b.setOdd(parser.getValueAsString());
 												b.setBookmaker(bm);
 												b.setLabel(l);
-												b = betr.save(b);
-												// dodavanje beta u odds; mozda ce biti potrebno da se pravi kobija
-												// objekta "b"
+												
 												b.setOddBean(o);
+												b = betr.save(b);
+												
 												jsonToken = parser.nextToken();
 											}
 											ok2 = true;
