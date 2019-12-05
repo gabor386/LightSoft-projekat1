@@ -2,8 +2,8 @@ package football.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import model.Startxi;
+import model.StartXI;
 
-public interface StartxiRepo extends JpaRepository<Startxi, Integer>{
+public interface StartxiRepo extends JpaRepository<StartXI, Integer>{
 
 }

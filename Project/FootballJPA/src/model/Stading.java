@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the stading database table.
+ * The persistent class for the Stading database table.
  * 
  */
 @Entity
@@ -34,15 +34,17 @@ public class Stading implements Serializable {
 
 	//bi-directional many-to-one association to League
 	@ManyToOne
+	@JoinColumn(name="League_idLeague")
 	private League league;
 
 	//bi-directional many-to-one association to Team
 	@ManyToOne
+	@JoinColumn(name="Team_idTeam")
 	private Team team;
 
-	//bi-directional many-to-one association to Standingstat
+	//bi-directional many-to-one association to StandingStat
 	@OneToMany(mappedBy="stading")
-	private List<Standingstat> standingstats;
+	private List<StandingStat> standingStats;
 
 	public Stading() {
 	}
@@ -127,26 +129,26 @@ public class Stading implements Serializable {
 		this.team = team;
 	}
 
-	public List<Standingstat> getStandingstats() {
-		return this.standingstats;
+	public List<StandingStat> getStandingStats() {
+		return this.standingStats;
 	}
 
-	public void setStandingstats(List<Standingstat> standingstats) {
-		this.standingstats = standingstats;
+	public void setStandingStats(List<StandingStat> standingStats) {
+		this.standingStats = standingStats;
 	}
 
-	public Standingstat addStandingstat(Standingstat standingstat) {
-		getStandingstats().add(standingstat);
-		standingstat.setStading(this);
+	public StandingStat addStandingStat(StandingStat standingStat) {
+		getStandingStats().add(standingStat);
+		standingStat.setStading(this);
 
-		return standingstat;
+		return standingStat;
 	}
 
-	public Standingstat removeStandingstat(Standingstat standingstat) {
-		getStandingstats().remove(standingstat);
-		standingstat.setStading(null);
+	public StandingStat removeStandingStat(StandingStat standingStat) {
+		getStandingStats().remove(standingStat);
+		standingStat.setStading(null);
 
-		return standingstat;
+		return standingStat;
 	}
 
 }

@@ -2,8 +2,8 @@ package football.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import model.Lineup;
+import model.LineUp;
 
-public interface LineupRepo extends JpaRepository<Lineup, Integer>{
+public interface LineupRepo extends JpaRepository<LineUp, Integer>{
 
 }

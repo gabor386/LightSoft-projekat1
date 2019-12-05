@@ -2,8 +2,8 @@ package football.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import model.Standingstat;
+import model.StandingStat;
 
-public interface StandingstatsRepo extends JpaRepository<Standingstat, Integer>{
+public interface StandingstatsRepo extends JpaRepository<StandingStat, Integer>{
 
 }

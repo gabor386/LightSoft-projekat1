@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the substitute database table.
+ * The persistent class for the Substitute database table.
  * 
  */
 @Entity
@@ -17,13 +17,15 @@ public class Substitute implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idSubstitute;
 
-	//bi-directional many-to-one association to Teamplayer
+	//bi-directional many-to-one association to LineUp
 	@ManyToOne
-	private Teamplayer teamplayer;
+	@JoinColumn(name="LineUp_idLineUp")
+	private LineUp lineUp;
 
-	//bi-directional many-to-one association to Lineup
+	//bi-directional many-to-one association to TeamPlayer
 	@ManyToOne
-	private Lineup lineup;
+	@JoinColumn(name="TeamPlayer_idTeamPlayer")
+	private TeamPlayer teamPlayer;
 
 	public Substitute() {
 	}
@@ -36,20 +38,20 @@ public class Substitute implements Serializable {
 		this.idSubstitute = idSubstitute;
 	}
 
-	public Teamplayer getTeamplayer() {
-		return this.teamplayer;
+	public LineUp getLineUp() {
+		return this.lineUp;
 	}
 
-	public void setTeamplayer(Teamplayer teamplayer) {
-		this.teamplayer = teamplayer;
+	public void setLineUp(LineUp lineUp) {
+		this.lineUp = lineUp;
 	}
 
-	public Lineup getLineup() {
-		return this.lineup;
+	public TeamPlayer getTeamPlayer() {
+		return this.teamPlayer;
 	}
 
-	public void setLineup(Lineup lineup) {
-		this.lineup = lineup;
+	public void setTeamPlayer(TeamPlayer teamPlayer) {
+		this.teamPlayer = teamPlayer;
 	}
 
 }

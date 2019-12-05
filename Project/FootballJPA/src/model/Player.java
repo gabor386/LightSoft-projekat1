@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the player database table.
+ * The persistent class for the Player database table.
  * 
  */
 @Entity
@@ -41,9 +41,9 @@ public class Player implements Serializable {
 
 	private String weight;
 
-	//bi-directional many-to-one association to Teamplayer
+	//bi-directional many-to-one association to TeamPlayer
 	@OneToMany(mappedBy="player")
-	private List<Teamplayer> teamplayers;
+	private List<TeamPlayer> teamPlayers;
 
 	//bi-directional many-to-one association to Transfer
 	@OneToMany(mappedBy="player")
@@ -160,26 +160,26 @@ public class Player implements Serializable {
 		this.weight = weight;
 	}
 
-	public List<Teamplayer> getTeamplayers() {
-		return this.teamplayers;
+	public List<TeamPlayer> getTeamPlayers() {
+		return this.teamPlayers;
 	}
 
-	public void setTeamplayers(List<Teamplayer> teamplayers) {
-		this.teamplayers = teamplayers;
+	public void setTeamPlayers(List<TeamPlayer> teamPlayers) {
+		this.teamPlayers = teamPlayers;
 	}
 
-	public Teamplayer addTeamplayer(Teamplayer teamplayer) {
-		getTeamplayers().add(teamplayer);
-		teamplayer.setPlayer(this);
+	public TeamPlayer addTeamPlayer(TeamPlayer teamPlayer) {
+		getTeamPlayers().add(teamPlayer);
+		teamPlayer.setPlayer(this);
 
-		return teamplayer;
+		return teamPlayer;
 	}
 
-	public Teamplayer removeTeamplayer(Teamplayer teamplayer) {
-		getTeamplayers().remove(teamplayer);
-		teamplayer.setPlayer(null);
+	public TeamPlayer removeTeamPlayer(TeamPlayer teamPlayer) {
+		getTeamPlayers().remove(teamPlayer);
+		teamPlayer.setPlayer(null);
 
-		return teamplayer;
+		return teamPlayer;
 	}
 
 	public List<Transfer> getTransfers() {

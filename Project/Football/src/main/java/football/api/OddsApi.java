@@ -105,7 +105,7 @@ public class OddsApi extends Thread {
 												jsonToken = parser.nextToken();
 												jsonToken = parser.nextToken();
 												jsonToken = parser.nextToken();
-												b.setValues(parser.getValueAsString());
+												b.setBetValues(parser.getValueAsString());
 												jsonToken = parser.nextToken();
 												jsonToken = parser.nextToken();
 												b.setOdd(parser.getValueAsString());

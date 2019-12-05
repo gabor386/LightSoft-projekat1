@@ -5,27 +5,29 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the startxi database table.
+ * The persistent class for the StartXI database table.
  * 
  */
 @Entity
-@NamedQuery(name="Startxi.findAll", query="SELECT s FROM Startxi s")
-public class Startxi implements Serializable {
+@NamedQuery(name="StartXI.findAll", query="SELECT s FROM StartXI s")
+public class StartXI implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idStartXI;
 
-	//bi-directional many-to-one association to Teamplayer
+	//bi-directional many-to-one association to LineUp
 	@ManyToOne
-	private Teamplayer teamplayer;
+	@JoinColumn(name="LineUp_idLineUp")
+	private LineUp lineUp;
 
-	//bi-directional many-to-one association to Lineup
+	//bi-directional many-to-one association to TeamPlayer
 	@ManyToOne
-	private Lineup lineup;
+	@JoinColumn(name="TeamPlayer_idTeamPlayer")
+	private TeamPlayer teamPlayer;
 
-	public Startxi() {
+	public StartXI() {
 	}
 
 	public int getIdStartXI() {
@@ -36,20 +38,20 @@ public class Startxi implements Serializable {
 		this.idStartXI = idStartXI;
 	}
 
-	public Teamplayer getTeamplayer() {
-		return this.teamplayer;
+	public LineUp getLineUp() {
+		return this.lineUp;
 	}
 
-	public void setTeamplayer(Teamplayer teamplayer) {
-		this.teamplayer = teamplayer;
+	public void setLineUp(LineUp lineUp) {
+		this.lineUp = lineUp;
 	}
 
-	public Lineup getLineup() {
-		return this.lineup;
+	public TeamPlayer getTeamPlayer() {
+		return this.teamPlayer;
 	}
 
-	public void setLineup(Lineup lineup) {
-		this.lineup = lineup;
+	public void setTeamPlayer(TeamPlayer teamPlayer) {
+		this.teamPlayer = teamPlayer;
 	}
 
 }

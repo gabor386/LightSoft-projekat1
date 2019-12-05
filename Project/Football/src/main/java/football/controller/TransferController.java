@@ -21,8 +21,8 @@ import football.repository.TeamoutRepo;
 import football.repository.TransferRepo;
 import model.Player;
 import model.Team;
-import model.Teamin;
-import model.Teamout;
+import model.TeamIn;
+import model.TeamOut;
 import model.Transfer;
 
 @RestController
@@ -83,10 +83,10 @@ public class TransferController {
 									jsonToken = parser.nextToken();
 									jsonToken = parser.nextToken();
 									jsonToken = parser.nextToken();
-									Teamin ti = new Teamin();
+									TeamIn ti = new TeamIn();
 									Team teamI = tr.getOne(parser.getIntValue());
 									ti.setTeam(teamI);
-									List<Teamin> til = tir.findByTeam(teamI);
+									List<TeamIn> til = tir.findByTeam(teamI);
 									if (til.size() == 0) {
 										ti = tir.save(ti);
 									} else {
@@ -95,17 +95,17 @@ public class TransferController {
 									for (int j = 0; j < 5; j++) {
 										jsonToken = parser.nextToken();
 									}
-									t.setTeamin(ti);
-									Teamout to = new Teamout();
+									t.setTeamIn(ti);
+									TeamOut to = new TeamOut();
 									Team teamO = tr.getOne(parser.getIntValue());
 									to.setTeam(teamO);
-									List<Teamout> tol = tor.findByTeam(teamO);
+									List<TeamOut> tol = tor.findByTeam(teamO);
 									if (tol.size() == 0) {
 										to = tor.save(to);
 									} else {
 										to = tol.get(0);
 									}
-									t.setTeamout(to);
+									t.setTeamOut(to);
 									for (int j = 0; j < 7; j++) {
 										jsonToken = parser.nextToken();
 									}
@@ -129,7 +129,7 @@ public class TransferController {
 	public void saveTransfer(List<Transfer> transferi, Transfer t) {
 		for (Transfer trans:transferi) {
 			if (trans.getPlayer().getIdPlayer()==t.getPlayer().getIdPlayer()
-					&& trans.getTeamin().getIdTeamIn()==t.getTeamin().getIdTeamIn()
+					&& trans.getTeamIn().getIdTeamIn()==t.getTeamIn().getIdTeamIn()
 					&& trans.getTransferDate().equals(t.getTransferDate())) {
 				trans.setLastUpdate(t.getLastUpdate());
 				transr.save(trans);

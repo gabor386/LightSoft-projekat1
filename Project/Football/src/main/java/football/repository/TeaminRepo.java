@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import model.Team;
-import model.Teamin;
+import model.TeamIn;
 
-public interface TeaminRepo extends JpaRepository<Teamin, Integer>{
-	List<Teamin> findByTeam(Team team);
+public interface TeaminRepo extends JpaRepository<TeamIn, Integer>{
+	List<TeamIn> findByTeam(Team team);
 }

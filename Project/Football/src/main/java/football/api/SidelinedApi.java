@@ -16,8 +16,8 @@ import football.repository.CoachRepo;
 import football.repository.SidelineRepo;
 import football.repository.TeamplayerRepo;
 import model.Coach;
-import model.Sideline;
-import model.Teamplayer;
+import model.SideLine;
+import model.TeamPlayer;
 
 public class SidelinedApi extends Thread {
 
@@ -35,11 +35,11 @@ public class SidelinedApi extends Thread {
 	}
 
 	public void apiSidelined() {
-		List<Teamplayer> players = pr.findAll();
+		List<TeamPlayer> players = pr.findAll();
 		List<Coach> coaches = cr.findAll();
-		List<Sideline> sls = sr.findAll();
+		List<SideLine> sls = sr.findAll();
 		String json = null;
-		for (Teamplayer p : players) {
+		for (TeamPlayer p : players) {
 			try {
 				HttpResponse<String> response = Unirest.get(param.getAdd() + "/sidelined/player/" + p.getIdTeamPlayer())
 						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
@@ -62,7 +62,7 @@ public class SidelinedApi extends Thread {
 								jsonToken = parser.nextToken();
 								jsonToken = parser.nextToken();
 								for (int i = 0; i < br; i++) {
-									Sideline s = new Sideline();
+									SideLine s = new SideLine();
 									jsonToken = parser.nextToken();
 									jsonToken = parser.nextToken();
 									jsonToken = parser.nextToken();
@@ -75,7 +75,7 @@ public class SidelinedApi extends Thread {
 									s.setEnd(parser.getValueAsString());
 									jsonToken = parser.nextToken();
 									if (!hasSideline(s, sls)) {
-										s.setTeamplayer(p);
+										s.setTeamPlayer(p);
 										sr.save(s);
 									}
 								}
@@ -111,7 +111,7 @@ public class SidelinedApi extends Thread {
 								jsonToken = parser.nextToken();
 								jsonToken = parser.nextToken();
 								for (int i = 0; i < br; i++) {
-									Sideline s = new Sideline();
+									SideLine s = new SideLine();
 									jsonToken = parser.nextToken();
 									jsonToken = parser.nextToken();
 									jsonToken = parser.nextToken();
@@ -140,12 +140,12 @@ public class SidelinedApi extends Thread {
 
 	}
 
-	public boolean hasSideline(Sideline sl, List<Sideline> sls) {
-		for (Sideline s : sls) {
+	public boolean hasSideline(SideLine sl, List<SideLine> sls) {
+		for (SideLine s : sls) {
 			if (s.getType().equals(sl.getType()) && s.getStart().equals(sl.getStart())
 					&& s.getEnd().equals(sl.getEnd())) {
 				if (s.getCoach().getIdCoach() == sl.getCoach().getIdCoach()
-						|| s.getTeamplayer().getIdTeamPlayer() == sl.getTeamplayer().getIdTeamPlayer()) {
+						|| s.getTeamPlayer().getIdTeamPlayer() == sl.getTeamPlayer().getIdTeamPlayer()) {
 					return true;
 				}
 			}

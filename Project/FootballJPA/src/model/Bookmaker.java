@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the bookmaker database table.
+ * The persistent class for the Bookmaker database table.
  * 
  */
 @Entity

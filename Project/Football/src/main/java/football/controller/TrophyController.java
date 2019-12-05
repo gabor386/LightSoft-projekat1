@@ -23,8 +23,8 @@ import football.repository.WinnerRepo;
 import model.Coach;
 import model.League;
 import model.Player;
-import model.Sideline;
-import model.Teamplayer;
+import model.SideLine;
+import model.TeamPlayer;
 import model.Trophy;
 import model.Winner;
 

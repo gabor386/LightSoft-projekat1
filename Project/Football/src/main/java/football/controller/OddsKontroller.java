@@ -44,7 +44,7 @@ public class OddsKontroller {
 	FixtureRepo fr;
 	
 	
-	
+	@RequestMapping (value = "/odds")
 	public void apiOdds() {
 		String json = null;
 		List<Fixture> fs = fr.findAll();
@@ -56,6 +56,7 @@ public class OddsKontroller {
 				HttpResponse<String> response = Unirest.get(param.getAdd() + "/odds/fixture/" + f.getIdFixtures())
 						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
 				json = response.getBody();
+				System.out.println(json);
 				
 			} catch (UnirestException e) {
 				e.printStackTrace();
@@ -78,6 +79,7 @@ public class OddsKontroller {
 								for (int i = 0; i < br; i++) {
 									Odd o = new Odd();
 									o.setFixture(f);
+									o=or.save(o);
 									for (int j = 0; j < 12; j++) {
 										jsonToken = parser.nextToken();
 									}
@@ -108,15 +110,16 @@ public class OddsKontroller {
 												jsonToken = parser.nextToken();
 												jsonToken = parser.nextToken();
 												jsonToken = parser.nextToken();
-												b.setValues(parser.getValueAsString());
+												b.setBetValues(parser.getValueAsString());
 												jsonToken = parser.nextToken();
 												jsonToken = parser.nextToken();
 												b.setOdd(parser.getValueAsString());
 												b.setBookmaker(bm);
 												b.setLabel(l);
+												b.setOddBean(o);
 												b=betr.save(b);
 												// dodavanje beta u odds;  mozda ce biti potrebno da se pravi kobija objekta "b"
-												b.setOddBean(o);
+												
 												jsonToken = parser.nextToken();
 											}
 											ok2=true;

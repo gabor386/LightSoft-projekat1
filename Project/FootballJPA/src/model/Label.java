@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the label database table.
+ * The persistent class for the Label database table.
  * 
  */
 @Entity

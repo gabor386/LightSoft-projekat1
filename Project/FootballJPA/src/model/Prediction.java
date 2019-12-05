@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the prediction database table.
+ * The persistent class for the Prediction database table.
  * 
  */
 @Entity
