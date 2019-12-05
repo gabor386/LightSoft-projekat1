@@ -1,10 +1,9 @@
-package football.controller;
+package football.api;
 
 import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -13,23 +12,18 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import football.api.Param;
 import football.repository.CoachRepo;
 import football.repository.LeagueRepo;
 import football.repository.PlayerRepo;
-import football.repository.TeamplayerRepo;
 import football.repository.TrophyRepo;
 import football.repository.WinnerRepo;
 import model.Coach;
 import model.League;
 import model.Player;
-import model.Sideline;
-import model.Teamplayer;
 import model.Trophy;
 import model.Winner;
 
-@RestController
-public class TrophyController {
+public class TrophyApi extends Thread {
 
 	Param param = new Param();
 
@@ -44,6 +38,11 @@ public class TrophyController {
 	@Autowired
 	LeagueRepo lr;
 
+	
+	public void run () {
+		apiTrophy();
+	}
+	
 	public void apiTrophy() {
 		String json = null;
 		List<Player> tps = pr.findAll();
@@ -203,5 +202,5 @@ public class TrophyController {
 		ws.add(win);
 		return false;
 	}
-
+	
 }

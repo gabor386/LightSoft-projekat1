@@ -1,10 +1,9 @@
-package football.controller;
+package football.api;
 
 import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -13,7 +12,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import football.api.Param;
 import football.repository.PlayerRepo;
 import football.repository.TeamRepo;
 import football.repository.TeaminRepo;
@@ -25,8 +23,7 @@ import model.Teamin;
 import model.Teamout;
 import model.Transfer;
 
-@RestController
-public class TransferController {
+public class TransferApi extends Thread {
 
 	Param param = new Param();
 
@@ -41,10 +38,14 @@ public class TransferController {
 	@Autowired
 	TeamoutRepo tor;
 
+	public void run() {
+		apiTransfer();
+	}
+
 	public void apiTransfer() {
 		String json = null;
 		List<Player> players = pr.findAll();
-		List<Transfer>transferi = transr.findAll();
+		List<Transfer> transferi = transr.findAll();
 
 		for (Player p : players) {
 			try {
@@ -110,7 +111,7 @@ public class TransferController {
 										jsonToken = parser.nextToken();
 									}
 									int lu = parser.getIntValue();
-									String lus = lu+"";
+									String lus = lu + "";
 									t.setLastUpdate(lus);
 									saveTransfer(transferi, t);
 
@@ -125,18 +126,19 @@ public class TransferController {
 			json = null;
 		}
 	}
-	
+
 	public void saveTransfer(List<Transfer> transferi, Transfer t) {
-		for (Transfer trans:transferi) {
-			if (trans.getPlayer().getIdPlayer()==t.getPlayer().getIdPlayer()
-					&& trans.getTeamin().getIdTeamIn()==t.getTeamin().getIdTeamIn()
+		for (Transfer trans : transferi) {
+			if (trans.getPlayer().getIdPlayer() == t.getPlayer().getIdPlayer()
+					&& trans.getTeamin().getIdTeamIn() == t.getTeamin().getIdTeamIn()
 					&& trans.getTransferDate().equals(t.getTransferDate())) {
 				trans.setLastUpdate(t.getLastUpdate());
 				transr.save(trans);
 				return;
 			}
-		}		
-		t=transr.save(t);
+		}
+		t = transr.save(t);
 		transferi.add(t);
 	}
+
 }

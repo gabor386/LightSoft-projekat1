@@ -1,21 +1,17 @@
-package football.controller;
+package football.api;
 
 import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import football.api.Param;
 import football.repository.BetRepo;
 import football.repository.BookmakerRepo;
 import football.repository.FixtureRepo;
@@ -27,8 +23,7 @@ import model.Fixture;
 import model.Label;
 import model.Odd;
 
-@RestController
-public class OddsKontroller {
+public class OddsApi extends Thread {
 
 	private Param param = new Param();
 
@@ -42,21 +37,22 @@ public class OddsKontroller {
 	LabelRepo lr;
 	@Autowired
 	FixtureRepo fr;
-	
-	
-	
+
+	public void run() {
+		apiOdds();
+	}
+
 	public void apiOdds() {
 		String json = null;
 		List<Fixture> fs = fr.findAll();
 
 		for (Fixture f : fs) {
-		
-			
+
 			try {
 				HttpResponse<String> response = Unirest.get(param.getAdd() + "/odds/fixture/" + f.getIdFixtures())
 						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
 				json = response.getBody();
-				
+
 			} catch (UnirestException e) {
 				e.printStackTrace();
 			}
@@ -81,7 +77,7 @@ public class OddsKontroller {
 									for (int j = 0; j < 12; j++) {
 										jsonToken = parser.nextToken();
 									}
-									boolean ok =true;
+									boolean ok = true;
 									while (jsonToken != jsonToken.END_ARRAY && ok) {
 										jsonToken = parser.nextToken();
 										jsonToken = parser.nextToken();
@@ -91,8 +87,8 @@ public class OddsKontroller {
 										jsonToken = parser.nextToken();
 										jsonToken = parser.nextToken();
 										jsonToken = parser.nextToken();
-										ok=false;
-										boolean ok2=true;
+										ok = false;
+										boolean ok2 = true;
 										while (jsonToken != jsonToken.END_ARRAY && ok2) {
 											jsonToken = parser.nextToken();
 											jsonToken = parser.nextToken();
@@ -102,8 +98,8 @@ public class OddsKontroller {
 											jsonToken = parser.nextToken();
 											jsonToken = parser.nextToken();
 											jsonToken = parser.nextToken();
-											ok2=false;
-											while(jsonToken != jsonToken.END_ARRAY) {
+											ok2 = false;
+											while (jsonToken != jsonToken.END_ARRAY) {
 												Bet b = new Bet();
 												jsonToken = parser.nextToken();
 												jsonToken = parser.nextToken();
@@ -114,15 +110,16 @@ public class OddsKontroller {
 												b.setOdd(parser.getValueAsString());
 												b.setBookmaker(bm);
 												b.setLabel(l);
-												b=betr.save(b);
-												// dodavanje beta u odds;  mozda ce biti potrebno da se pravi kobija objekta "b"
+												b = betr.save(b);
+												// dodavanje beta u odds; mozda ce biti potrebno da se pravi kobija
+												// objekta "b"
 												b.setOddBean(o);
 												jsonToken = parser.nextToken();
 											}
-											ok2=true;
+											ok2 = true;
 											jsonToken = parser.nextToken();
 										}
-										ok=true;
+										ok = true;
 										jsonToken = parser.nextToken();
 									}
 

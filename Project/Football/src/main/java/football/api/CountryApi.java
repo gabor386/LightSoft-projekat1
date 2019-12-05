@@ -1,12 +1,9 @@
-package football.controller;
+package football.api;
 
 import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -15,19 +12,20 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import football.api.Param;
 import football.repository.CountryRepo;
 import model.Country;
-@RestController
-public class CountryController {
 
+public class CountryApi extends Thread {
+
+	
 	private Param param=new Param();
 	@Autowired
 	CountryRepo cr;
-
-	// Dodavanje drzava u bazu
-	//jednom mesecno
-	//@Scheduled(cron="0 0 0 1 1-12 *")
+	
+	public void run() {
+		apiCountry();
+	}
+	
 	
 	public void apiCountry() {
 		System.out.println("Dodavanje drzava u bazu..");

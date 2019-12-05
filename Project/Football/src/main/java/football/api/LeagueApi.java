@@ -1,8 +1,6 @@
-package football.controller;
+package football.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -10,15 +8,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-import football.api.Param;
 import football.repository.CountryRepo;
 import football.repository.LeagueRepo;
 import football.repository.SeasonRepo;
 import model.Country;
 import model.League;
 import model.Season;
-@RestController
-public class LeagueController {
+
+public class LeagueApi extends Thread {
 
 	private Param param=new Param();
 
@@ -30,8 +27,10 @@ public class LeagueController {
 	SeasonRepo sr;
 	
 	
+	public void run() {
+		apiLeague();
+	}
 	
-	@RequestMapping (value = "try")
 	public void apiLeague() {
 
 		String json = null;
@@ -120,5 +119,5 @@ public class LeagueController {
 		}
 		json=null;
 	}
-
+	
 }

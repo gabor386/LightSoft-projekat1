@@ -1,10 +1,8 @@
-package football.controller;
+package football.api;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -12,13 +10,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-import football.api.Param;
 import football.repository.LeagueRepo;
 import football.repository.RoundRepo;
 import model.League;
 import model.Round;
-@RestController
-public class RoundController {
+
+public class RoundApi extends Thread {
 
 	private Param param = new Param();
 
@@ -26,12 +23,14 @@ public class RoundController {
 	LeagueRepo lr;
 	@Autowired
 	RoundRepo rr;
-	
-	
-	@RequestMapping (value = "try2")
-	public void apiRaund() {
+
+	public void run() {
+		apiRound();
+	}
+
+	public void apiRound() {
 		List<League> leagues = lr.findAll();
-		
+
 		for (League l : leagues) {
 			if (l != null) {
 				String json = null;
@@ -63,9 +62,6 @@ public class RoundController {
 										jsonToken = parser.nextToken();
 										Round r = new Round();
 										r.setReguralSeason(parser.getValueAsString());
-										
-										r.setReguralSeason(r.getReguralSeason().replaceAll("_", " "));
-										
 										if (!hasRound(runde, r)) {
 											r.setLeague(l);
 											rr.save(r);
@@ -78,7 +74,7 @@ public class RoundController {
 						e.printStackTrace();
 					}
 				}
-				json=null;
+				json = null;
 			}
 		}
 	}

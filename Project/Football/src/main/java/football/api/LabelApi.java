@@ -1,10 +1,8 @@
-package football.controller;
+package football.api;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -12,21 +10,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-import football.api.Param;
 import football.repository.LabelRepo;
 import model.Label;
 
-@RestController
-public class LabelController {
+public class LabelApi extends Thread {
 
 	private Param param = new Param();
-	
+
 	@Autowired
 	LabelRepo lr;
-	
-	
-	// dodaavanje labela u bazu
-	@RequestMapping (value = "try4")
+
+	public void run() {
+		apiLabel();
+	}
+
 	public void apiLabel() {
 		String json = null;
 
@@ -39,7 +36,7 @@ public class LabelController {
 		}
 
 		if (json != null) {
-			List<Label> labels=lr.findAll();
+			List<Label> labels = lr.findAll();
 			JsonFactory factory = new JsonFactory();
 			try {
 				JsonParser parser = factory.createParser(json);
@@ -67,7 +64,7 @@ public class LabelController {
 									labels.add(l);
 									lr.save(l);
 								}
-								
+
 							}
 						}
 					}

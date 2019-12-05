@@ -1,10 +1,8 @@
-package football.controller;
+package football.api;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -12,26 +10,25 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-import football.api.Param;
-import football.repository.LabelRepo;
-import model.Label;
+import football.repository.BookmakerRepo;
+import model.Bookmaker;
 
-@RestController
-public class LabelController {
+public class BookmakerApi extends Thread {
 
 	private Param param = new Param();
-	
+
 	@Autowired
-	LabelRepo lr;
-	
-	
-	// dodaavanje labela u bazu
-	@RequestMapping (value = "try4")
+	BookmakerRepo bkr;
+
+	public void run() {
+
+	}
+
 	public void apiLabel() {
 		String json = null;
 
 		try {
-			HttpResponse<String> response = Unirest.get(param.getAdd() + "/odds/labels/")
+			HttpResponse<String> response = Unirest.get(param.getAdd() + "/odds/bookmakers/")
 					.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
 			json = response.getBody();
 		} catch (Exception e) {
@@ -39,7 +36,7 @@ public class LabelController {
 		}
 
 		if (json != null) {
-			List<Label> labels=lr.findAll();
+			List<Bookmaker> bms = bkr.findAll();
 			JsonFactory factory = new JsonFactory();
 			try {
 				JsonParser parser = factory.createParser(json);
@@ -54,20 +51,20 @@ public class LabelController {
 							jsonToken = parser.nextToken();
 							jsonToken = parser.nextToken();
 							for (int i = 0; i < br; i++) {
-								Label l = new Label();
+								Bookmaker b = new Bookmaker();
 								jsonToken = parser.nextToken();
 								jsonToken = parser.nextToken();
 								jsonToken = parser.nextToken();
-								l.setIdLabel(parser.getIntValue());
+								b.setIdBookmaker(parser.getIntValue());
 								jsonToken = parser.nextToken();
 								jsonToken = parser.nextToken();
-								l.setLabel(parser.getValueAsString());
+								b.setName(parser.getValueAsString());
 								jsonToken = parser.nextToken();
-								if (!labels.contains(l)) {
-									labels.add(l);
-									lr.save(l);
+								if (!bms.contains(b)) {
+									bms.add(b);
+									bkr.save(b);
 								}
-								
+
 							}
 						}
 					}
@@ -81,5 +78,4 @@ public class LabelController {
 		}
 
 	}
-
 }
