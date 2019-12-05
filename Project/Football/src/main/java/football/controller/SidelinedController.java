@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -34,6 +35,8 @@ public class SidelinedController {
 	CoachRepo cr;
 	
 	
+	
+	@RequestMapping (value = "/sideline")
 	public void apiSidelined() {
 		List<TeamPlayer> players = pr.findAll();
 		List<Coach> coaches = cr.findAll();
@@ -44,7 +47,7 @@ public class SidelinedController {
 				HttpResponse<String> response = Unirest.get(param.getAdd() + "/sidelined/player/" + p.getIdTeamPlayer())
 						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
 				json = response.getBody();
-				
+				System.out.println(json);
 			} catch (UnirestException e) {
 				e.printStackTrace();
 			}

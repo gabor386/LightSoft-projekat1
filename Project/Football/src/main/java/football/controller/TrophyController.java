@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -44,6 +45,8 @@ public class TrophyController {
 	@Autowired
 	LeagueRepo lr;
 
+	
+	@RequestMapping (value = "trophy")
 	public void apiTrophy() {
 		String json = null;
 		List<Player> tps = pr.findAll();
@@ -56,7 +59,7 @@ public class TrophyController {
 				HttpResponse<String> response = Unirest.get(param.getAdd() + "/trophies/player/" + p.getIdPlayer())
 						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
 				json = response.getBody();
-
+				System.out.println(json);
 			} catch (UnirestException e) {
 				e.printStackTrace();
 			}
