@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 
@@ -10,11 +13,13 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="League")
 @NamedQuery(name="League.findAll", query="SELECT l FROM League l")
 public class League implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@JsonProperty("league_id")
 	private int idLeague;
 
 	private String logo;

@@ -13,6 +13,7 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="Team")
 @NamedQuery(name="Team.findAll", query="SELECT t FROM Team t")
 public class Team implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -21,20 +22,26 @@ public class Team implements Serializable {
 	@JsonProperty("team_id")
 	private int idTeam;
 
+	@JsonProperty("venue_capacity")
 	private int capacity;
 
 	private int founded;
 
 	private String logo;
 
+	@JsonProperty("venue_address")
 	private String stadionAddress;
 
+	@JsonProperty("venue_city")
 	private String stadionCity;
-
+	
+	@JsonProperty("venue_name")
 	private String stadionName;
 
+	@JsonProperty("venue_surface")
 	private String stadionSurface;
 
+	@JsonProperty("name")
 	private String teamName;
 
 	//bi-directional many-to-one association to Awayteam

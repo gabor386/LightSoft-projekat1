@@ -13,7 +13,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="fixtures")
+@Table(name="Fixtures")
 @NamedQuery(name="Fixture.findAll", query="SELECT f FROM Fixture f")
 public class Fixture implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -28,7 +28,7 @@ public class Fixture implements Serializable {
 	@JsonProperty("event_date")
 	private String eventDate;
 
-	@JsonProperty( "event_timestamp")
+	@JsonProperty("event_timestamp")
 	private int eventTimeStamp;
 	
 
