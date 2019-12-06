@@ -6,4 +6,5 @@ import model.Teamplayer;
 
 public interface TeamplayerRepo extends JpaRepository<Teamplayer, Integer>{
 
+	
 }
