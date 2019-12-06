@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the transfer database table.
+ * The persistent class for the Transfer database table.
  * 
  */
 @Entity
@@ -25,15 +25,18 @@ public class Transfer implements Serializable {
 
 	//bi-directional many-to-one association to Player
 	@ManyToOne
+	@JoinColumn(name="Player_idPlayer")
 	private Player player;
 
-	//bi-directional many-to-one association to Teamin
+	//bi-directional many-to-one association to TeamIn
 	@ManyToOne
-	private Teamin teamin;
+	@JoinColumn(name="TeamIn_idTeamIn")
+	private TeamIn teamIn;
 
-	//bi-directional many-to-one association to Teamout
+	//bi-directional many-to-one association to TeamOut
 	@ManyToOne
-	private Teamout teamout;
+	@JoinColumn(name="TeamOut_idTeamOut")
+	private TeamOut teamOut;
 
 	public Transfer() {
 	}
@@ -78,20 +81,20 @@ public class Transfer implements Serializable {
 		this.player = player;
 	}
 
-	public Teamin getTeamin() {
-		return this.teamin;
+	public TeamIn getTeamIn() {
+		return this.teamIn;
 	}
 
-	public void setTeamin(Teamin teamin) {
-		this.teamin = teamin;
+	public void setTeamIn(TeamIn teamIn) {
+		this.teamIn = teamIn;
 	}
 
-	public Teamout getTeamout() {
-		return this.teamout;
+	public TeamOut getTeamOut() {
+		return this.teamOut;
 	}
 
-	public void setTeamout(Teamout teamout) {
-		this.teamout = teamout;
+	public void setTeamOut(TeamOut teamOut) {
+		this.teamOut = teamOut;
 	}
 
 }

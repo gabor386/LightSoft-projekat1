@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the winner database table.
+ * The persistent class for the Winner database table.
  * 
  */
 @Entity
@@ -19,10 +19,12 @@ public class Winner implements Serializable {
 
 	//bi-directional many-to-one association to Player
 	@ManyToOne
+	@JoinColumn(name="Player_idPlayer")
 	private Player player;
 
 	//bi-directional many-to-one association to Trophy
 	@ManyToOne
+	@JoinColumn(name="Trophy_idTrophy")
 	private Trophy trophy;
 
 	public Winner() {

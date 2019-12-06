@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the bet database table.
+ * The persistent class for the Bet database table.
  * 
  */
 @Entity
@@ -17,16 +17,18 @@ public class Bet implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idBet;
 
-	private String odd;
+	private String betValues;
 
-	private String values;
+	private String odd;
 
 	//bi-directional many-to-one association to Bookmaker
 	@ManyToOne
+	@JoinColumn(name="Bookmaker_idBookmaker")
 	private Bookmaker bookmaker;
 
 	//bi-directional many-to-one association to Label
 	@ManyToOne
+	@JoinColumn(name="Label_idLabel")
 	private Label label;
 
 	//bi-directional many-to-one association to Odd
@@ -45,20 +47,20 @@ public class Bet implements Serializable {
 		this.idBet = idBet;
 	}
 
+	public String getBetValues() {
+		return this.betValues;
+	}
+
+	public void setBetValues(String betValues) {
+		this.betValues = betValues;
+	}
+
 	public String getOdd() {
 		return this.odd;
 	}
 
 	public void setOdd(String odd) {
 		this.odd = odd;
-	}
-
-	public String getValues() {
-		return this.values;
-	}
-
-	public void setValues(String values) {
-		this.values = values;
 	}
 
 	public Bookmaker getBookmaker() {

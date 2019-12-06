@@ -5,12 +5,12 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the sideline database table.
+ * The persistent class for the SideLine database table.
  * 
  */
 @Entity
-@NamedQuery(name="Sideline.findAll", query="SELECT s FROM Sideline s")
-public class Sideline implements Serializable {
+@NamedQuery(name="SideLine.findAll", query="SELECT s FROM SideLine s")
+public class SideLine implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -23,15 +23,17 @@ public class Sideline implements Serializable {
 
 	private String type;
 
-	//bi-directional many-to-one association to Teamplayer
-	@ManyToOne
-	private Teamplayer teamplayer;
-
 	//bi-directional many-to-one association to Coach
 	@ManyToOne
+	@JoinColumn(name="Coach_idCoach")
 	private Coach coach;
 
-	public Sideline() {
+	//bi-directional many-to-one association to TeamPlayer
+	@ManyToOne
+	@JoinColumn(name="TeamPlayer_idTeamPlayer")
+	private TeamPlayer teamPlayer;
+
+	public SideLine() {
 	}
 
 	public int getIdSideLine() {
@@ -66,20 +68,20 @@ public class Sideline implements Serializable {
 		this.type = type;
 	}
 
-	public Teamplayer getTeamplayer() {
-		return this.teamplayer;
-	}
-
-	public void setTeamplayer(Teamplayer teamplayer) {
-		this.teamplayer = teamplayer;
-	}
-
 	public Coach getCoach() {
 		return this.coach;
 	}
 
 	public void setCoach(Coach coach) {
 		this.coach = coach;
+	}
+
+	public TeamPlayer getTeamPlayer() {
+		return this.teamPlayer;
+	}
+
+	public void setTeamPlayer(TeamPlayer teamPlayer) {
+		this.teamPlayer = teamPlayer;
 	}
 
 }

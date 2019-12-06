@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the round database table.
+ * The persistent class for the Round database table.
  * 
  */
 @Entity
@@ -26,6 +26,7 @@ public class Round implements Serializable {
 
 	//bi-directional many-to-one association to League
 	@ManyToOne
+	@JoinColumn(name="League_idLeague")
 	private League league;
 
 	public Round() {

@@ -28,7 +28,7 @@ public class LeagueController {
 	@Autowired
 	SeasonRepo sr;
 	
-	
+	@RequestMapping(value="/leauge")
 	public void apiLeague() {
 
 		String json = null;
@@ -100,7 +100,7 @@ public class LeagueController {
 								for (int j=0; j<31; j++) {
 									jsonToken = parser.nextToken();
 								}
-								if (lr.getOne(l.getIdLeague())==null) {
+								if (!lr.existsById(l.getIdLeague())) {
 									lr.save(l);
 									
 								}

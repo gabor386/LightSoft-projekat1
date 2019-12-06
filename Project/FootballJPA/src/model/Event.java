@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the event database table.
+ * The persistent class for the Event database table.
  * 
  */
 @Entity
@@ -23,18 +23,20 @@ public class Event implements Serializable {
 
 	private String type;
 
+	//bi-directional many-to-one association to Assist
+	@ManyToOne
+	@JoinColumn(name="Assist_idAssist")
+	private Assist assist;
+
 	//bi-directional many-to-one association to Fixture
 	@ManyToOne
 	@JoinColumn(name="Fixtures_idFixtures")
 	private Fixture fixture;
 
-	//bi-directional many-to-one association to Teamplayer
+	//bi-directional many-to-one association to TeamPlayer
 	@ManyToOne
-	private Teamplayer teamplayer;
-
-	//bi-directional many-to-one association to Assist
-	@ManyToOne
-	private Assist assist;
+	@JoinColumn(name="TeamPlayer_idTeamPlayer")
+	private TeamPlayer teamPlayer;
 
 	public Event() {
 	}
@@ -71,6 +73,14 @@ public class Event implements Serializable {
 		this.type = type;
 	}
 
+	public Assist getAssist() {
+		return this.assist;
+	}
+
+	public void setAssist(Assist assist) {
+		this.assist = assist;
+	}
+
 	public Fixture getFixture() {
 		return this.fixture;
 	}
@@ -79,20 +89,12 @@ public class Event implements Serializable {
 		this.fixture = fixture;
 	}
 
-	public Teamplayer getTeamplayer() {
-		return this.teamplayer;
+	public TeamPlayer getTeamPlayer() {
+		return this.teamPlayer;
 	}
 
-	public void setTeamplayer(Teamplayer teamplayer) {
-		this.teamplayer = teamplayer;
-	}
-
-	public Assist getAssist() {
-		return this.assist;
-	}
-
-	public void setAssist(Assist assist) {
-		this.assist = assist;
+	public void setTeamPlayer(TeamPlayer teamPlayer) {
+		this.teamPlayer = teamPlayer;
 	}
 
 }

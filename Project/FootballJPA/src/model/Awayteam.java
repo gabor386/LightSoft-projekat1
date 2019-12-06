@@ -6,12 +6,12 @@ import java.util.List;
 
 
 /**
- * The persistent class for the awayteam database table.
+ * The persistent class for the AwayTeam database table.
  * 
  */
 @Entity
-@NamedQuery(name="Awayteam.findAll", query="SELECT a FROM Awayteam a")
-public class Awayteam implements Serializable {
+@NamedQuery(name="AwayTeam.findAll", query="SELECT a FROM AwayTeam a")
+public class AwayTeam implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -20,13 +20,14 @@ public class Awayteam implements Serializable {
 
 	//bi-directional many-to-one association to Team
 	@ManyToOne
+	@JoinColumn(name="Team_idTeam")
 	private Team team;
 
 	//bi-directional many-to-one association to Fixture
-	@OneToMany(mappedBy="awayteam")
+	@OneToMany(mappedBy="awayTeam")
 	private List<Fixture> fixtures;
 
-	public Awayteam() {
+	public AwayTeam() {
 	}
 
 	public int getIdAwayTeam() {
@@ -55,14 +56,14 @@ public class Awayteam implements Serializable {
 
 	public Fixture addFixture(Fixture fixture) {
 		getFixtures().add(fixture);
-		fixture.setAwayteam(this);
+		fixture.setAwayTeam(this);
 
 		return fixture;
 	}
 
 	public Fixture removeFixture(Fixture fixture) {
 		getFixtures().remove(fixture);
-		fixture.setAwayteam(null);
+		fixture.setAwayTeam(null);
 
 		return fixture;
 	}

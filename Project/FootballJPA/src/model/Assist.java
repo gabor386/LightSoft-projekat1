@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the assist database table.
+ * The persistent class for the Assist database table.
  * 
  */
 @Entity
@@ -18,9 +18,10 @@ public class Assist implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idAssist;
 
-	//bi-directional many-to-one association to Teamplayer
+	//bi-directional many-to-one association to TeamPlayer
 	@ManyToOne
-	private Teamplayer teamplayer;
+	@JoinColumn(name="TeamPlayer_idTeamPlayer")
+	private TeamPlayer teamPlayer;
 
 	//bi-directional many-to-one association to Event
 	@OneToMany(mappedBy="assist")
@@ -37,12 +38,12 @@ public class Assist implements Serializable {
 		this.idAssist = idAssist;
 	}
 
-	public Teamplayer getTeamplayer() {
-		return this.teamplayer;
+	public TeamPlayer getTeamPlayer() {
+		return this.teamPlayer;
 	}
 
-	public void setTeamplayer(Teamplayer teamplayer) {
-		this.teamplayer = teamplayer;
+	public void setTeamPlayer(TeamPlayer teamPlayer) {
+		this.teamPlayer = teamPlayer;
 	}
 
 	public List<Event> getEvents() {

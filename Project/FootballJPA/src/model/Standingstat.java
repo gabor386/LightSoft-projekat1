@@ -5,12 +5,12 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the standingstat database table.
+ * The persistent class for the StandingStat database table.
  * 
  */
 @Entity
-@NamedQuery(name="Standingstat.findAll", query="SELECT s FROM Standingstat s")
-public class Standingstat implements Serializable {
+@NamedQuery(name="StandingStat.findAll", query="SELECT s FROM StandingStat s")
+public class StandingStat implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -33,9 +33,10 @@ public class Standingstat implements Serializable {
 
 	//bi-directional many-to-one association to Stading
 	@ManyToOne
+	@JoinColumn(name="Stading_idStading")
 	private Stading stading;
 
-	public Standingstat() {
+	public StandingStat() {
 	}
 
 	public int getIdStendingStat() {

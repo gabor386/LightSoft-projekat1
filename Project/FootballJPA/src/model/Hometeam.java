@@ -6,12 +6,12 @@ import java.util.List;
 
 
 /**
- * The persistent class for the hometeam database table.
+ * The persistent class for the HomeTeam database table.
  * 
  */
 @Entity
-@NamedQuery(name="Hometeam.findAll", query="SELECT h FROM Hometeam h")
-public class Hometeam implements Serializable {
+@NamedQuery(name="HomeTeam.findAll", query="SELECT h FROM HomeTeam h")
+public class HomeTeam implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -19,14 +19,15 @@ public class Hometeam implements Serializable {
 	private int idHomeTeam;
 
 	//bi-directional many-to-one association to Fixture
-	@OneToMany(mappedBy="hometeam")
+	@OneToMany(mappedBy="homeTeam")
 	private List<Fixture> fixtures;
 
 	//bi-directional many-to-one association to Team
 	@ManyToOne
+	@JoinColumn(name="Team_idTeam")
 	private Team team;
 
-	public Hometeam() {
+	public HomeTeam() {
 	}
 
 	public int getIdHomeTeam() {
@@ -47,14 +48,14 @@ public class Hometeam implements Serializable {
 
 	public Fixture addFixture(Fixture fixture) {
 		getFixtures().add(fixture);
-		fixture.setHometeam(this);
+		fixture.setHomeTeam(this);
 
 		return fixture;
 	}
 
 	public Fixture removeFixture(Fixture fixture) {
 		getFixtures().remove(fixture);
-		fixture.setHometeam(null);
+		fixture.setHomeTeam(null);
 
 		return fixture;
 	}

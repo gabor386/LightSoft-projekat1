@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the score database table.
+ * The persistent class for the Score database table.
  * 
  */
 @Entity

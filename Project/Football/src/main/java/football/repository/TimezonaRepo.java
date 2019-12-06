@@ -2,8 +2,8 @@ package football.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import model.Timezona;
+import model.TimeZona;
 
-public interface TimezonaRepo extends JpaRepository<Timezona, Integer>{
+public interface TimezonaRepo extends JpaRepository<TimeZona, Integer>{
 
 }
