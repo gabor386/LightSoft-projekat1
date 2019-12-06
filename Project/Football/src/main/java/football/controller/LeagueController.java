@@ -65,6 +65,7 @@ public class LeagueController {
 								jsonToken = parser.nextToken();
 								jsonToken = parser.nextToken();
 								l.setIdLeague(parser.getIntValue());
+								System.out.println(parser.getIntValue());
 								jsonToken = parser.nextToken();
 								jsonToken = parser.nextToken();
 								l.setName(parser.getValueAsString());
@@ -105,10 +106,10 @@ public class LeagueController {
 								}
 								System.out.println("trying");
 								System.out.println(l);
-								if (!lr.existsById(l.getIdLeague())) {
+								
 									lr.save(l);
 									
-								}
+								
 								
 							}
 						}
