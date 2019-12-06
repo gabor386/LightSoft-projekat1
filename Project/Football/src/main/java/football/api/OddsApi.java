@@ -63,6 +63,7 @@ public class OddsApi extends Thread {
 					JsonParser parser = factory.createParser(json);
 
 					while (!parser.isClosed()) {
+
 						JsonToken jsonToken = parser.nextToken();
 						if (JsonToken.FIELD_NAME.equals(jsonToken)) {
 							String fieldName = parser.getCurrentName();
@@ -71,16 +72,18 @@ public class OddsApi extends Thread {
 								int br = parser.getIntValue();
 								jsonToken = parser.nextToken();
 								jsonToken = parser.nextToken();
+								System.out.println("Broj rezultata " + br);
 								for (int i = 0; i < br; i++) {
 									Odd o = new Odd();
 									o.setFixture(f);
-									o=or.save(o);
+									o = or.save(o);
 									for (int j = 0; j < 12; j++) {
 										jsonToken = parser.nextToken();
 									}
+									jsonToken = parser.nextToken();
 									boolean ok = true;
 									while (jsonToken != jsonToken.END_ARRAY && ok) {
-										jsonToken = parser.nextToken();
+
 										jsonToken = parser.nextToken();
 										jsonToken = parser.nextToken();
 										Bookmaker bm = bmr.getOne(parser.getIntValue());
@@ -90,19 +93,23 @@ public class OddsApi extends Thread {
 										jsonToken = parser.nextToken();
 										ok = false;
 										boolean ok2 = true;
+										jsonToken = parser.nextToken();
 										while (jsonToken != jsonToken.END_ARRAY && ok2) {
+
+											jsonToken = parser.nextToken(); // otvara objekat labele
+
 											jsonToken = parser.nextToken();
-											jsonToken = parser.nextToken();
-											jsonToken = parser.nextToken();
+
 											Label l = lr.getOne(parser.getIntValue());
 											jsonToken = parser.nextToken();
 											jsonToken = parser.nextToken();
 											jsonToken = parser.nextToken();
 											jsonToken = parser.nextToken();
 											ok2 = false;
+											jsonToken = parser.nextToken();
 											while (jsonToken != jsonToken.END_ARRAY) {
 												Bet b = new Bet();
-												jsonToken = parser.nextToken();
+
 												jsonToken = parser.nextToken();
 												jsonToken = parser.nextToken();
 												b.setBetValues(parser.getValueAsString());
@@ -111,23 +118,30 @@ public class OddsApi extends Thread {
 												b.setOdd(parser.getValueAsString());
 												b.setBookmaker(bm);
 												b.setLabel(l);
-												
 												b.setOddBean(o);
 												b = betr.save(b);
-												
+												System.out.println("insert bet");
+												jsonToken = parser.nextToken();
 												jsonToken = parser.nextToken();
 											}
+											l = null;
 											ok2 = true;
+											jsonToken = parser.nextToken(); // zatvara objekat labele
 											jsonToken = parser.nextToken();
 										}
 										ok = true;
+
+										jsonToken = parser.nextToken();
 										jsonToken = parser.nextToken();
 									}
+									jsonToken = parser.nextToken();
+									jsonToken = parser.nextToken();
 
 								}
 
 							}
 						}
+
 					}
 				} catch (IOException e) {
 					e.printStackTrace();

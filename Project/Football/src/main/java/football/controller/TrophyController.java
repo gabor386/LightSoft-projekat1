@@ -46,7 +46,7 @@ public class TrophyController {
 	LeagueRepo lr;
 
 	
-	@RequestMapping (value = "trophy")
+	@RequestMapping (value = "/trophy")
 	public void apiTrophy() {
 		String json = null;
 		List<Player> tps = pr.findAll();

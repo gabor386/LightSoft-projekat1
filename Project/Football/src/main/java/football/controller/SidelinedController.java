@@ -44,7 +44,7 @@ public class SidelinedController {
 		String json = null;
 		for (TeamPlayer p:players) {
 			try {
-				HttpResponse<String> response = Unirest.get(param.getAdd() + "/sidelined/player/" + p.getIdTeamPlayer())
+				HttpResponse<String> response = Unirest.get(param.getAdd() + "/sidelined/player/" + p.getPlayer().getIdPlayer())
 						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
 				json = response.getBody();
 				System.out.println(json);

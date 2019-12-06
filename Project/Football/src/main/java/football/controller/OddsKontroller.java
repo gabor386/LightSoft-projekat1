@@ -139,7 +139,7 @@ public class OddsKontroller {
 										jsonToken = parser.nextToken();
 									}
 									jsonToken = parser.nextToken();
-									
+									jsonToken = parser.nextToken();
 
 								}
 
