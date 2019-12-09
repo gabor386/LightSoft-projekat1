@@ -10,6 +10,7 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="Assist")
 @NamedQuery(name="Assist.findAll", query="SELECT a FROM Assist a")
 public class Assist implements Serializable {
 	private static final long serialVersionUID = 1L;

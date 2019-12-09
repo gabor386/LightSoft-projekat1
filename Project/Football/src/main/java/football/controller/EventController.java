@@ -80,25 +80,26 @@ public class EventController {
 				
 				JSONObject o2 = (JSONObject)n1.get(i);
 				
-				   Long elapsedLong = (Long) o2.get("elapsed"); 
-				   Integer elapsed  = elapsedLong.intValue();
+				   Object elapsedLong =  o2.get("elapsed"); 
+				   Integer elapsed  =   elapsedLong instanceof Long ? ((Long) elapsedLong).intValue() :0;
 				   event.setElapsed(elapsed);
 				
-				   event.setType((String) o2.get("type"));
-				   event.setDetail((String) o2.get("detail"));
+				   event.setType((String) o2.get("type") == null ? null : (String) o2.get("type"));
+				   
+				   event.setDetail((String) o2.get("detail") == null ? null : (String) o2.get("detail"));
 				   
 				   event.setFixture(f);
 				   
-				   Long teamPlayerLong = (Long) o2.get("player_id"); 
-				   Integer teamPlayerId  = teamPlayerLong.intValue();
+				   Object teamPlayerLong =  o2.get("player_id"); 
+				   Integer teamPlayerId  =   teamPlayerLong instanceof Long ? ((Long) teamPlayerLong).intValue() : 0;
 				   
 				
 				    Teamplayer teamPlayer =  teamPlayerRepo.getOne(teamPlayerId);
 				    
 				    event.setTeamplayer(teamPlayer);
 				    
-				    Long teamPlayerAssistLong = (Long) o2.get("assist_id"); 
-					Integer teamPlayerAssistId  =   teamPlayerAssistLong == null ? null : teamPlayerAssistLong.intValue();
+				    Object teamPlayerAssistLong = o2.get("assist_id"); 
+					Integer teamPlayerAssistId  =   teamPlayerAssistLong instanceof Long ? ((Long) teamPlayerAssistLong).intValue() : 0;
 				   
 				   teamPlayer = teamPlayerRepo.getOne(teamPlayerAssistId);
 				    

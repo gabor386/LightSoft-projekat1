@@ -67,147 +67,150 @@ public class FixturesController {
 	@RequestMapping(value = "/saveFixture", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
 	public void apiFixtures() {
 
-		List<Fixture> retFixture = new ArrayList<Fixture>();
+		List<League> leagues = leagueRepo.findAll();
 
-		HttpResponse<String> response = null;
-		try {
-			response = Unirest.get(param.getAdd() + "/fixtures/league/357").header("x-rapidapi-host", param.getH1())
-					.header("x-rapidapi-key", param.getH2()).asString();
-		} catch (UnirestException e1) {
-			e1.printStackTrace();
-		}
+		for (League l : leagues) {
 
-		String json = response.getBody();
+			List<Fixture> retFixture = new ArrayList<Fixture>();
 
-		JSONParser parse = new JSONParser();
-		JSONObject o;
-
-		Fixture fixture = new Fixture();
-
-		try {
-			o = (JSONObject) parse.parse(json);
-			JSONObject o1 = (JSONObject) o.get("api");
-
-			JSONArray n1 = (JSONArray) o1.get("fixtures");
-
-			for (int i = 0; i < n1.size(); i++) {
-
-				JSONObject o2 = (JSONObject) n1.get(i);
-
-				Long idLongFixture = (long) o2.get("fixture_id");
-				Integer idFixture = idLongFixture == null ? null : idLongFixture.intValue();
-				fixture.setIdFixtures(idFixture);
-				System.out.println("Id fix : " + idFixture);
-//					  
-//					   Long eventTimeStampLong =  (Long) o2.get("event_timestamp");
-//					   Integer eventTimeStamp = eventTimeStampLong == null ? null : eventTimeStampLong.intValue();
-//					  // fixture.setEventTimeStamp(eventTimeStamp);
-//					  System.out.println("Event time stamp" + eventTimeStamp);	
-//					 
-//
-//					   Long firstHalfStartLong =  (Long) o2.get("firstHalfStart");
-//					   Integer firstHalfStart  = firstHalfStartLong == null ? null : firstHalfStartLong.intValue();
-//					   //fixture.setFristHalfStart(firstHalfStart);
-//					   System.out.println("Frist half start" + firstHalfStart);
-//
-//					   Long secondtHalfStartLong = (Long) o2.get("secondHalfStart");
-//					   Integer secondHalfStart  = secondtHalfStartLong  == null ? null:secondtHalfStartLong.intValue();
-//					  // fixture.setSecondHalfStart(secondHalfStart);
-//					   System.out.println("Sec half start" + secondHalfStart);
-//					   
-//					   
-//					   Long elapsedLong = (Long) o2.get("elapsed");
-//					   Integer elapsed  = elapsedLong == null ? null :elapsedLong.intValue();
-//					   //fixture.setElapsed(elapsed);
-//					   System.out.println("Elapsed" + elapsed);
-//					   
-//					   Long goalsHomeTeamLong = (Long) o2.get("goalsHomeTeam"); 
-//					   Integer goalsHomeTeam  = goalsHomeTeamLong == null  ?  null : goalsHomeTeamLong.intValue();
-//					   //fixture.setGoalsHomeTeam(goalsHomeTeam);
-//					   System.out.println("Goals team home" + goalsHomeTeam);
-//					   
-//					   Long goalsAwayTeamLong = (Long) o2.get("goalsAwayTeam"); 
-//					   Integer goalsAwayTeam  = goalsAwayTeamLong == null ? null :goalsAwayTeamLong.intValue();
-//					   //fixture.setGoalsAwayTeam(goalsAwayTeam);
-//					   System.out.println("Goals team away" + goalsAwayTeam); 
-
-//					   
-//					   fixture.setEventDate((String) o2.get("event_date"));
-//					   fixture.setStatus((String) o2.get("status"));
-//					   fixture.setStatusShort((String) o2.get("statusShort"));
-//					   fixture.setVenue((String) o2.get("venue"));
-//					   fixture.setReferee((String) o2.get("referee"));
-
-//			
-//				 
-//				 Long idLeagueLong = (Long) o2.get("league_id"); 
-//				 Integer idLeague  = idLeagueLong.intValue();
-//				 System.out.println("Liga id " + idLeague);
-//				  
-//
-//				  League league = leagueRepo.getOne(idLeague);
-//				  List<Round> rounds = roundRepo.findByLeague(league);
-//				  
-//				  for(Round r : rounds) {
-//					  if(r.getReguralSeason().equals(o2.get("round"))) {
-//						  System.out.println("Runde" + r.getReguralSeason());
-//						 // fixture.setRound(r);
-//					  }
-//				  }
-
-//				 
-//				  
-				JSONObject o3 = (JSONObject) o2.get("homeTeam");
-				JSONObject o4 = (JSONObject) o2.get("awayTeam");
-
-				Hometeam homeTeam = new Hometeam();
-				Awayteam awayTeam = new Awayteam();
-
-				Long idHomeTeamLong = (Long) o3.get("team_id");
-				Integer idHomeTeam = idHomeTeamLong != null ? idHomeTeamLong.intValue() : null;
-
-				Team team = teamRepo.getOne(idHomeTeam);
-
-				homeTeam.setTeam(team);
-				homeTeam = homeTeamRepo.save(homeTeam);
-
-				Long idAwayTeamLong = (Long) o4.get("team_id");
-				Integer idAwayTeam = idAwayTeamLong != null ? idAwayTeamLong.intValue() : null;
-
-				team = teamRepo.getOne(idAwayTeam);
-
-				awayTeam.setTeam(team);
-				awayTeam = awayTeamRepo.save(awayTeam);
-
-				fixture.setHometeam(homeTeam);
-				fixture.setAwayteam(awayTeam);
-
-//				  JSONObject o5 =   (JSONObject) o2.get("score");
-//				  
-//				  Score score = new Score();
-//				  score.setHalfTime((String) o5.get("halftime"));
-//				  System.out.println("Half time" + (String) o5.get("halftime"));
-//				  score.setFullTime((String) o5.get("fulltime"));
-//				  System.out.println("Full time" + (String) o5.get("fulltime"));
-//				  score.setExtraTime((String) o5.get("extratime"));
-//				  System.out.println("Extra time" + (String) o5.get("extratime"));
-//				  score.setPenalty((String) o5.get("penalty"));
-//				  System.out.println("Penali" + (String) o5.get("penalty"));
-//				  
-//				  score = scoreRepo.save(score);
-//				  fixture.setScore(score);
-//				  				 
-
-				retFixture.add(fixture);
-				retFixture = fixtureRepo.saveAll(retFixture);
-
+			HttpResponse<String> response = null;
+			try {
+				response = Unirest.get(param.getAdd() + "/fixtures/league/" + l.getIdLeague())
+						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
+			} catch (UnirestException e1) {
+				e1.printStackTrace();
 			}
 
-		} catch (ParseException e) {
+			String json = response.getBody();
 
-			e.printStackTrace();
+			JSONParser parse = new JSONParser();
+			JSONObject o;
+
+			Fixture fixture = new Fixture();
+
+			try {
+				o = (JSONObject) parse.parse(json);
+				JSONObject o1 = (JSONObject) o.get("api");
+
+				JSONArray n1 = (JSONArray) o1.get("fixtures");
+
+				for (int i = 0; i < n1.size(); i++) {
+
+					JSONObject o2 = (JSONObject) n1.get(i);
+
+					// Fixtureeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+
+					Object idLongFixture = o2.get("fixture_id");
+					Integer idFixture = idLongFixture instanceof Long ? ((Long) idLongFixture).intValue() : 0;
+					fixture.setIdFixtures(idFixture);
+
+					Object eventTimeStampLong = o2.get("event_timestamp");
+					Integer eventTimeStamp = eventTimeStampLong instanceof Long ? ((Long) eventTimeStampLong).intValue()
+							: 0;
+					fixture.setEventTimeStamp(eventTimeStamp);
+
+					Object firstHalfStartLong = o2.get("firstHalfStart");
+					Integer firstHalfStart = firstHalfStartLong instanceof Long ? ((Long) firstHalfStartLong).intValue()
+							: 0;
+					fixture.setFristHalfStart(firstHalfStart);
+
+					Object secondtHalfStartLong = o2.get("secondHalfStart");
+					Integer secondHalfStart = secondtHalfStartLong instanceof Long
+							? ((Long) secondtHalfStartLong).intValue()
+							: 0;
+					fixture.setSecondHalfStart(secondHalfStart);
+
+					Object elapsedLong = o2.get("elapsed");
+					Integer elapsed = elapsedLong instanceof Long ? ((Long) elapsedLong).intValue() : 0;
+					fixture.setElapsed(elapsed);
+
+					Object goalsHomeTeamLong = o2.get("goalsHomeTeam");
+					Integer goalsHomeTeam = goalsHomeTeamLong instanceof Long ? ((Long) goalsHomeTeamLong).intValue()
+							: 0;
+					fixture.setGoalsHomeTeam(goalsHomeTeam);
+
+					Object goalsAwayTeamLong = o2.get("goalsAwayTeam");
+					Integer goalsAwayTeam = goalsAwayTeamLong instanceof Long ? ((Long) goalsAwayTeamLong).intValue()
+							: 0;
+					fixture.setGoalsAwayTeam(goalsAwayTeam);
+
+					fixture.setEventDate((String) o2.get("event_date") == null ? null : (String) o2.get("event_date"));
+					fixture.setStatus((String) o2.get("status") == null ? null : (String) o2.get("status"));
+					fixture.setStatusShort(
+							(String) o2.get("statusShort") == null ? null : (String) o2.get("statusShort"));
+					fixture.setVenue((String) o2.get("venue") == null ? null : (String) o2.get("venue"));
+					fixture.setReferee((String) o2.get("referee") == null ? null : (String) o2.get("referee"));
+
+					// Rounddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+					Object idLeagueLong = o2.get("league_id");
+					Integer idLeague = idLeagueLong instanceof Long ? ((Long) idLeagueLong).intValue() : 0;
+
+					League league = leagueRepo.getOne(idLeague);
+					List<Round> rounds = roundRepo.findByLeague(league);
+
+					for (Round r : rounds) {
+						if (r.getReguralSeason().equals(o2.get("round"))) {
+							fixture.setRound(r);
+						}
+					}
+
+					// Home away
+					// teammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
+					JSONObject o3 = (JSONObject) o2.get("homeTeam");
+					JSONObject o4 = (JSONObject) o2.get("awayTeam");
+
+					Hometeam homeTeam = new Hometeam();
+					Awayteam awayTeam = new Awayteam();
+
+					Object idHomeTeamLong = o3.get("team_id");
+					Integer idHomeTeam = idHomeTeamLong instanceof Long ? ((Long) idHomeTeamLong).intValue() : 0;
+
+					Team team = teamRepo.getOne(idHomeTeam);
+
+					homeTeam.setTeam(team);
+					homeTeam = homeTeamRepo.save(homeTeam);
+
+					Object idAwayTeamLong = o4.get("team_id");
+					Integer idAwayTeam = idAwayTeamLong instanceof Long ? ((Long) idAwayTeamLong).intValue() : 0;
+
+					team = teamRepo.getOne(idAwayTeam);
+
+					awayTeam.setTeam(team);
+					awayTeam = awayTeamRepo.save(awayTeam);
+
+					fixture.setHometeam(homeTeam);
+					fixture.setAwayteam(awayTeam);
+
+					JSONObject o5 = (JSONObject) o2.get("score");
+
+					// Scoreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+
+					Score score = new Score();
+
+					score.setHalfTime((String) o5.get("halftime") == null ? null : (String) o5.get("halftime"));
+
+					score.setFullTime((String) o5.get("fulltime") == null ? null : (String) o5.get("fulltime"));
+
+					score.setExtraTime((String) o5.get("extratime") == null ? null : (String) o5.get("extratime"));
+
+					score.setPenalty((String) o5.get("penalty") == null ? null : (String) o5.get("penalty"));
+
+					score = scoreRepo.save(score);
+					fixture.setScore(score);
+
+					retFixture.add(fixture);
+					retFixture = fixtureRepo.saveAll(retFixture);
+
+				}
+
+			} catch (ParseException e) {
+
+				e.printStackTrace();
+			}
+
 		}
-
 	}
 
 }

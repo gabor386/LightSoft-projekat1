@@ -11,6 +11,6 @@ import model.Teamplayer;
 
 public interface AssistRepo extends JpaRepository<Assist, Integer> {
 
-	List<Assist> findByCountry(Teamplayer t);
+	
 	
 }

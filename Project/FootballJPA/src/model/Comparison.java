@@ -9,6 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
+@Table(name="Comparison")
 @NamedQuery(name="Comparison.findAll", query="SELECT c FROM Comparison c")
 public class Comparison implements Serializable {
 	private static final long serialVersionUID = 1L;
