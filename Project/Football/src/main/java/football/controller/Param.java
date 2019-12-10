@@ -1,4 +1,4 @@
-package football.api;
+package football.controller;
 
 public class Param {
 	private String add;
