@@ -3,7 +3,11 @@ package football.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -40,10 +44,11 @@ public class TransferController {
 	@Autowired
 	TeamoutRepo tor;
 
+	@RequestMapping(value = "/transfer")
 	public void apiTransfer() {
 		String json = null;
 		List<Player> players = pr.findAll();
-		List<Transfer>transferi = transr.findAll();
+		List<Transfer> transferi = transr.findAll();
 
 		for (Player p : players) {
 			try {
@@ -56,86 +61,62 @@ public class TransferController {
 			}
 
 			if (json != null) {
-				JsonFactory factory = new JsonFactory();
+				JSONParser parse = new JSONParser();
+				JSONObject o;
 				try {
-					JsonParser parser = factory.createParser(json);
-					while (!parser.isClosed()) {
-						JsonToken jsonToken = parser.nextToken();
-						if (JsonToken.FIELD_NAME.equals(jsonToken)) {
-							String fieldName = parser.getCurrentName();
-							if ("results".equals(fieldName)) {
-								jsonToken = parser.nextToken();
-								int br = parser.getIntValue();
-								jsonToken = parser.nextToken();
-								jsonToken = parser.nextToken();
-								for (int i = 0; i < br; i++) {
-									Transfer t = new Transfer();
-									t.setPlayer(p);
-									for (int j = 0; j < 7; j++) {
-										jsonToken = parser.nextToken();
-									}
-									t.setTransferDate(parser.getValueAsString());
-									jsonToken = parser.nextToken();
-									jsonToken = parser.nextToken();
-									t.setType(parser.getValueAsString());
-									jsonToken = parser.nextToken();
-									jsonToken = parser.nextToken();
-									jsonToken = parser.nextToken();
-									jsonToken = parser.nextToken();
-									TeamIn ti = new TeamIn();
-									Team teamI = tr.getOne(parser.getIntValue());
-									ti.setTeam(teamI);
-									List<TeamIn> til = tir.findByTeam(teamI);
-									if (til.size() == 0) {
-										ti = tir.save(ti);
-									} else {
-										ti = til.get(0);
-									}
-									for (int j = 0; j < 5; j++) {
-										jsonToken = parser.nextToken();
-									}
-									t.setTeamIn(ti);
-									TeamOut to = new TeamOut();
-									Team teamO = tr.getOne(parser.getIntValue());
-									to.setTeam(teamO);
-									List<TeamOut> tol = tor.findByTeam(teamO);
-									if (tol.size() == 0) {
-										to = tor.save(to);
-									} else {
-										to = tol.get(0);
-									}
-									t.setTeamOut(to);
-									for (int j = 0; j < 7; j++) {
-										jsonToken = parser.nextToken();
-									}
-									int lu = parser.getIntValue();
-									String lus = lu+"";
-									t.setLastUpdate(lus);
-									saveTransfer(transferi, t);
-
-								}
-							}
+					o = (JSONObject) parse.parse(json);
+					JSONObject api = (JSONObject) o.get("api");
+					JSONArray transfers = (JSONArray) api.get("transfers");
+					for (int i = 0; i < transfers.size(); i++) {
+						JSONObject transfer = (JSONObject) transfers.get(i);
+						Transfer t = new Transfer();
+						Long lu = (Long) transfer.get("lastUpdate");
+						t.setLastUpdate(lu.intValue() + "");
+						t.setType((String) transfer.get("type"));
+						TeamIn ti = new TeamIn();
+						JSONObject tio = (JSONObject) transfer.get("team_in");
+						Long idTeamIn = (Long) tio.get("team_id");
+						if (idTeamIn!=null) {
+						Team teamIn = tr.getOne(idTeamIn.intValue());
+						ti.setTeam(teamIn);
+						ti = tir.save(ti);
+						t.setTeamIn(ti);
 						}
+						TeamOut to = new TeamOut();
+						JSONObject too = (JSONObject) transfer.get("team_out");
+						Object idTeamOut = (Object) too.get("team_id");
+						if (idTeamOut instanceof Long) {
+							Long idTeamOutL = (Long) idTeamOut;
+							Team teamOut = tr.getOne(idTeamOutL.intValue());
+							to.setTeam(teamOut);
+							to = tor.save(to);
+							t.setTeamOut(to);
+						}
+						
+						t.setPlayer(p);
+						t.setTransferDate((String) transfer.get("transfer_date"));
+						transr.save(t);
 					}
-				} catch (IOException e) {
+
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 			json = null;
 		}
 	}
-	
+
 	public void saveTransfer(List<Transfer> transferi, Transfer t) {
-		for (Transfer trans:transferi) {
-			if (trans.getPlayer().getIdPlayer()==t.getPlayer().getIdPlayer()
-					&& trans.getTeamIn().getIdTeamIn()==t.getTeamIn().getIdTeamIn()
+		for (Transfer trans : transferi) {
+			if (trans.getPlayer().getIdPlayer() == t.getPlayer().getIdPlayer()
+					&& trans.getTeamIn().getIdTeamIn() == t.getTeamIn().getIdTeamIn()
 					&& trans.getTransferDate().equals(t.getTransferDate())) {
 				trans.setLastUpdate(t.getLastUpdate());
 				transr.save(trans);
 				return;
 			}
-		}		
-		t=transr.save(t);
+		}
+		t = transr.save(t);
 		transferi.add(t);
 	}
 }
