@@ -83,6 +83,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
+<<<<<<< Updated upstream
 		<dependency>
 			<groupId>com.mashape.unirest</groupId>
 			<artifactId>unirest-java</artifactId>
@@ -108,6 +109,9 @@
 			<artifactId>json</artifactId>
 			<version>20140107</version>
 		</dependency>
+=======
+
+>>>>>>> Stashed changes
 
 	</dependencies>
 

@@ -5,12 +5,12 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the playerstatistic database table.
+ * The persistent class for the PlayerStatistic database table.
  * 
  */
 @Entity
-@NamedQuery(name="Playerstatistic.findAll", query="SELECT p FROM Playerstatistic p")
-public class Playerstatistic implements Serializable {
+@NamedQuery(name="PlayerStatistic.findAll", query="SELECT p FROM PlayerStatistic p")
+public class PlayerStatistic implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -87,11 +87,12 @@ public class Playerstatistic implements Serializable {
 
 	private int tacklesTotal;
 
-	//bi-directional many-to-one association to Teamplayer
+	//bi-directional many-to-one association to TeamPlayer
 	@ManyToOne
-	private Teamplayer teamplayer;
+	@JoinColumn(name="TeamPlayer_idTeamPlayer")
+	private TeamPlayer teamPlayer;
 
-	public Playerstatistic() {
+	public PlayerStatistic() {
 	}
 
 	public int getIdPlayerStatistic() {
@@ -382,12 +383,12 @@ public class Playerstatistic implements Serializable {
 		this.tacklesTotal = tacklesTotal;
 	}
 
-	public Teamplayer getTeamplayer() {
-		return this.teamplayer;
+	public TeamPlayer getTeamPlayer() {
+		return this.teamPlayer;
 	}
 
-	public void setTeamplayer(Teamplayer teamplayer) {
-		this.teamplayer = teamplayer;
+	public void setTeamPlayer(TeamPlayer teamPlayer) {
+		this.teamPlayer = teamPlayer;
 	}
 
 }

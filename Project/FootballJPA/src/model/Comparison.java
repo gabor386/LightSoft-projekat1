@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the comparison database table.
+ * The persistent class for the Comparison database table.
  * 
  */
 @Entity
@@ -25,6 +25,7 @@ public class Comparison implements Serializable {
 
 	//bi-directional many-to-one association to Prediction
 	@ManyToOne
+	@JoinColumn(name="Prediction_idPrediction")
 	private Prediction prediction;
 
 	public Comparison() {

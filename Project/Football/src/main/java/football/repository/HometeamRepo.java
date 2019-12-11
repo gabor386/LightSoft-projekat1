@@ -1,9 +1,12 @@
 package football.repository;
 
+
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import model.Hometeam;
+import model.HomeTeam;
 
-public interface HometeamRepo extends JpaRepository<Hometeam, Integer> {
+public interface HometeamRepo extends JpaRepository<HomeTeam, Integer> {
 
+	
 }

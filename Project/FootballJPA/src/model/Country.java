@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the country database table.
+ * The persistent class for the Country database table.
  * 
  */
 @Entity
@@ -21,11 +21,8 @@ public class Country implements Serializable {
 	private String code;
 
 	private String flag;
-	
-	
+
 	private String name;
-	
-	
 
 	//bi-directional many-to-one association to Coach
 	@OneToMany(mappedBy="country")
@@ -45,8 +42,7 @@ public class Country implements Serializable {
 	public int getIdCountry() {
 		return this.idCountry;
 	}
-	
-	
+
 	public void setIdCountry(int idCountry) {
 		this.idCountry = idCountry;
 	}
@@ -140,6 +136,5 @@ public class Country implements Serializable {
 
 		return team;
 	}
-	
-	
+
 }

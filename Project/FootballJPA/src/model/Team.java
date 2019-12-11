@@ -2,11 +2,14 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 
 /**
- * The persistent class for the team database table.
+ * The persistent class for the Team database table.
  * 
  */
 @Entity
@@ -15,27 +18,34 @@ public class Team implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@JsonProperty("team_id")
 	private int idTeam;
 
+	@JsonProperty("venue_capacity")
 	private int capacity;
 
 	private int founded;
 
 	private String logo;
 
+	@JsonProperty("venue_address")
 	private String stadionAddress;
 
+	@JsonProperty("venue_city")
 	private String stadionCity;
 
+	@JsonProperty("venue_name")
 	private String stadionName;
 
+	@JsonProperty("venue_surface")
 	private String stadionSurface;
 
+	@JsonProperty("name")
 	private String teamName;
 
-	//bi-directional many-to-one association to Awayteam
+	//bi-directional many-to-one association to AwayTeam
 	@OneToMany(mappedBy="team")
-	private List<Awayteam> awayteams;
+	private List<AwayTeam> awayTeams;
 
 	//bi-directional many-to-one association to Career
 	@OneToMany(mappedBy="team")
@@ -45,17 +55,17 @@ public class Team implements Serializable {
 	@OneToMany(mappedBy="team")
 	private List<Coach> coaches;
 
-	//bi-directional many-to-one association to Hometeam
+	//bi-directional many-to-one association to HomeTeam
 	@OneToMany(mappedBy="team")
-	private List<Hometeam> hometeams;
+	private List<HomeTeam> homeTeams;
 
-	//bi-directional many-to-one association to Lastfivestat
+	//bi-directional many-to-one association to LastFiveStat
 	@OneToMany(mappedBy="team")
-	private List<Lastfivestat> lastfivestats;
+	private List<LastFiveStat> lastFiveStats;
 
-	//bi-directional many-to-one association to Lineup
+	//bi-directional many-to-one association to LineUp
 	@OneToMany(mappedBy="team")
-	private List<Lineup> lineups;
+	private List<LineUp> lineUps;
 
 	//bi-directional many-to-one association to Stading
 	@OneToMany(mappedBy="team")
@@ -63,23 +73,24 @@ public class Team implements Serializable {
 
 	//bi-directional many-to-one association to Country
 	@ManyToOne
+	@JoinColumn(name="Country_idCountry")
 	private Country country;
 
-	//bi-directional many-to-one association to Teamin
+	//bi-directional many-to-one association to TeamIn
 	@OneToMany(mappedBy="team")
-	private List<Teamin> teamins;
+	private List<TeamIn> teamIns;
 
-	//bi-directional many-to-one association to Teamout
+	//bi-directional many-to-one association to TeamOut
 	@OneToMany(mappedBy="team")
-	private List<Teamout> teamouts;
+	private List<TeamOut> teamOuts;
 
-	//bi-directional many-to-one association to Teamplayer
+	//bi-directional many-to-one association to TeamPlayer
 	@OneToMany(mappedBy="team")
-	private List<Teamplayer> teamplayers;
+	private List<TeamPlayer> teamPlayers;
 
-	//bi-directional many-to-one association to Teamstatistic
+	//bi-directional many-to-one association to TeamStatistic
 	@OneToMany(mappedBy="team")
-	private List<Teamstatistic> teamstatistics;
+	private List<TeamStatistic> teamStatistics;
 
 	public Team() {
 	}
@@ -156,26 +167,26 @@ public class Team implements Serializable {
 		this.teamName = teamName;
 	}
 
-	public List<Awayteam> getAwayteams() {
-		return this.awayteams;
+	public List<AwayTeam> getAwayTeams() {
+		return this.awayTeams;
 	}
 
-	public void setAwayteams(List<Awayteam> awayteams) {
-		this.awayteams = awayteams;
+	public void setAwayTeams(List<AwayTeam> awayTeams) {
+		this.awayTeams = awayTeams;
 	}
 
-	public Awayteam addAwayteam(Awayteam awayteam) {
-		getAwayteams().add(awayteam);
-		awayteam.setTeam(this);
+	public AwayTeam addAwayTeam(AwayTeam awayTeam) {
+		getAwayTeams().add(awayTeam);
+		awayTeam.setTeam(this);
 
-		return awayteam;
+		return awayTeam;
 	}
 
-	public Awayteam removeAwayteam(Awayteam awayteam) {
-		getAwayteams().remove(awayteam);
-		awayteam.setTeam(null);
+	public AwayTeam removeAwayTeam(AwayTeam awayTeam) {
+		getAwayTeams().remove(awayTeam);
+		awayTeam.setTeam(null);
 
-		return awayteam;
+		return awayTeam;
 	}
 
 	public List<Career> getCareers() {
@@ -222,70 +233,70 @@ public class Team implements Serializable {
 		return coach;
 	}
 
-	public List<Hometeam> getHometeams() {
-		return this.hometeams;
+	public List<HomeTeam> getHomeTeams() {
+		return this.homeTeams;
 	}
 
-	public void setHometeams(List<Hometeam> hometeams) {
-		this.hometeams = hometeams;
+	public void setHomeTeams(List<HomeTeam> homeTeams) {
+		this.homeTeams = homeTeams;
 	}
 
-	public Hometeam addHometeam(Hometeam hometeam) {
-		getHometeams().add(hometeam);
-		hometeam.setTeam(this);
+	public HomeTeam addHomeTeam(HomeTeam homeTeam) {
+		getHomeTeams().add(homeTeam);
+		homeTeam.setTeam(this);
 
-		return hometeam;
+		return homeTeam;
 	}
 
-	public Hometeam removeHometeam(Hometeam hometeam) {
-		getHometeams().remove(hometeam);
-		hometeam.setTeam(null);
+	public HomeTeam removeHomeTeam(HomeTeam homeTeam) {
+		getHomeTeams().remove(homeTeam);
+		homeTeam.setTeam(null);
 
-		return hometeam;
+		return homeTeam;
 	}
 
-	public List<Lastfivestat> getLastfivestats() {
-		return this.lastfivestats;
+	public List<LastFiveStat> getLastFiveStats() {
+		return this.lastFiveStats;
 	}
 
-	public void setLastfivestats(List<Lastfivestat> lastfivestats) {
-		this.lastfivestats = lastfivestats;
+	public void setLastFiveStats(List<LastFiveStat> lastFiveStats) {
+		this.lastFiveStats = lastFiveStats;
 	}
 
-	public Lastfivestat addLastfivestat(Lastfivestat lastfivestat) {
-		getLastfivestats().add(lastfivestat);
-		lastfivestat.setTeam(this);
+	public LastFiveStat addLastFiveStat(LastFiveStat lastFiveStat) {
+		getLastFiveStats().add(lastFiveStat);
+		lastFiveStat.setTeam(this);
 
-		return lastfivestat;
+		return lastFiveStat;
 	}
 
-	public Lastfivestat removeLastfivestat(Lastfivestat lastfivestat) {
-		getLastfivestats().remove(lastfivestat);
-		lastfivestat.setTeam(null);
+	public LastFiveStat removeLastFiveStat(LastFiveStat lastFiveStat) {
+		getLastFiveStats().remove(lastFiveStat);
+		lastFiveStat.setTeam(null);
 
-		return lastfivestat;
+		return lastFiveStat;
 	}
 
-	public List<Lineup> getLineups() {
-		return this.lineups;
+	public List<LineUp> getLineUps() {
+		return this.lineUps;
 	}
 
-	public void setLineups(List<Lineup> lineups) {
-		this.lineups = lineups;
+	public void setLineUps(List<LineUp> lineUps) {
+		this.lineUps = lineUps;
 	}
 
-	public Lineup addLineup(Lineup lineup) {
-		getLineups().add(lineup);
-		lineup.setTeam(this);
+	public LineUp addLineUp(LineUp lineUp) {
+		getLineUps().add(lineUp);
+		lineUp.setTeam(this);
 
-		return lineup;
+		return lineUp;
 	}
 
-	public Lineup removeLineup(Lineup lineup) {
-		getLineups().remove(lineup);
-		lineup.setTeam(null);
+	public LineUp removeLineUp(LineUp lineUp) {
+		getLineUps().remove(lineUp);
+		lineUp.setTeam(null);
 
-		return lineup;
+		return lineUp;
 	}
 
 	public List<Stading> getStadings() {
@@ -318,92 +329,92 @@ public class Team implements Serializable {
 		this.country = country;
 	}
 
-	public List<Teamin> getTeamins() {
-		return this.teamins;
+	public List<TeamIn> getTeamIns() {
+		return this.teamIns;
 	}
 
-	public void setTeamins(List<Teamin> teamins) {
-		this.teamins = teamins;
+	public void setTeamIns(List<TeamIn> teamIns) {
+		this.teamIns = teamIns;
 	}
 
-	public Teamin addTeamin(Teamin teamin) {
-		getTeamins().add(teamin);
-		teamin.setTeam(this);
+	public TeamIn addTeamIn(TeamIn teamIn) {
+		getTeamIns().add(teamIn);
+		teamIn.setTeam(this);
 
-		return teamin;
+		return teamIn;
 	}
 
-	public Teamin removeTeamin(Teamin teamin) {
-		getTeamins().remove(teamin);
-		teamin.setTeam(null);
+	public TeamIn removeTeamIn(TeamIn teamIn) {
+		getTeamIns().remove(teamIn);
+		teamIn.setTeam(null);
 
-		return teamin;
+		return teamIn;
 	}
 
-	public List<Teamout> getTeamouts() {
-		return this.teamouts;
+	public List<TeamOut> getTeamOuts() {
+		return this.teamOuts;
 	}
 
-	public void setTeamouts(List<Teamout> teamouts) {
-		this.teamouts = teamouts;
+	public void setTeamOuts(List<TeamOut> teamOuts) {
+		this.teamOuts = teamOuts;
 	}
 
-	public Teamout addTeamout(Teamout teamout) {
-		getTeamouts().add(teamout);
-		teamout.setTeam(this);
+	public TeamOut addTeamOut(TeamOut teamOut) {
+		getTeamOuts().add(teamOut);
+		teamOut.setTeam(this);
 
-		return teamout;
+		return teamOut;
 	}
 
-	public Teamout removeTeamout(Teamout teamout) {
-		getTeamouts().remove(teamout);
-		teamout.setTeam(null);
+	public TeamOut removeTeamOut(TeamOut teamOut) {
+		getTeamOuts().remove(teamOut);
+		teamOut.setTeam(null);
 
-		return teamout;
+		return teamOut;
 	}
 
-	public List<Teamplayer> getTeamplayers() {
-		return this.teamplayers;
+	public List<TeamPlayer> getTeamPlayers() {
+		return this.teamPlayers;
 	}
 
-	public void setTeamplayers(List<Teamplayer> teamplayers) {
-		this.teamplayers = teamplayers;
+	public void setTeamPlayers(List<TeamPlayer> teamPlayers) {
+		this.teamPlayers = teamPlayers;
 	}
 
-	public Teamplayer addTeamplayer(Teamplayer teamplayer) {
-		getTeamplayers().add(teamplayer);
-		teamplayer.setTeam(this);
+	public TeamPlayer addTeamPlayer(TeamPlayer teamPlayer) {
+		getTeamPlayers().add(teamPlayer);
+		teamPlayer.setTeam(this);
 
-		return teamplayer;
+		return teamPlayer;
 	}
 
-	public Teamplayer removeTeamplayer(Teamplayer teamplayer) {
-		getTeamplayers().remove(teamplayer);
-		teamplayer.setTeam(null);
+	public TeamPlayer removeTeamPlayer(TeamPlayer teamPlayer) {
+		getTeamPlayers().remove(teamPlayer);
+		teamPlayer.setTeam(null);
 
-		return teamplayer;
+		return teamPlayer;
 	}
 
-	public List<Teamstatistic> getTeamstatistics() {
-		return this.teamstatistics;
+	public List<TeamStatistic> getTeamStatistics() {
+		return this.teamStatistics;
 	}
 
-	public void setTeamstatistics(List<Teamstatistic> teamstatistics) {
-		this.teamstatistics = teamstatistics;
+	public void setTeamStatistics(List<TeamStatistic> teamStatistics) {
+		this.teamStatistics = teamStatistics;
 	}
 
-	public Teamstatistic addTeamstatistic(Teamstatistic teamstatistic) {
-		getTeamstatistics().add(teamstatistic);
-		teamstatistic.setTeam(this);
+	public TeamStatistic addTeamStatistic(TeamStatistic teamStatistic) {
+		getTeamStatistics().add(teamStatistic);
+		teamStatistic.setTeam(this);
 
-		return teamstatistic;
+		return teamStatistic;
 	}
 
-	public Teamstatistic removeTeamstatistic(Teamstatistic teamstatistic) {
-		getTeamstatistics().remove(teamstatistic);
-		teamstatistic.setTeam(null);
+	public TeamStatistic removeTeamStatistic(TeamStatistic teamStatistic) {
+		getTeamStatistics().remove(teamStatistic);
+		teamStatistic.setTeam(null);
 
-		return teamstatistic;
+		return teamStatistic;
 	}
 
 }

@@ -5,12 +5,12 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the timezona database table.
+ * The persistent class for the TimeZona database table.
  * 
  */
 @Entity
-@NamedQuery(name="Timezona.findAll", query="SELECT t FROM Timezona t")
-public class Timezona implements Serializable {
+@NamedQuery(name="TimeZona.findAll", query="SELECT t FROM TimeZona t")
+public class TimeZona implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -19,7 +19,7 @@ public class Timezona implements Serializable {
 
 	private String timeZone;
 
-	public Timezona() {
+	public TimeZona() {
 	}
 
 	public int getIdTimeZona() {

@@ -6,11 +6,11 @@ import java.util.List;
 
 
 /**
- * The persistent class for the odds database table.
+ * The persistent class for the Odds database table.
  * 
  */
 @Entity
-@Table(name="odds")
+@Table(name="Odds")
 @NamedQuery(name="Odd.findAll", query="SELECT o FROM Odd o")
 public class Odd implements Serializable {
 	private static final long serialVersionUID = 1L;

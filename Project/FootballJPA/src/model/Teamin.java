@@ -6,12 +6,12 @@ import java.util.List;
 
 
 /**
- * The persistent class for the teamin database table.
+ * The persistent class for the TeamIn database table.
  * 
  */
 @Entity
-@NamedQuery(name="Teamin.findAll", query="SELECT t FROM Teamin t")
-public class Teamin implements Serializable {
+@NamedQuery(name="TeamIn.findAll", query="SELECT t FROM TeamIn t")
+public class TeamIn implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -20,13 +20,14 @@ public class Teamin implements Serializable {
 
 	//bi-directional many-to-one association to Team
 	@ManyToOne
+	@JoinColumn(name="Team_idTeam")
 	private Team team;
 
 	//bi-directional many-to-one association to Transfer
-	@OneToMany(mappedBy="teamin")
+	@OneToMany(mappedBy="teamIn")
 	private List<Transfer> transfers;
 
-	public Teamin() {
+	public TeamIn() {
 	}
 
 	public int getIdTeamIn() {
@@ -55,14 +56,14 @@ public class Teamin implements Serializable {
 
 	public Transfer addTransfer(Transfer transfer) {
 		getTransfers().add(transfer);
-		transfer.setTeamin(this);
+		transfer.setTeamIn(this);
 
 		return transfer;
 	}
 
 	public Transfer removeTransfer(Transfer transfer) {
 		getTransfers().remove(transfer);
-		transfer.setTeamin(null);
+		transfer.setTeamIn(null);
 
 		return transfer;
 	}

@@ -2,11 +2,14 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 
 /**
- * The persistent class for the score database table.
+ * The persistent class for the Score database table.
  * 
  */
 @Entity
@@ -18,10 +21,13 @@ public class Score implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idScore;
 
+	@JsonProperty("extratime")
 	private String extraTime;
 
+	@JsonProperty("fulltime")
 	private String fullTime;
 
+	@JsonProperty("halftime")
 	private String halfTime;
 
 	private String penalty;

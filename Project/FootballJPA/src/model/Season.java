@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the season database table.
+ * The persistent class for the Season database table.
  * 
  */
 @Entity
@@ -23,9 +23,9 @@ public class Season implements Serializable {
 	@OneToMany(mappedBy="seasonBean")
 	private List<League> leagues;
 
-	//bi-directional many-to-one association to Teamplayer
+	//bi-directional many-to-one association to TeamPlayer
 	@OneToMany(mappedBy="season")
-	private List<Teamplayer> teamplayers;
+	private List<TeamPlayer> teamPlayers;
 
 	public Season() {
 	}
@@ -68,26 +68,26 @@ public class Season implements Serializable {
 		return league;
 	}
 
-	public List<Teamplayer> getTeamplayers() {
-		return this.teamplayers;
+	public List<TeamPlayer> getTeamPlayers() {
+		return this.teamPlayers;
 	}
 
-	public void setTeamplayers(List<Teamplayer> teamplayers) {
-		this.teamplayers = teamplayers;
+	public void setTeamPlayers(List<TeamPlayer> teamPlayers) {
+		this.teamPlayers = teamPlayers;
 	}
 
-	public Teamplayer addTeamplayer(Teamplayer teamplayer) {
-		getTeamplayers().add(teamplayer);
-		teamplayer.setSeason(this);
+	public TeamPlayer addTeamPlayer(TeamPlayer teamPlayer) {
+		getTeamPlayers().add(teamPlayer);
+		teamPlayer.setSeason(this);
 
-		return teamplayer;
+		return teamPlayer;
 	}
 
-	public Teamplayer removeTeamplayer(Teamplayer teamplayer) {
-		getTeamplayers().remove(teamplayer);
-		teamplayer.setSeason(null);
+	public TeamPlayer removeTeamPlayer(TeamPlayer teamPlayer) {
+		getTeamPlayers().remove(teamPlayer);
+		teamPlayer.setSeason(null);
 
-		return teamplayer;
+		return teamPlayer;
 	}
 
 }

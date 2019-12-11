@@ -5,12 +5,12 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the lastfivestat database table.
+ * The persistent class for the LastFiveStat database table.
  * 
  */
 @Entity
-@NamedQuery(name="Lastfivestat.findAll", query="SELECT l FROM Lastfivestat l")
-public class Lastfivestat implements Serializable {
+@NamedQuery(name="LastFiveStat.findAll", query="SELECT l FROM LastFiveStat l")
+public class LastFiveStat implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -33,9 +33,10 @@ public class Lastfivestat implements Serializable {
 
 	//bi-directional many-to-one association to Team
 	@ManyToOne
+	@JoinColumn(name="Team_idTeam")
 	private Team team;
 
-	public Lastfivestat() {
+	public LastFiveStat() {
 	}
 
 	public int getIdlastFiveStat() {

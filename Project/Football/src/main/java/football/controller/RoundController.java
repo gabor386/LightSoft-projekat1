@@ -25,8 +25,9 @@ public class RoundController {
 	LeagueRepo lr;
 	@Autowired
 	RoundRepo rr;
-
-	@RequestMapping(value ="tryr")
+	
+	
+	@RequestMapping (value = "try2")
 	public void apiRaund() {
 		List<League> leagues = lr.findAll();
 		
@@ -61,6 +62,9 @@ public class RoundController {
 										jsonToken = parser.nextToken();
 										Round r = new Round();
 										r.setReguralSeason(parser.getValueAsString());
+										
+										r.setReguralSeason(r.getReguralSeason().replaceAll("_", " "));
+										
 										if (!hasRound(runde, r)) {
 											r.setLeague(l);
 											rr.save(r);
@@ -73,6 +77,7 @@ public class RoundController {
 						e.printStackTrace();
 					}
 				}
+				json=null;
 			}
 		}
 	}
