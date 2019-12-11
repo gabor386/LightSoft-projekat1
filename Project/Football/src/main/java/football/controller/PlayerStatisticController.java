@@ -48,7 +48,8 @@ public class PlayerStatisticController {
 
 	@RequestMapping(value = "playerStatisic")
 	public List<PlayerStatistic> getApiPlayerStatistic() {
-
+		
+		
 		List<PlayerStatistic> listaPlayerStaticis = new ArrayList<PlayerStatistic>();
 
 		List<Player> player = pr.findAll();
