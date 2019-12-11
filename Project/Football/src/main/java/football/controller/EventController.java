@@ -20,10 +20,12 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import football.repository.AssistRepo;
 import football.repository.EventRepo;
 import football.repository.FixtureRepo;
+import football.repository.PlayerRepo;
 import football.repository.TeamplayerRepo;
 import model.Assist;
 import model.Event;
 import model.Fixture;
+import model.Player;
 import model.Teamplayer;
 
 @RestController
@@ -37,6 +39,10 @@ public class EventController {
 
 	@Autowired
 	TeamplayerRepo teamPlayerRepo;
+	
+	@Autowired
+	PlayerRepo playerRepo;
+	
 
 	@Autowired
 	FixtureRepo fixtureRepo;
@@ -51,8 +57,20 @@ public class EventController {
 		List<Fixture> fixtures = fixtureRepo.findAll();
 
 		for (Fixture f : fixtures) {
+			
+		List<Event> retEvent = new ArrayList<Event>();	
+			
+		List<Event> eventDelete = eventRepo.findByFixture(f);
 		
-		List<Event> retEvent = new ArrayList<Event>();
+		for(Event e : eventDelete) {
+			eventRepo.delete(e);
+		}
+		
+		System.out.println("Mecevi " + f.getIdFixtures());
+		
+			
+		
+		
 
 		HttpResponse<String> response = null;
 		try {
@@ -90,31 +108,56 @@ public class EventController {
 				   
 				   event.setFixture(f);
 				   
-				   Object teamPlayerLong =  o2.get("player_id"); 
-				   Integer teamPlayerId  =   teamPlayerLong instanceof Long ? ((Long) teamPlayerLong).intValue() : 0;
+				   Object playerLong =  o2.get("player_id"); 
+				   Integer playerId  =   playerLong instanceof Long ? ((Long) playerLong).intValue() : 0;
 				   
 				
-				    Teamplayer teamPlayer =  teamPlayerRepo.getOne(teamPlayerId);
+				    Player player =  playerRepo.getOne(playerId);
 				    
-				    event.setTeamplayer(teamPlayer);
+				    List<Teamplayer> teamplayers = teamPlayerRepo.findByPlayer(player);
 				    
-				    Object teamPlayerAssistLong = o2.get("assist_id"); 
-					Integer teamPlayerAssistId  =   teamPlayerAssistLong instanceof Long ? ((Long) teamPlayerAssistLong).intValue() : 0;
+				    
+				    for(Teamplayer tp : teamplayers) {
+				    	if(tp.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()) {
+				    		 event.setTeamplayer(tp);
+				    	}
+				    }
+				    
 				   
-				   teamPlayer = teamPlayerRepo.getOne(teamPlayerAssistId);
 				    
+				    Object playerAssistLong = o2.get("assist_id");
 				    
-				   Assist assist = new Assist();
-				   assist.setTeamplayer(teamPlayer);
-				   assist = assistRepo.save(assist);
-				   
-				   event.setAssist(assist);
-				     
-				
-				
+					Integer playerAssistId  =   playerAssistLong instanceof Long ? ((Long) playerAssistLong).intValue() : 0;
+					
+					Assist assist = new Assist();
+					
+					
+					  player =  playerRepo.getOne(playerAssistId);
+					  	  
+					
+					 teamplayers = teamPlayerRepo.findByPlayer(player);
+					 
+					
+					 for(Teamplayer tp : teamplayers) {
+						 
+					    	if(tp.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()) {
+					    			
+								   assist.setTeamplayer(tp);
+								   assistRepo.save(assist);
+					    		
+								   event.setAssist(assist);
+					    	  }else {
+					    		 assist.setTeamplayer(null);
+						    	 assistRepo.save(assist);
+						    	 event.setAssist(assist);
+					    	  }
+					    		
+					    	} 	
+					    
+					 
 				
 				 retEvent.add(event);
-			     retEvent = eventRepo.saveAll(retEvent);
+			     eventRepo.saveAll(retEvent);
 				
 			}
 			

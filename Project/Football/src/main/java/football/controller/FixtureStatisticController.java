@@ -55,6 +55,10 @@ public class FixtureStatisticController {
 
 			JSONParser parse = new JSONParser();
 			JSONObject o;
+			
+			Fixturestat deleteStat = fixtureStatRepo.findByFixture(f);
+			if(deleteStat != null)
+				fixtureStatRepo.delete(deleteStat);
 
 			try {
 

@@ -9,6 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
+@Table(name="TimeZona")
 @NamedQuery(name="Timezona.findAll", query="SELECT t FROM Timezona t")
 public class Timezona implements Serializable {
 	private static final long serialVersionUID = 1L;
