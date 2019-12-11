@@ -31,8 +31,8 @@ public class LeagueController {
 	CountryRepo cr;
 	@Autowired
 	SeasonRepo sr;
-
-	@RequestMapping(value = "try")
+	
+	@RequestMapping(value="/leauge")
 	public void apiLeague() {
 
 		String json = null;
