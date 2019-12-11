@@ -9,11 +9,10 @@ import java.util.List;
 
 
 /**
- * The persistent class for the score database table.
+ * The persistent class for the Score database table.
  * 
  */
 @Entity
-@Table(name="Score")
 @NamedQuery(name="Score.findAll", query="SELECT s FROM Score s")
 public class Score implements Serializable {
 	private static final long serialVersionUID = 1L;

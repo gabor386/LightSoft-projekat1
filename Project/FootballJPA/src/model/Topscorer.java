@@ -5,13 +5,13 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the topscorers database table.
+ * The persistent class for the TopScorers database table.
  * 
  */
 @Entity
-@Table(name="topscorers")
-@NamedQuery(name="Topscorer.findAll", query="SELECT t FROM Topscorer t")
-public class Topscorer implements Serializable {
+@Table(name="TopScorers")
+@NamedQuery(name="TopScorer.findAll", query="SELECT t FROM TopScorer t")
+public class TopScorer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -20,13 +20,15 @@ public class Topscorer implements Serializable {
 
 	//bi-directional many-to-one association to League
 	@ManyToOne
+	@JoinColumn(name="League_idLeague")
 	private League league;
 
-	//bi-directional many-to-one association to Teamplayer
+	//bi-directional many-to-one association to TeamPlayer
 	@ManyToOne
-	private Teamplayer teamplayer;
+	@JoinColumn(name="TeamPlayer_idTeamPlayer")
+	private TeamPlayer teamPlayer;
 
-	public Topscorer() {
+	public TopScorer() {
 	}
 
 	public int getIdTopScorers() {
@@ -45,12 +47,12 @@ public class Topscorer implements Serializable {
 		this.league = league;
 	}
 
-	public Teamplayer getTeamplayer() {
-		return this.teamplayer;
+	public TeamPlayer getTeamPlayer() {
+		return this.teamPlayer;
 	}
 
-	public void setTeamplayer(Teamplayer teamplayer) {
-		this.teamplayer = teamplayer;
+	public void setTeamPlayer(TeamPlayer teamPlayer) {
+		this.teamPlayer = teamPlayer;
 	}
 
 }

@@ -6,12 +6,12 @@ import java.util.List;
 
 
 /**
- * The persistent class for the teamout database table.
+ * The persistent class for the TeamOut database table.
  * 
  */
 @Entity
-@NamedQuery(name="Teamout.findAll", query="SELECT t FROM Teamout t")
-public class Teamout implements Serializable {
+@NamedQuery(name="TeamOut.findAll", query="SELECT t FROM TeamOut t")
+public class TeamOut implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -20,13 +20,14 @@ public class Teamout implements Serializable {
 
 	//bi-directional many-to-one association to Team
 	@ManyToOne
+	@JoinColumn(name="Team_idTeam")
 	private Team team;
 
 	//bi-directional many-to-one association to Transfer
-	@OneToMany(mappedBy="teamout")
+	@OneToMany(mappedBy="teamOut")
 	private List<Transfer> transfers;
 
-	public Teamout() {
+	public TeamOut() {
 	}
 
 	public int getIdTeamOut() {
@@ -55,14 +56,14 @@ public class Teamout implements Serializable {
 
 	public Transfer addTransfer(Transfer transfer) {
 		getTransfers().add(transfer);
-		transfer.setTeamout(this);
+		transfer.setTeamOut(this);
 
 		return transfer;
 	}
 
 	public Transfer removeTransfer(Transfer transfer) {
 		getTransfers().remove(transfer);
-		transfer.setTeamout(null);
+		transfer.setTeamOut(null);
 
 		return transfer;
 	}

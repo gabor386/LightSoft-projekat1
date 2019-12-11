@@ -5,13 +5,12 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the fixturestat database table.
+ * The persistent class for the FixtureStat database table.
  * 
  */
 @Entity
-@Table(name="FixtureStat")
-@NamedQuery(name="Fixturestat.findAll", query="SELECT f FROM Fixturestat f")
-public class Fixturestat implements Serializable {
+@NamedQuery(name="FixtureStat.findAll", query="SELECT f FROM FixtureStat f")
+public class FixtureStat implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -29,7 +28,7 @@ public class Fixturestat implements Serializable {
 	@JoinColumn(name="Fixtures_idFixtures")
 	private Fixture fixture;
 
-	public Fixturestat() {
+	public FixtureStat() {
 	}
 
 	public int getIdFixtureStat() {

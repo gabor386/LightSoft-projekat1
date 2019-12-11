@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the trophy database table.
+ * The persistent class for the Trophy database table.
  * 
  */
 @Entity
@@ -20,15 +20,18 @@ public class Trophy implements Serializable {
 
 	private String place;
 
+	@Column(name="Trophycol")
 	private String trophycol;
-
-	//bi-directional many-to-one association to League
-	@ManyToOne
-	private League league;
 
 	//bi-directional many-to-one association to Coach
 	@ManyToOne
+	@JoinColumn(name="Coach_idCoach")
 	private Coach coach;
+
+	//bi-directional many-to-one association to League
+	@ManyToOne
+	@JoinColumn(name="League_idLeague")
+	private League league;
 
 	//bi-directional many-to-one association to Winner
 	@OneToMany(mappedBy="trophy")
@@ -61,20 +64,20 @@ public class Trophy implements Serializable {
 		this.trophycol = trophycol;
 	}
 
-	public League getLeague() {
-		return this.league;
-	}
-
-	public void setLeague(League league) {
-		this.league = league;
-	}
-
 	public Coach getCoach() {
 		return this.coach;
 	}
 
 	public void setCoach(Coach coach) {
 		this.coach = coach;
+	}
+
+	public League getLeague() {
+		return this.league;
+	}
+
+	public void setLeague(League league) {
+		this.league = league;
 	}
 
 	public List<Winner> getWinners() {

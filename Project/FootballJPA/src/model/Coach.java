@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the coach database table.
+ * The persistent class for the Coach database table.
  * 
  */
 @Entity
@@ -43,18 +43,19 @@ public class Coach implements Serializable {
 	@OneToMany(mappedBy="coach")
 	private List<Career> careers;
 
+	//bi-directional many-to-one association to Country
+	@ManyToOne
+	@JoinColumn(name="Country_idCountry")
+	private Country country;
+
 	//bi-directional many-to-one association to Team
 	@ManyToOne
 	@JoinColumn(name="idTeam")
 	private Team team;
 
-	//bi-directional many-to-one association to Country
-	@ManyToOne
-	private Country country;
-
-	//bi-directional many-to-one association to Sideline
+	//bi-directional many-to-one association to SideLine
 	@OneToMany(mappedBy="coach")
-	private List<Sideline> sidelines;
+	private List<SideLine> sideLines;
 
 	//bi-directional many-to-one association to Trophy
 	@OneToMany(mappedBy="coach")
@@ -173,14 +174,6 @@ public class Coach implements Serializable {
 		return career;
 	}
 
-	public Team getTeam() {
-		return this.team;
-	}
-
-	public void setTeam(Team team) {
-		this.team = team;
-	}
-
 	public Country getCountry() {
 		return this.country;
 	}
@@ -189,26 +182,34 @@ public class Coach implements Serializable {
 		this.country = country;
 	}
 
-	public List<Sideline> getSidelines() {
-		return this.sidelines;
+	public Team getTeam() {
+		return this.team;
 	}
 
-	public void setSidelines(List<Sideline> sidelines) {
-		this.sidelines = sidelines;
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 
-	public Sideline addSideline(Sideline sideline) {
-		getSidelines().add(sideline);
-		sideline.setCoach(this);
-
-		return sideline;
+	public List<SideLine> getSideLines() {
+		return this.sideLines;
 	}
 
-	public Sideline removeSideline(Sideline sideline) {
-		getSidelines().remove(sideline);
-		sideline.setCoach(null);
+	public void setSideLines(List<SideLine> sideLines) {
+		this.sideLines = sideLines;
+	}
 
-		return sideline;
+	public SideLine addSideLine(SideLine sideLine) {
+		getSideLines().add(sideLine);
+		sideLine.setCoach(this);
+
+		return sideLine;
+	}
+
+	public SideLine removeSideLine(SideLine sideLine) {
+		getSideLines().remove(sideLine);
+		sideLine.setCoach(null);
+
+		return sideLine;
 	}
 
 	public List<Trophy> getTrophies() {

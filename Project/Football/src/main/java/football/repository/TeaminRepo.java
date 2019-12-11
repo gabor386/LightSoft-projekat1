@@ -2,8 +2,8 @@ package football.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import model.Teamin;
+import model.TeamIn;
 
-public interface TeaminRepo extends JpaRepository<Teamin, Integer>{
+public interface TeaminRepo extends JpaRepository<TeamIn, Integer>{
 
 }

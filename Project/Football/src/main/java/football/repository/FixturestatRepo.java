@@ -3,10 +3,10 @@ package football.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import model.Fixture;
-import model.Fixturestat;
+import model.FixtureStat;
 
-public interface FixturestatRepo extends JpaRepository<Fixturestat, Integer>{
+public interface FixturestatRepo extends JpaRepository<FixtureStat, Integer>{
 
-	Fixturestat findByFixture (Fixture f);
+	FixtureStat findByFixture (Fixture f);
 	
 }

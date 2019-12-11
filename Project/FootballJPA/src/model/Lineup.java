@@ -6,13 +6,12 @@ import java.util.List;
 
 
 /**
- * The persistent class for the lineup database table.
+ * The persistent class for the LineUp database table.
  * 
  */
 @Entity
-@Table(name="LineUp")
-@NamedQuery(name="Lineup.findAll", query="SELECT l FROM Lineup l")
-public class Lineup implements Serializable {
+@NamedQuery(name="LineUp.findAll", query="SELECT l FROM LineUp l")
+public class LineUp implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -21,24 +20,25 @@ public class Lineup implements Serializable {
 
 	private String formation;
 
-	//bi-directional many-to-one association to Team
-	@ManyToOne
-	private Team team;
-
 	//bi-directional many-to-one association to Fixture
 	@ManyToOne
 	@JoinColumn(name="Fixtures_idFixtures")
 	private Fixture fixture;
 
-	//bi-directional many-to-one association to Startxi
-	@OneToMany(mappedBy="lineup")
-	private List<Startxi> startxis;
+	//bi-directional many-to-one association to Team
+	@ManyToOne
+	@JoinColumn(name="Team_idTeam")
+	private Team team;
+
+	//bi-directional many-to-one association to StartXI
+	@OneToMany(mappedBy="lineUp")
+	private List<StartXI> startXis;
 
 	//bi-directional many-to-one association to Substitute
-	@OneToMany(mappedBy="lineup")
+	@OneToMany(mappedBy="lineUp")
 	private List<Substitute> substitutes;
 
-	public Lineup() {
+	public LineUp() {
 	}
 
 	public int getIdLineUp() {
@@ -57,14 +57,6 @@ public class Lineup implements Serializable {
 		this.formation = formation;
 	}
 
-	public Team getTeam() {
-		return this.team;
-	}
-
-	public void setTeam(Team team) {
-		this.team = team;
-	}
-
 	public Fixture getFixture() {
 		return this.fixture;
 	}
@@ -73,26 +65,34 @@ public class Lineup implements Serializable {
 		this.fixture = fixture;
 	}
 
-	public List<Startxi> getStartxis() {
-		return this.startxis;
+	public Team getTeam() {
+		return this.team;
 	}
 
-	public void setStartxis(List<Startxi> startxis) {
-		this.startxis = startxis;
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 
-	public Startxi addStartxi(Startxi startxi) {
-		getStartxis().add(startxi);
-		startxi.setLineup(this);
-
-		return startxi;
+	public List<StartXI> getStartXis() {
+		return this.startXis;
 	}
 
-	public Startxi removeStartxi(Startxi startxi) {
-		getStartxis().remove(startxi);
-		startxi.setLineup(null);
+	public void setStartXis(List<StartXI> startXis) {
+		this.startXis = startXis;
+	}
 
-		return startxi;
+	public StartXI addStartXi(StartXI startXi) {
+		getStartXis().add(startXi);
+		startXi.setLineUp(this);
+
+		return startXi;
+	}
+
+	public StartXI removeStartXi(StartXI startXi) {
+		getStartXis().remove(startXi);
+		startXi.setLineUp(null);
+
+		return startXi;
 	}
 
 	public List<Substitute> getSubstitutes() {
@@ -105,14 +105,14 @@ public class Lineup implements Serializable {
 
 	public Substitute addSubstitute(Substitute substitute) {
 		getSubstitutes().add(substitute);
-		substitute.setLineup(this);
+		substitute.setLineUp(this);
 
 		return substitute;
 	}
 
 	public Substitute removeSubstitute(Substitute substitute) {
 		getSubstitutes().remove(substitute);
-		substitute.setLineup(null);
+		substitute.setLineUp(null);
 
 		return substitute;
 	}

@@ -9,7 +9,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the fixtures database table.
+ * The persistent class for the Fixtures database table.
  * 
  */
 @Entity
@@ -22,7 +22,6 @@ public class Fixture implements Serializable {
 	@JsonProperty("fixture_id")
 	private int idFixtures;
 
-
 	private int elapsed;
 
 	@JsonProperty("event_date")
@@ -30,16 +29,14 @@ public class Fixture implements Serializable {
 
 	@JsonProperty("event_timestamp")
 	private int eventTimeStamp;
-	
 
 	private int fristHalfStart;
-	
+
 	private int goalsAwayTeam;
 
 	private int goalsHomeTeam;
-		
-	private String referee;
 
+	private String referee;
 
 	private int secondHalfStart;
 
@@ -53,37 +50,41 @@ public class Fixture implements Serializable {
 	@OneToMany(mappedBy="fixture")
 	private List<Event> events;
 
-	//bi-directional many-to-one association to Score
-	@ManyToOne
-	private Score score;
+	//bi-directional many-to-one association to FixtureStat
+	@OneToMany(mappedBy="fixture")
+	private List<FixtureStat> fixtureStats;
 
-	//bi-directional many-to-one association to Hometeam
+	//bi-directional many-to-one association to AwayTeam
 	@ManyToOne
-	private Hometeam hometeam;
+	@JoinColumn(name="AwayTeam_idAwayTeam")
+	private AwayTeam awayTeam;
 
-	//bi-directional many-to-one association to Awayteam
+	//bi-directional many-to-one association to HomeTeam
 	@ManyToOne
-	private Awayteam awayteam;
+	@JoinColumn(name="HomeTeam_idHomeTeam")
+	private HomeTeam homeTeam;
 
 	//bi-directional many-to-one association to Round
 	@ManyToOne
+	@JoinColumn(name="Round_idRound")
 	private Round round;
 
-	//bi-directional many-to-one association to Fixturestat
-	@OneToMany(mappedBy="fixture")
-	private List<Fixturestat> fixturestats;
+	//bi-directional many-to-one association to Score
+	@ManyToOne
+	@JoinColumn(name="Score_idScore")
+	private Score score;
 
-	//bi-directional many-to-one association to Lineup
+	//bi-directional many-to-one association to LineUp
 	@OneToMany(mappedBy="fixture")
-	private List<Lineup> lineups;
+	private List<LineUp> lineUps;
 
 	//bi-directional many-to-one association to Odd
 	@OneToMany(mappedBy="fixture")
 	private List<Odd> odds;
 
-	//bi-directional many-to-one association to Playerfixstat
+	//bi-directional many-to-one association to PlayerFixStat
 	@OneToMany(mappedBy="fixture")
-	private List<Playerfixstat> playerfixstats;
+	private List<PlayerFixStat> playerFixStats;
 
 	//bi-directional many-to-one association to Prediction
 	@OneToMany(mappedBy="fixture")
@@ -210,28 +211,42 @@ public class Fixture implements Serializable {
 		return event;
 	}
 
-	public Score getScore() {
-		return this.score;
+	public List<FixtureStat> getFixtureStats() {
+		return this.fixtureStats;
 	}
 
-	public void setScore(Score score) {
-		this.score = score;
+	public void setFixtureStats(List<FixtureStat> fixtureStats) {
+		this.fixtureStats = fixtureStats;
 	}
 
-	public Hometeam getHometeam() {
-		return this.hometeam;
+	public FixtureStat addFixtureStat(FixtureStat fixtureStat) {
+		getFixtureStats().add(fixtureStat);
+		fixtureStat.setFixture(this);
+
+		return fixtureStat;
 	}
 
-	public void setHometeam(Hometeam hometeam) {
-		this.hometeam = hometeam;
+	public FixtureStat removeFixtureStat(FixtureStat fixtureStat) {
+		getFixtureStats().remove(fixtureStat);
+		fixtureStat.setFixture(null);
+
+		return fixtureStat;
 	}
 
-	public Awayteam getAwayteam() {
-		return this.awayteam;
+	public AwayTeam getAwayTeam() {
+		return this.awayTeam;
 	}
 
-	public void setAwayteam(Awayteam awayteam) {
-		this.awayteam = awayteam;
+	public void setAwayTeam(AwayTeam awayTeam) {
+		this.awayTeam = awayTeam;
+	}
+
+	public HomeTeam getHomeTeam() {
+		return this.homeTeam;
+	}
+
+	public void setHomeTeam(HomeTeam homeTeam) {
+		this.homeTeam = homeTeam;
 	}
 
 	public Round getRound() {
@@ -242,48 +257,34 @@ public class Fixture implements Serializable {
 		this.round = round;
 	}
 
-	public List<Fixturestat> getFixturestats() {
-		return this.fixturestats;
+	public Score getScore() {
+		return this.score;
 	}
 
-	public void setFixturestats(List<Fixturestat> fixturestats) {
-		this.fixturestats = fixturestats;
+	public void setScore(Score score) {
+		this.score = score;
 	}
 
-	public Fixturestat addFixturestat(Fixturestat fixturestat) {
-		getFixturestats().add(fixturestat);
-		fixturestat.setFixture(this);
-
-		return fixturestat;
+	public List<LineUp> getLineUps() {
+		return this.lineUps;
 	}
 
-	public Fixturestat removeFixturestat(Fixturestat fixturestat) {
-		getFixturestats().remove(fixturestat);
-		fixturestat.setFixture(null);
-
-		return fixturestat;
+	public void setLineUps(List<LineUp> lineUps) {
+		this.lineUps = lineUps;
 	}
 
-	public List<Lineup> getLineups() {
-		return this.lineups;
+	public LineUp addLineUp(LineUp lineUp) {
+		getLineUps().add(lineUp);
+		lineUp.setFixture(this);
+
+		return lineUp;
 	}
 
-	public void setLineups(List<Lineup> lineups) {
-		this.lineups = lineups;
-	}
+	public LineUp removeLineUp(LineUp lineUp) {
+		getLineUps().remove(lineUp);
+		lineUp.setFixture(null);
 
-	public Lineup addLineup(Lineup lineup) {
-		getLineups().add(lineup);
-		lineup.setFixture(this);
-
-		return lineup;
-	}
-
-	public Lineup removeLineup(Lineup lineup) {
-		getLineups().remove(lineup);
-		lineup.setFixture(null);
-
-		return lineup;
+		return lineUp;
 	}
 
 	public List<Odd> getOdds() {
@@ -308,26 +309,26 @@ public class Fixture implements Serializable {
 		return odd;
 	}
 
-	public List<Playerfixstat> getPlayerfixstats() {
-		return this.playerfixstats;
+	public List<PlayerFixStat> getPlayerFixStats() {
+		return this.playerFixStats;
 	}
 
-	public void setPlayerfixstats(List<Playerfixstat> playerfixstats) {
-		this.playerfixstats = playerfixstats;
+	public void setPlayerFixStats(List<PlayerFixStat> playerFixStats) {
+		this.playerFixStats = playerFixStats;
 	}
 
-	public Playerfixstat addPlayerfixstat(Playerfixstat playerfixstat) {
-		getPlayerfixstats().add(playerfixstat);
-		playerfixstat.setFixture(this);
+	public PlayerFixStat addPlayerFixStat(PlayerFixStat playerFixStat) {
+		getPlayerFixStats().add(playerFixStat);
+		playerFixStat.setFixture(this);
 
-		return playerfixstat;
+		return playerFixStat;
 	}
 
-	public Playerfixstat removePlayerfixstat(Playerfixstat playerfixstat) {
-		getPlayerfixstats().remove(playerfixstat);
-		playerfixstat.setFixture(null);
+	public PlayerFixStat removePlayerFixStat(PlayerFixStat playerFixStat) {
+		getPlayerFixStats().remove(playerFixStat);
+		playerFixStat.setFixture(null);
 
-		return playerfixstat;
+		return playerFixStat;
 	}
 
 	public List<Prediction> getPredictions() {

@@ -24,11 +24,11 @@ import football.repository.SubstituteRepo;
 import football.repository.TeamRepo;
 import football.repository.TeamplayerRepo;
 import model.Fixture;
-import model.Lineup;
+import model.LineUp;
 import model.Player;
-import model.Startxi;
+import model.StartXI;
 import model.Substitute;
-import model.Teamplayer;
+import model.TeamPlayer;
 
 @RestController
 @RequestMapping(value = "/LineUpController")
@@ -64,9 +64,9 @@ public class LineUpController {
 
 		for (Fixture f : fixtures) {
 
-			List<Lineup> lineUpDelete = lineUpRepo.findByFixture(f);
+			List<LineUp> lineUpDelete = lineUpRepo.findByFixture(f);
 			
-			for(Lineup l : lineUpDelete) {
+			for(LineUp l : lineUpDelete) {
 				lineUpRepo.delete(l);
 			}
 			
@@ -94,13 +94,13 @@ public class LineUpController {
 
 				// Tim1 ++++++++++++++
 				
-				JSONObject tim1 = (JSONObject) o2.get(f.getHometeam().getTeam().getTeamName());
-				Lineup lineup = new Lineup();
+				JSONObject tim1 = (JSONObject) o2.get(f.getHomeTeam().getTeam().getTeamName());
+				LineUp lineup = new LineUp();
 
 				String formacija = (String) tim1.get("formation");
 				lineup.setFormation(formacija);
 
-				lineup.setTeam(f.getHometeam().getTeam());
+				lineup.setTeam(f.getHomeTeam().getTeam());
 
 				lineup.setFixture(f);
 
@@ -108,13 +108,13 @@ public class LineUpController {
 
 				// Tim 2 ++++++++++++++
 				
-				JSONObject tim2 = (JSONObject) o2.get(f.getAwayteam().getTeam().getTeamName());
-				lineup = new Lineup();
+				JSONObject tim2 = (JSONObject) o2.get(f.getAwayTeam().getTeam().getTeamName());
+				lineup = new LineUp();
 
 				formacija = (String) tim2.get("formation");
 				lineup.setFormation(formacija);
 
-				lineup.setTeam(f.getAwayteam().getTeam());
+				lineup.setTeam(f.getAwayTeam().getTeam());
 
 				lineup.setFixture(f);
 
@@ -127,22 +127,22 @@ public class LineUpController {
 
 					JSONObject objekatUNizu = (JSONObject) n.get(i);
 
-					Startxi startxi = new Startxi();
+					StartXI startxi = new StartXI();
 
 					Object playerIdLong = objekatUNizu.get("player_id");
 					Integer playerId = playerIdLong instanceof Long ? ((Long) playerIdLong).intValue() : 0;
 
 					Player player = playerRepo.getOne(playerId);
-					List<Teamplayer> pomList = teamplayerRepo.findByPlayer(player);
+					List<TeamPlayer> pomList = teamplayerRepo.findByPlayer(player);
 
-					for (Teamplayer tp : pomList) {
+					for (TeamPlayer tp : pomList) {
 
 						if (tp.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()) {
-							startxi.setTeamplayer(tp);
+							startxi.setTeamPlayer(tp);
 						}
 
 					}
-					startxi.setLineup(lineup);
+					startxi.setLineUp(lineup);
 
 					startxi = startxiRepo.save(startxi);
 
@@ -160,15 +160,15 @@ public class LineUpController {
 					Integer playerId = playerIdLong instanceof Long ? ((Long) playerIdLong).intValue() : 0;
 
 					Player player = playerRepo.getOne(playerId);
-					List<Teamplayer> pomList2 = teamplayerRepo.findByPlayer(player);
+					List<TeamPlayer> pomList2 = teamplayerRepo.findByPlayer(player);
 
-					for (Teamplayer tp : pomList2) {
+					for (TeamPlayer tp : pomList2) {
 
 						if (tp.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()) {
-							substitutes.setTeamplayer(tp);
+							substitutes.setTeamPlayer(tp);
 						}
 					}
-					substitutes.setLineup(lineup);
+					substitutes.setLineUp(lineup);
 					substitutes = substituteRepo.save(substitutes);
 				}
 
@@ -180,22 +180,22 @@ public class LineUpController {
 					
 					JSONObject objekatUNizu = (JSONObject) n2.get(i);
 
-					Startxi startxi = new Startxi();
+					StartXI startxi = new StartXI();
 
 					Object playerIdLong = objekatUNizu.get("player_id");
 					Integer playerId = playerIdLong instanceof Long ? ((Long) playerIdLong).intValue() : 0;
 
 					Player player = playerRepo.getOne(playerId);
-					List<Teamplayer> pomList = teamplayerRepo.findByPlayer(player);
+					List<TeamPlayer> pomList = teamplayerRepo.findByPlayer(player);
 
-					for (Teamplayer tp : pomList) {
+					for (TeamPlayer tp : pomList) {
 
 						if (tp.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()) {
-							startxi.setTeamplayer(tp);
+							startxi.setTeamPlayer(tp);
 						}
 
 					}
-					startxi.setLineup(lineup);
+					startxi.setLineUp(lineup);
 
 					startxi = startxiRepo.save(startxi);
 
@@ -214,15 +214,15 @@ public class LineUpController {
 					Integer playerId = playerIdLong instanceof Long ? ((Long) playerIdLong).intValue() : 0;
 
 					Player player = playerRepo.getOne(playerId);
-					List<Teamplayer> pomList2 = teamplayerRepo.findByPlayer(player);
+					List<TeamPlayer> pomList2 = teamplayerRepo.findByPlayer(player);
 
-					for (Teamplayer tp : pomList2) {
+					for (TeamPlayer tp : pomList2) {
 
 						if (tp.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()) {
-							substitutes.setTeamplayer(tp);
+							substitutes.setTeamPlayer(tp);
 						}
 					}
-					substitutes.setLineup(lineup);
+					substitutes.setLineUp(lineup);
 					substitutes = substituteRepo.save(substitutes);
 				}
 

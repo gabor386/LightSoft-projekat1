@@ -26,7 +26,7 @@ import model.Assist;
 import model.Event;
 import model.Fixture;
 import model.Player;
-import model.Teamplayer;
+import model.TeamPlayer;
 
 @RestController
 @RequestMapping(value = "/eventController")
@@ -114,12 +114,12 @@ public class EventController {
 				
 				    Player player =  playerRepo.getOne(playerId);
 				    
-				    List<Teamplayer> teamplayers = teamPlayerRepo.findByPlayer(player);
+				    List<TeamPlayer> teamplayers = teamPlayerRepo.findByPlayer(player);
 				    
 				    
-				    for(Teamplayer tp : teamplayers) {
+				    for(TeamPlayer tp : teamplayers) {
 				    	if(tp.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()) {
-				    		 event.setTeamplayer(tp);
+				    		 event.setTeamPlayer(tp);
 				    	}
 				    }
 				    
@@ -138,16 +138,16 @@ public class EventController {
 					 teamplayers = teamPlayerRepo.findByPlayer(player);
 					 
 					
-					 for(Teamplayer tp : teamplayers) {
+					 for(TeamPlayer tp : teamplayers) {
 						 
 					    	if(tp.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()) {
 					    			
-								   assist.setTeamplayer(tp);
+								   assist.setTeamPlayer(tp);
 								   assistRepo.save(assist);
 					    		
 								   event.setAssist(assist);
 					    	  }else {
-					    		 assist.setTeamplayer(null);
+					    		 assist.setTeamPlayer(null);
 						    	 assistRepo.save(assist);
 						    	 event.setAssist(assist);
 					    	  }

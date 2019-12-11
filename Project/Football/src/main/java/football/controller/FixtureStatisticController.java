@@ -20,7 +20,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import football.repository.FixtureRepo;
 import football.repository.FixturestatRepo;
 import model.Fixture;
-import model.Fixturestat;
+import model.FixtureStat;
 
 @RestController
 @RequestMapping(value = "/fixtureStatisticController")
@@ -41,7 +41,7 @@ public class FixtureStatisticController {
 
 		for (Fixture f : fixtures) {
 
-			List<Fixturestat> retfixtureStats = new ArrayList<Fixturestat>();
+			List<FixtureStat> retfixtureStats = new ArrayList<FixtureStat>();
 
 			HttpResponse<String> response = null;
 			try {
@@ -56,7 +56,7 @@ public class FixtureStatisticController {
 			JSONParser parse = new JSONParser();
 			JSONObject o;
 			
-			Fixturestat deleteStat = fixtureStatRepo.findByFixture(f);
+			FixtureStat deleteStat = fixtureStatRepo.findByFixture(f);
 			if(deleteStat != null)
 				fixtureStatRepo.delete(deleteStat);
 
@@ -77,7 +77,7 @@ public class FixtureStatisticController {
 				
 				//Sutevi na golllllllllllllllllllllllllllllllllllllllllll
 				
-				Fixturestat shotOnGoal = new Fixturestat();
+				FixtureStat shotOnGoal = new FixtureStat();
 
 				JSONObject o3 = (JSONObject) o2.get("Shots on Goal");
 
@@ -95,7 +95,7 @@ public class FixtureStatisticController {
 				
 				//Sutevi pored golaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
-				Fixturestat shotOffGoal = new Fixturestat();
+				FixtureStat shotOffGoal = new FixtureStat();
 
 				JSONObject o4 = (JSONObject) o2.get("Shots off Goal");
 
@@ -113,7 +113,7 @@ public class FixtureStatisticController {
 				
 				//Ukupno suteviiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 				
-				Fixturestat totalShots = new Fixturestat();
+				FixtureStat totalShots = new FixtureStat();
 
 				JSONObject o5 = (JSONObject) o2.get("Total Shots");
 
@@ -131,7 +131,7 @@ public class FixtureStatisticController {
 				
 				//Blokirani suteviiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 				
-				Fixturestat blockedShots = new Fixturestat();
+				FixtureStat blockedShots = new FixtureStat();
 
 				JSONObject o6 = (JSONObject) o2.get("Blocked Shots");
 
@@ -149,7 +149,7 @@ public class FixtureStatisticController {
 				
 				//Shots insideboxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 				
-				Fixturestat shotInsideBox = new Fixturestat();
+				FixtureStat shotInsideBox = new FixtureStat();
 
 				JSONObject o7 = (JSONObject) o2.get("Shots insidebox");
 
@@ -167,7 +167,7 @@ public class FixtureStatisticController {
 				
 				//Shots outsideboxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 				
-				Fixturestat shotOutsideBox = new Fixturestat();
+				FixtureStat shotOutsideBox = new FixtureStat();
 
 				JSONObject o8 = (JSONObject) o2.get("Shots outsidebox");
 
@@ -185,7 +185,7 @@ public class FixtureStatisticController {
 				
 				//Fauloviiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 				
-				Fixturestat fouls = new Fixturestat();
+				FixtureStat fouls = new FixtureStat();
 
 				JSONObject o9 = (JSONObject) o2.get("Fouls");
 
@@ -203,7 +203,7 @@ public class FixtureStatisticController {
 				
 				//Korneriiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 				
-				Fixturestat cornerKicks = new Fixturestat();
+				FixtureStat cornerKicks = new FixtureStat();
 
 				JSONObject o10 = (JSONObject) o2.get("Corner Kicks");
 
@@ -221,7 +221,7 @@ public class FixtureStatisticController {
 				
 				//Ofsajdiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 				
-				Fixturestat offsides = new Fixturestat();
+				FixtureStat offsides = new FixtureStat();
 
 				JSONObject o11 = (JSONObject) o2.get("Offsides");
 
@@ -240,7 +240,7 @@ public class FixtureStatisticController {
 				//Posed lopteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 				
 
-				Fixturestat ballPossession = new Fixturestat();
+				FixtureStat ballPossession = new FixtureStat();
 
 				JSONObject o12 = (JSONObject) o2.get("Ball Possession");
 
@@ -259,7 +259,7 @@ public class FixtureStatisticController {
 				//Zuti kartoniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 				
 
-				Fixturestat yellowCards = new Fixturestat();
+				FixtureStat yellowCards = new FixtureStat();
 
 				JSONObject o13 = (JSONObject) o2.get("Yellow Cards");
 
@@ -278,7 +278,7 @@ public class FixtureStatisticController {
 				//Crveni kartoniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 				
 
-				Fixturestat redCards = new Fixturestat();
+				FixtureStat redCards = new FixtureStat();
 
 				JSONObject o14 = (JSONObject) o2.get("Red Cards");
 
@@ -297,7 +297,7 @@ public class FixtureStatisticController {
 				//Odbraneeeeee golmanaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 				
 
-				Fixturestat goalkeeperSaves = new Fixturestat();
+				FixtureStat goalkeeperSaves = new FixtureStat();
 
 				JSONObject o15 = (JSONObject) o2.get("Goalkeeper Saves");
 
@@ -317,7 +317,7 @@ public class FixtureStatisticController {
 				
 				
 
-				Fixturestat totalPasses = new Fixturestat();
+				FixtureStat totalPasses = new FixtureStat();
 
 				JSONObject o16 = (JSONObject) o2.get("Total passes");
 
@@ -336,7 +336,7 @@ public class FixtureStatisticController {
 				// Passes accurateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 				
 
-				Fixturestat passesAccurate = new Fixturestat();
+				FixtureStat passesAccurate = new FixtureStat();
 
 				JSONObject o17 = (JSONObject) o2.get("Passes accurate");
 
@@ -355,7 +355,7 @@ public class FixtureStatisticController {
 				//  Passes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 				
 
-				Fixturestat passes = new Fixturestat();
+				FixtureStat passes = new FixtureStat();
 
 				JSONObject o18 = (JSONObject) o2.get("Passes %");
 

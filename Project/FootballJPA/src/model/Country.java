@@ -2,21 +2,15 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 
 /**
- * The persistent class for the country database table.
+ * The persistent class for the Country database table.
  * 
  */
-
-
 @Entity
 @NamedQuery(name="Country.findAll", query="SELECT c FROM Country c")
-@Table(name="Country")
 public class Country implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -27,12 +21,8 @@ public class Country implements Serializable {
 	private String code;
 
 	private String flag;
-	
 
-	@JsonProperty("country")
 	private String name;
-	
-	
 
 	//bi-directional many-to-one association to Coach
 	@OneToMany(mappedBy="country")
@@ -52,8 +42,7 @@ public class Country implements Serializable {
 	public int getIdCountry() {
 		return this.idCountry;
 	}
-	
-	
+
 	public void setIdCountry(int idCountry) {
 		this.idCountry = idCountry;
 	}
@@ -78,7 +67,6 @@ public class Country implements Serializable {
 		return this.name;
 	}
 
-	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -148,6 +136,5 @@ public class Country implements Serializable {
 
 		return team;
 	}
-	
-	
+
 }

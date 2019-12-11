@@ -8,11 +8,11 @@ import model.Assist;
 import model.Player;
 import model.Season;
 import model.Team;
-import model.Teamplayer;
+import model.TeamPlayer;
 
-public interface TeamplayerRepo extends JpaRepository<Teamplayer, Integer>{
+public interface TeamplayerRepo extends JpaRepository<TeamPlayer, Integer>{
 
-	List <Teamplayer> findByPlayer(Player player);
+	List <TeamPlayer> findByPlayer(Player player);
 	
 	//List<Teamplayer> findByPlayerAndTeamAndSeason(Player p , Team t , Season s);
 	

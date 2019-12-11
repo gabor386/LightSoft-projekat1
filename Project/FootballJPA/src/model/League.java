@@ -2,24 +2,19 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 
 /**
- * The persistent class for the league database table.
+ * The persistent class for the League database table.
  * 
  */
 @Entity
-@Table(name="League")
 @NamedQuery(name="League.findAll", query="SELECT l FROM League l")
 public class League implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@JsonProperty("league_id")
 	private int idLeague;
 
 	private String logo;
@@ -32,14 +27,15 @@ public class League implements Serializable {
 
 	private String type;
 
+	//bi-directional many-to-one association to Country
+	@ManyToOne
+	@JoinColumn(name="Country_idCountry")
+	private Country country;
+
 	//bi-directional many-to-one association to Season
 	@ManyToOne
 	@JoinColumn(name="season")
 	private Season seasonBean;
-
-	//bi-directional many-to-one association to Country
-	@ManyToOne
-	private Country country;
 
 	//bi-directional many-to-one association to Round
 	@OneToMany(mappedBy="league")
@@ -49,13 +45,13 @@ public class League implements Serializable {
 	@OneToMany(mappedBy="league")
 	private List<Stading> stadings;
 
-	//bi-directional many-to-one association to Teamstatistic
+	//bi-directional many-to-one association to TeamStatistic
 	@OneToMany(mappedBy="league")
-	private List<Teamstatistic> teamstatistics;
+	private List<TeamStatistic> teamStatistics;
 
-	//bi-directional many-to-one association to Topscorer
+	//bi-directional many-to-one association to TopScorer
 	@OneToMany(mappedBy="league")
-	private List<Topscorer> topscorers;
+	private List<TopScorer> topScorers;
 
 	//bi-directional many-to-one association to Trophy
 	@OneToMany(mappedBy="league")
@@ -112,20 +108,20 @@ public class League implements Serializable {
 		this.type = type;
 	}
 
-	public Season getSeasonBean() {
-		return this.seasonBean;
-	}
-
-	public void setSeasonBean(Season seasonBean) {
-		this.seasonBean = seasonBean;
-	}
-
 	public Country getCountry() {
 		return this.country;
 	}
 
 	public void setCountry(Country country) {
 		this.country = country;
+	}
+
+	public Season getSeasonBean() {
+		return this.seasonBean;
+	}
+
+	public void setSeasonBean(Season seasonBean) {
+		this.seasonBean = seasonBean;
 	}
 
 	public List<Round> getRounds() {
@@ -172,48 +168,48 @@ public class League implements Serializable {
 		return stading;
 	}
 
-	public List<Teamstatistic> getTeamstatistics() {
-		return this.teamstatistics;
+	public List<TeamStatistic> getTeamStatistics() {
+		return this.teamStatistics;
 	}
 
-	public void setTeamstatistics(List<Teamstatistic> teamstatistics) {
-		this.teamstatistics = teamstatistics;
+	public void setTeamStatistics(List<TeamStatistic> teamStatistics) {
+		this.teamStatistics = teamStatistics;
 	}
 
-	public Teamstatistic addTeamstatistic(Teamstatistic teamstatistic) {
-		getTeamstatistics().add(teamstatistic);
-		teamstatistic.setLeague(this);
+	public TeamStatistic addTeamStatistic(TeamStatistic teamStatistic) {
+		getTeamStatistics().add(teamStatistic);
+		teamStatistic.setLeague(this);
 
-		return teamstatistic;
+		return teamStatistic;
 	}
 
-	public Teamstatistic removeTeamstatistic(Teamstatistic teamstatistic) {
-		getTeamstatistics().remove(teamstatistic);
-		teamstatistic.setLeague(null);
+	public TeamStatistic removeTeamStatistic(TeamStatistic teamStatistic) {
+		getTeamStatistics().remove(teamStatistic);
+		teamStatistic.setLeague(null);
 
-		return teamstatistic;
+		return teamStatistic;
 	}
 
-	public List<Topscorer> getTopscorers() {
-		return this.topscorers;
+	public List<TopScorer> getTopScorers() {
+		return this.topScorers;
 	}
 
-	public void setTopscorers(List<Topscorer> topscorers) {
-		this.topscorers = topscorers;
+	public void setTopScorers(List<TopScorer> topScorers) {
+		this.topScorers = topScorers;
 	}
 
-	public Topscorer addTopscorer(Topscorer topscorer) {
-		getTopscorers().add(topscorer);
-		topscorer.setLeague(this);
+	public TopScorer addTopScorer(TopScorer topScorer) {
+		getTopScorers().add(topScorer);
+		topScorer.setLeague(this);
 
-		return topscorer;
+		return topScorer;
 	}
 
-	public Topscorer removeTopscorer(Topscorer topscorer) {
-		getTopscorers().remove(topscorer);
-		topscorer.setLeague(null);
+	public TopScorer removeTopScorer(TopScorer topScorer) {
+		getTopScorers().remove(topScorer);
+		topScorer.setLeague(null);
 
-		return topscorer;
+		return topScorer;
 	}
 
 	public List<Trophy> getTrophies() {

@@ -2,18 +2,14 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 
 /**
- * The persistent class for the round database table.
+ * The persistent class for the Round database table.
  * 
  */
 @Entity
-@Table(name="Round")
 @NamedQuery(name="Round.findAll", query="SELECT r FROM Round r")
 public class Round implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -22,7 +18,6 @@ public class Round implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idRound;
 
-	@JsonProperty("round")
 	private String reguralSeason;
 
 	//bi-directional many-to-one association to Fixture
@@ -31,6 +26,7 @@ public class Round implements Serializable {
 
 	//bi-directional many-to-one association to League
 	@ManyToOne
+	@JoinColumn(name="League_idLeague")
 	private League league;
 
 	public Round() {

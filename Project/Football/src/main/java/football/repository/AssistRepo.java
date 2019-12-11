@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import model.Assist;
 import model.Country;
 import model.Team;
-import model.Teamplayer;
+import model.TeamPlayer;
 
 public interface AssistRepo extends JpaRepository<Assist, Integer> {
 

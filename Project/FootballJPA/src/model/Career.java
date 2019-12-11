@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the career database table.
+ * The persistent class for the Career database table.
  * 
  */
 @Entity
@@ -21,13 +21,15 @@ public class Career implements Serializable {
 
 	private String start;
 
-	//bi-directional many-to-one association to Team
-	@ManyToOne
-	private Team team;
-
 	//bi-directional many-to-one association to Coach
 	@ManyToOne
+	@JoinColumn(name="Coach_idCoach")
 	private Coach coach;
+
+	//bi-directional many-to-one association to Team
+	@ManyToOne
+	@JoinColumn(name="Team_idTeam")
+	private Team team;
 
 	public Career() {
 	}
@@ -56,20 +58,20 @@ public class Career implements Serializable {
 		this.start = start;
 	}
 
-	public Team getTeam() {
-		return this.team;
-	}
-
-	public void setTeam(Team team) {
-		this.team = team;
-	}
-
 	public Coach getCoach() {
 		return this.coach;
 	}
 
 	public void setCoach(Coach coach) {
 		this.coach = coach;
+	}
+
+	public Team getTeam() {
+		return this.team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 
 }

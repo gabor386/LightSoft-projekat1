@@ -9,11 +9,10 @@ import java.util.List;
 
 
 /**
- * The persistent class for the prediction database table.
+ * The persistent class for the Prediction database table.
  * 
  */
 @Entity
-@Table(name="Prediction")
 @NamedQuery(name="Prediction.findAll", query="SELECT p FROM Prediction p")
 public class Prediction implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -38,7 +37,7 @@ public class Prediction implements Serializable {
 
 	@JsonProperty("away")
 	private String winningPercenteAway;
-	
+
 	@JsonProperty("draws")
 	private String winningPercenteDraws;
 

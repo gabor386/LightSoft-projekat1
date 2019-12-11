@@ -26,9 +26,9 @@ import football.repository.LeagueRepo;
 import football.repository.RoundRepo;
 import football.repository.ScoreRepo;
 import football.repository.TeamRepo;
-import model.Awayteam;
+import model.AwayTeam;
 import model.Fixture;
-import model.Hometeam;
+import model.HomeTeam;
 import model.League;
 import model.Round;
 import model.Score;
@@ -161,8 +161,8 @@ public class FixturesController {
 					JSONObject o3 = (JSONObject) o2.get("homeTeam");
 					JSONObject o4 = (JSONObject) o2.get("awayTeam");
 
-					Hometeam homeTeam = new Hometeam();
-					Awayteam awayTeam = new Awayteam();
+					HomeTeam homeTeam = new HomeTeam();
+					AwayTeam awayTeam = new AwayTeam();
 
 					Object idHomeTeamLong = o3.get("team_id");
 					Integer idHomeTeam = idHomeTeamLong instanceof Long ? ((Long) idHomeTeamLong).intValue() : 0;
@@ -180,8 +180,8 @@ public class FixturesController {
 					awayTeam.setTeam(team);
 					awayTeam = awayTeamRepo.save(awayTeam);
 
-					fixture.setHometeam(homeTeam);
-					fixture.setAwayteam(awayTeam);
+					fixture.setHomeTeam(homeTeam);
+					fixture.setAwayTeam(awayTeam);
 
 					JSONObject o5 = (JSONObject) o2.get("score");
 

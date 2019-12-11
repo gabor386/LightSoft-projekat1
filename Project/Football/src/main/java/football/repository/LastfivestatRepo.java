@@ -2,8 +2,8 @@ package football.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import model.Lastfivestat;
+import model.LastFiveStat;
 
-public interface LastfivestatRepo extends JpaRepository<Lastfivestat, Integer>{
+public interface LastfivestatRepo extends JpaRepository<LastFiveStat, Integer>{
 
 }
