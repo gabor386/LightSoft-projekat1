@@ -2,44 +2,20 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="FootballJPA" transaction-type="RESOURCE_LOCAL">
 		<class>model.AwayTeam</class>
-		<class>model.Assist</class>
-		<class>model.Bet</class>
-		<class>model.Bookmaker</class>
-		<class>model.Career</class>
-		<class>model.Coach</class>
-		<class>model.Comparison</class>
-		<class>model.Country</class>
-		<class>model.Event</class>
 		<class>model.FixtureStat</class>
-		<class>model.Fixture</class>
 		<class>model.HomeTeam</class>
-		<class>model.Label</class>
 		<class>model.LastFiveStat</class>
-		<class>model.League</class>
 		<class>model.LineUp</class>
-		<class>model.Odd</class>
-		<class>model.Player</class>
-		<class>model.PlayerFixStat</class>
 		<class>model.PlayerStatistic</class>
-		<class>model.Prediction</class>
-		<class>model.Round</class>
-		<class>model.Score</class>
-		<class>model.Season</class>
 		<class>model.SideLine</class>
-		<class>model.Stading</class>
 		<class>model.StandingStat</class>
 		<class>model.StartXI</class>
-		<class>model.Substitute</class>
-		<class>model.Team</class>
 		<class>model.TeamIn</class>
 		<class>model.TeamOut</class>
 		<class>model.TeamPlayer</class>
 		<class>model.TeamStatistic</class>
 		<class>model.TimeZona</class>
 		<class>model.TopScorer</class>
-		<class>model.Transfer</class>
-		<class>model.Trophy</class>
-		<class>model.Winner</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://nastava.is.pmf.uns.ac.rs:3306/praksa"/>
 			<property name="javax.persistence.jdbc.user" value="praksa"/>
