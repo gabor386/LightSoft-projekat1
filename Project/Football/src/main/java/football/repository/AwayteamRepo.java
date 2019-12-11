@@ -8,6 +8,5 @@ import model.AwayTeam;
 
 public interface AwayteamRepo extends JpaRepository<AwayTeam, Integer>{
 
-public interface AwayteamRepo extends JpaRepository<AwayTeam, Integer>{
-	
+
 }

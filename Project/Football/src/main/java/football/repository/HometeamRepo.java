@@ -8,6 +8,5 @@ import model.HomeTeam;
 
 public interface HometeamRepo extends JpaRepository<HomeTeam, Integer> {
 
-public interface HometeamRepo extends JpaRepository<HomeTeam, Integer> {
 	
 }
