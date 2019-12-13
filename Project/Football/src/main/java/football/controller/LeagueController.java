@@ -1,5 +1,8 @@
 package football.controller;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,10 +19,11 @@ import football.repository.SeasonRepo;
 import model.Country;
 import model.League;
 import model.Season;
+
 @RestController
 public class LeagueController {
 
-	private Param param=new Param();
+	private Param param = new Param();
 
 	@Autowired
 	LeagueRepo lr;
@@ -28,91 +32,63 @@ public class LeagueController {
 	@Autowired
 	SeasonRepo sr;
 	
-	
+	@RequestMapping(value="/leauge")
 	public void apiLeague() {
 
 		String json = null;
 
 		try {
-			HttpResponse<String> response = Unirest.get(param.getAdd()+"/leagues")
-					.header("x-rapidapi-host", param.getH1())
-					.header("x-rapidapi-key", param.getH2()).asString();
+			HttpResponse<String> response = Unirest.get(param.getAdd() + "/leagues")
+					.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
 			json = response.getBody();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		if (json != null) {
-			JsonFactory factory = new JsonFactory();
+			System.out.println("Updateing league");
+			JSONParser parse = new JSONParser();
+			JSONObject o;
 			try {
-				JsonParser parser = factory.createParser(json);
-				while (!parser.isClosed()) {
-					JsonToken jsonToken = parser.nextToken();
-					if (JsonToken.FIELD_NAME.equals(jsonToken)) {
-						String fieldName = parser.getCurrentName();
-						if ("results".equals(fieldName)) {
-							jsonToken = parser.nextToken();
-							int br = parser.getIntValue();
-							jsonToken = parser.nextToken();
-							jsonToken = parser.nextToken();
-							for (int i=0; i<br; i++) {
-								League l = new League();
-								jsonToken = parser.nextToken();
-								jsonToken = parser.nextToken();
-								jsonToken = parser.nextToken();
-								l.setIdLeague(parser.getIntValue());
-								jsonToken = parser.nextToken();
-								jsonToken = parser.nextToken();
-								l.setName(parser.getValueAsString());
-								jsonToken = parser.nextToken();
-								jsonToken = parser.nextToken();
-								l.setType(parser.getValueAsString());
-								jsonToken = parser.nextToken();
-								jsonToken = parser.nextToken();
-								Country c=null;
-								try {
-								c = cr.findByName(parser.getValueAsString());
-								}catch (Exception e) {
-									e.printStackTrace();
-								}
-								l.setCountry(c);
-								jsonToken = parser.nextToken();
-								jsonToken = parser.nextToken();
-								jsonToken = parser.nextToken();
-								jsonToken = parser.nextToken();
-								Season s =null;
-								try {
-									s=sr.findBySeason(parser.getIntValue());
-								}catch (Exception e) {
-									e.printStackTrace();
-								}	
-								l.setSeasonBean(s);
-								 // Ovde treba povezati sa sezonm...
-								jsonToken = parser.nextToken();
-								jsonToken = parser.nextToken();
-								l.setSeasonStart(parser.getValueAsString());
-								jsonToken = parser.nextToken();
-								jsonToken = parser.nextToken();
-								l.setSeasonEnd(parser.getValueAsString());
-								jsonToken = parser.nextToken();
-								jsonToken = parser.nextToken();
-								l.setLogo(parser.getValueAsString());
-								for (int j=0; j<31; j++) {
-									jsonToken = parser.nextToken();
-								}
-								if (lr.getOne(l.getIdLeague())==null) {
-									lr.save(l);
-									
-								}
-								
-							}
-						}
-					}
+				o = (JSONObject) parse.parse(json);
+
+				JSONObject o1 = (JSONObject) o.get("api");
+
+				Long result = (Long) o1.get("results");
+				Integer br = result.intValue();
+
+				JSONArray leagues = (JSONArray) o1.get("leagues");
+				for (int i = 0; i < result; i++) {
+					JSONObject league = (JSONObject) leagues.get(i);
+					League l = new League();
+					Long id = (Long) league.get("league_id");
+					l.setIdLeague(id.intValue());
+					String name = (String) league.get("name");
+					l.setName(name);
+					String country = (String) league.get("country");
+					Country c = cr.findByName(country);
+					l.setCountry(c);
+					Long season = (Long) league.get("season");
+					Season s = sr.getOne(season.intValue());
+					l.setSeasonBean(s);
+					String start = (String) league.get("season_start");
+					l.setSeasonStart(start);
+					String end = (String) league.get("season_end");
+					l.setSeasonEnd(end);
+					String logo = (String) league.get("logo");
+					l.setLogo(logo);
+					String type = (String) league.get("type");
+					l.setType(type);
+
+					lr.save(l);
 				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+		json = null;
 	}
 
 }
