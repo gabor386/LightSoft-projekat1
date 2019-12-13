@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 
@@ -15,22 +18,29 @@ public class Team implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@JsonProperty("team_id")
 	private int idTeam;
 
+	@JsonProperty("venue_capacity")
 	private int capacity;
 
 	private int founded;
 
 	private String logo;
 
+	@JsonProperty("venue_address")
 	private String stadionAddress;
 
+	@JsonProperty("venue_city")
 	private String stadionCity;
 
+	@JsonProperty("venue_name")
 	private String stadionName;
 
+	@JsonProperty("venue_surface")
 	private String stadionSurface;
 
+	@JsonProperty("name")
 	private String teamName;
 
 	//bi-directional many-to-one association to AwayTeam
