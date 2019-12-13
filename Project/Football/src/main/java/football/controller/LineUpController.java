@@ -58,7 +58,7 @@ public class LineUpController {
 	TeamplayerRepo teamplayerRepo;
 
 	@RequestMapping(value = "/saveLineUp", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-	public void apiFixtures() {
+	public void apiLineUp() {
 
 		List<Fixture> fixtures = fixtureRepo.findAll();
 

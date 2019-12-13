@@ -35,7 +35,7 @@ public class FixtureStatisticController {
 	FixturestatRepo fixtureStatRepo;
 
 	@RequestMapping(value = "/saveFixtureStatistic", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-	public void apiPrediction() {
+	public void apiFixStat() {
 
 		List<Fixture> fixtures = fixtureRepo.findAll();
 
@@ -56,10 +56,10 @@ public class FixtureStatisticController {
 			JSONParser parse = new JSONParser();
 			JSONObject o;
 			
-			FixtureStat deleteStat = fixtureStatRepo.findByFixture(f);
-			if(deleteStat != null)
-				fixtureStatRepo.delete(deleteStat);
-
+			List<FixtureStat> deleteStat = fixtureStatRepo.findByFixture(f);
+			for(FixtureStat ds:deleteStat) {
+				fixtureStatRepo.delete(ds);
+			}
 			try {
 
 				o = (JSONObject) parse.parse(json);
