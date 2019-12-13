@@ -86,7 +86,7 @@ public class FixturesController {
 			JSONParser parse = new JSONParser();
 			JSONObject o;
 
-			Fixture fixture = new Fixture();
+			
 
 			try {
 				o = (JSONObject) parse.parse(json);
@@ -95,7 +95,7 @@ public class FixturesController {
 				JSONArray n1 = (JSONArray) o1.get("fixtures");
 
 				for (int i = 0; i < n1.size(); i++) {
-
+					Fixture fixture = new Fixture();
 					JSONObject o2 = (JSONObject) n1.get(i);
 
 					// Fixtureeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
@@ -200,8 +200,9 @@ public class FixturesController {
 					score = scoreRepo.save(score);
 					fixture.setScore(score);
 
+					fixture=fixtureRepo.save(fixture);
 					retFixture.add(fixture);
-					retFixture = fixtureRepo.saveAll(retFixture);
+					
 
 				}
 

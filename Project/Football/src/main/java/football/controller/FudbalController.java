@@ -130,9 +130,13 @@ public class FudbalController {
 
 	
 	
-	
+	@RequestMapping (value = "dateupdate")
 	public void update17days() {
 		List<String> dates = getDates();
+		//List<String> dates = new ArrayList<String>();
+		//dates.add("2020-05-17");
+		//dates.add("2020-05-10");
+		//dates.add("2020-05-09");
 		List<Fixture> fixtures = apiFixturesDate(dates);
 		apiLineUpDate(fixtures);
 		apiFixStatDate(fixtures);
@@ -178,7 +182,7 @@ public class FudbalController {
 			JSONParser parse = new JSONParser();
 			JSONObject o;
 
-			Fixture fixture = new Fixture();
+			
 
 			try {
 				o = (JSONObject) parse.parse(json);
@@ -186,8 +190,10 @@ public class FudbalController {
 
 				JSONArray n1 = (JSONArray) o1.get("fixtures");
 
+				
 				for (int i = 0; i < n1.size(); i++) {
 
+					Fixture fixture = new Fixture();
 					JSONObject o2 = (JSONObject) n1.get(i);
 
 					// Fixtureeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
@@ -260,27 +266,27 @@ public class FudbalController {
 					Integer idHomeTeam = idHomeTeamLong instanceof Long ? ((Long) idHomeTeamLong).intValue() : 0;
 
 					Team team = teamRepo.getOne(idHomeTeam);
-					HomeTeam htB = homeTeamRepo.findByTeam(team); // HomeTeam iz baze
-					if (htB == null) {
+			//		HomeTeam htB = homeTeamRepo.findByTeam(team); // HomeTeam iz baze
+			//		if (htB == null) {
 						homeTeam.setTeam(team);
 						homeTeam = homeTeamRepo.save(homeTeam);
 						fixture.setHomeTeam(homeTeam);
-					} else {
-						fixture.setHomeTeam(htB);
-					}
+			//		} else {
+			//			fixture.setHomeTeam(htB);
+			//		}
 					Object idAwayTeamLong = o4.get("team_id");
 					Integer idAwayTeam = idAwayTeamLong instanceof Long ? ((Long) idAwayTeamLong).intValue() : 0;
 
 					team = teamRepo.getOne(idAwayTeam);
 
-					AwayTeam atB = awayTeamRepo.findByTeam(team); // AwayTeam iz baze
-					if (atB == null) {
+			//		AwayTeam atB = awayTeamRepo.findByTeam(team); // AwayTeam iz baze
+			//		if (atB == null) {
 						awayTeam.setTeam(team);
 						awayTeam = awayTeamRepo.save(awayTeam);
 						fixture.setAwayTeam(awayTeam);
-					} else {
-						fixture.setAwayTeam(atB);
-					}
+			//		} else {
+			//			fixture.setAwayTeam(atB);
+			//		}
 
 					JSONObject o5 = (JSONObject) o2.get("score");
 
@@ -300,7 +306,7 @@ public class FudbalController {
 					fixture.setScore(score);
 
 					fixture = fixtureRepo.save(fixture);
-
+					
 					retFixture.add(fixture);
 
 				}
@@ -310,6 +316,13 @@ public class FudbalController {
 				e.printStackTrace();
 			}
 
+		}
+		System.out.println(retFixture);
+		int j=1;
+		for (Fixture f :retFixture) {
+			System.out.println("****************");
+			System.out.println(j + ". "+f.getIdFixtures()+ "  " +f.getHomeTeam().getTeam().getTeamName() + " - " + f.getAwayTeam().getTeam().getTeamName());
+		j++;
 		}
 		return retFixture;
 	}
@@ -491,10 +504,8 @@ public class FudbalController {
 	//dodavanje statistike za date meceve
 	public void apiFixStatDate(List<Fixture> fixtures) {
 
+		List<FixtureStat> retfixtureStats = new ArrayList<FixtureStat>();
 		for (Fixture f : fixtures) {
-
-			List<FixtureStat> retfixtureStats = new ArrayList<FixtureStat>();
-
 			HttpResponse<String> response = null;
 			try {
 				response = Unirest.get(param.getAdd() + "/statistics/fixture/" + f.getIdFixtures())
@@ -818,8 +829,6 @@ public class FudbalController {
 					passes.setFixture(f);
 
 					retfixtureStats.add(passes);
-
-					fixtureStatRepo.saveAll(retfixtureStats);
 				}
 
 				else {
@@ -833,6 +842,7 @@ public class FudbalController {
 			}
 
 		}
+		fixtureStatRepo.saveAll(retfixtureStats);
 	}
 	
 	
