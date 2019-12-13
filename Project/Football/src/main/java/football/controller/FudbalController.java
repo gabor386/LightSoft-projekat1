@@ -27,12 +27,16 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import football.repository.AwayteamRepo;
+import football.repository.BetRepo;
+import football.repository.BookmakerRepo;
 import football.repository.CountryRepo;
 import football.repository.FixtureRepo;
 import football.repository.FixturestatRepo;
 import football.repository.HometeamRepo;
+import football.repository.LabelRepo;
 import football.repository.LeagueRepo;
 import football.repository.LineupRepo;
+import football.repository.OddRepo;
 import football.repository.PlayerRepo;
 import football.repository.PlayerfixstatRepo;
 import football.repository.RoundRepo;
@@ -42,12 +46,16 @@ import football.repository.SubstituteRepo;
 import football.repository.TeamRepo;
 import football.repository.TeamplayerRepo;
 import model.AwayTeam;
+import model.Bet;
+import model.Bookmaker;
 import model.Country;
 import model.Fixture;
 import model.FixtureStat;
 import model.HomeTeam;
+import model.Label;
 import model.League;
 import model.LineUp;
+import model.Odd;
 import model.Player;
 import model.PlayerFixStat;
 import model.Round;
@@ -63,6 +71,17 @@ public class FudbalController {
 	// update-ovanje baze za prosla 3 dana i narednih 14 dana
 
 	private Param param = new Param();
+	
+
+	@Autowired
+	OddRepo or;
+	@Autowired
+	BookmakerRepo bmr;
+	@Autowired
+	BetRepo betr;
+	@Autowired
+	LabelRepo lr;
+	
 
 	@Autowired
 	FixtureRepo fixtureRepo;
@@ -118,6 +137,8 @@ public class FudbalController {
 		apiLineUpDate(fixtures);
 		apiFixStatDate(fixtures);
 		apiPlayerFixStatDate(fixtures);
+		
+		apiOddsDate(fixtures);
 		
 	}
 	
@@ -1017,6 +1038,101 @@ public class FudbalController {
 
 		}
 		return listPlayerFixStat;
+	}
+	
+	
+	
+	public void apiOddsDate(List<Fixture> fs) {
+		System.out.println("ODDS UPDATE");
+		String json = null;
+		
+
+		for (Fixture f : fs) {
+
+			try {
+				HttpResponse<String> response = Unirest.get(param.getAdd() + "/odds/fixture/" + f.getIdFixtures())
+						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
+				json = response.getBody();
+				System.out.println(f.getIdFixtures());
+
+			} catch (UnirestException e) {
+				e.printStackTrace();
+			}
+
+			if (json != null) {
+
+				JSONParser parse = new JSONParser();
+				JSONObject o;
+				try {
+					o = (JSONObject) parse.parse(json);
+
+					JSONObject o1 = (JSONObject) o.get("api");
+
+					Long result = (Long) o1.get("results");
+					Integer br = result.intValue();
+
+					JSONArray odds = (JSONArray) o1.get("odds");
+					for (int i = 0; i < result; i++) {
+						JSONObject objectOdds = (JSONObject) odds.get(i);
+						// da ne ubacuje dva puta isto
+						Odd oddDelete = or.findByFixture(f);
+						if (oddDelete!=null)
+							or.delete(oddDelete);
+						Odd odd = new Odd();
+						odd.setFixture(f);
+						odd = or.save(odd);
+
+						JSONArray bookmakers = (JSONArray) objectOdds.get("bookmakers");
+
+						for (int j = 0; j < bookmakers.size(); j++) {
+							JSONObject bm = (JSONObject) bookmakers.get(j);
+							Long idBm = (Long) bm.get("bookmaker_id");
+							Bookmaker bookmaker = bmr.getOne(idBm.intValue());
+							JSONArray labels = (JSONArray) bm.get("bets");
+							for (int z = 0; z < labels.size(); z++) {
+								JSONObject lb = (JSONObject) labels.get(z);
+								Long idLb = (Long) lb.get("label_id");
+								Label label = lr.getOne(idLb.intValue());
+
+								JSONArray bets = (JSONArray) lb.get("values");
+
+								for (int y = 0; y < bets.size(); y++) {
+									JSONObject bet = (JSONObject) bets.get(y);
+									Bet b = new Bet();
+									b.setOddBean(odd);
+									b.setLabel(label);
+									b.setBookmaker(bookmaker);
+									Object betValue = (Object) bet.get("value");
+									Object betOdds = (Object) bet.get("value");
+									if (betValue instanceof Long) {
+										Long lbv = (Long) betValue;
+										String betValueStr = betValue + "";
+										b.setBetValues(betValueStr);
+									} else {
+										String betValueStr = (String) betValue;
+										b.setBetValues(betValueStr);
+									}if (betOdds instanceof Long) {
+										Long lo = (Long) betValue;
+										String bos = lo + "";
+										b.setOdd(bos);
+									} else {
+										String bos = (String) betValue;
+										b.setOdd(bos);
+									}
+
+									
+									betr.save(b);
+								}
+							}
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+			json = null;
+		}
 	}
 
 }
