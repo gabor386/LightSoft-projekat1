@@ -23,7 +23,7 @@ import football.repository.LeagueRepo;
 import football.repository.SeasonRepo;
 import model.Country;
 import model.League;
-import model.Season;
+import model.Season; 
 
 @Component
 public class LeagueUpdate {
