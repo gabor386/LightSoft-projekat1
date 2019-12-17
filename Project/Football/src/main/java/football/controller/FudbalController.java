@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.PostConstruct;
 
@@ -138,11 +140,21 @@ public class FudbalController {
 		//dates.add("2020-05-10");
 		//dates.add("2020-05-09");
 		List<Fixture> fixtures = apiFixturesDate(dates);
-		apiLineUpDate(fixtures);
-		apiFixStatDate(fixtures);
-		apiPlayerFixStatDate(fixtures);
 		
+		ExecutorService executor = Executors.newFixedThreadPool(4);
+		
+		executor.execute(() -> {
+		apiLineUpDate(fixtures);
+		});
+		executor.execute(() -> {
+		apiFixStatDate(fixtures);
+		});
+		executor.execute(() -> {
+		apiPlayerFixStatDate(fixtures);
+		});
+		executor.execute(() -> {
 		apiOddsDate(fixtures);
+		});
 		
 	}
 	
