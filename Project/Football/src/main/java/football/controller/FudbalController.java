@@ -144,8 +144,7 @@ public class FudbalController {
 
 	@Autowired
 	LastfivestatRepo lastFiveRepo;
-	@Autowired
-	TopscorerRepo topScorrerRepo;
+	
 	
 	private Date date;
 	
@@ -1270,73 +1269,7 @@ public class FudbalController {
 		
 	}
 
-	//dodavanje topScorrer
-	public void apiTopScorrer(List<League>league) {
-
-		List<TopScorer> listaTopScorrera = new ArrayList<TopScorer>();
-
-		String json = "";
-
-		for (League l : league) {
-			HttpResponse<String> response;
-			try {
-				response = Unirest.get(param.getAdd() + "/topscorers/" + l.getIdLeague())
-						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
-				json = response.getBody();
-
-			} catch (UnirestException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			try {
-				JSONParser parse = new JSONParser();
-				JSONObject o;
-
-				o = (JSONObject) parse.parse(json);
-
-				JSONObject o1 = (JSONObject) o.get("api");
-
-				Long result = (Long) o1.get("results");
-
-				JSONArray nizPlayers = (JSONArray) o1.get("topscorers");
-				for (int i = 0; i < nizPlayers.size(); i++) {
-					JSONObject objectPlayers = (JSONObject) nizPlayers.get(i);
-
-					TopScorer topScorer=new TopScorer();
-					
-					//player
-					Long playerIdPom=(Long)objectPlayers.get("player_id");
-					Integer playerId=playerIdPom.intValue();
-					
-					//league
-					topScorer.setLeague(l);
-					
-					//team
-					Long teamPom=(Long) objectPlayers.get("team_id");
-					Team team=teamRepo.getOne(teamPom.intValue());
-					
-					List<TeamPlayer> teamPlayerList=teamplayerRepo.findByTeam(team);
-					
-					for(TeamPlayer teamP: teamPlayerList) {
-						if(teamP.getPlayer().getIdPlayer() == playerId) {
-							topScorer.setTeamPlayer(teamP);
-						}
-						
-					}
-					
-					topScorrerRepo.save(topScorer);
-					
-				}
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-
-			System.out.println(json);
-		}
-
 	
-	}
 	
 	public void apiEventDate(List<Fixture>fixtures) {
 
