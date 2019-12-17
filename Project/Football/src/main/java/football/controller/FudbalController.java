@@ -1267,7 +1267,6 @@ public class FudbalController {
 
 	
 	
-	public void apiEventDate(List<Fixture>fixtures) {
 
 	public void apiEventDate(List<Fixture> fixtures) {
 

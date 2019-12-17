@@ -146,7 +146,7 @@ public class FixtureUpdate {
 
 	private Date date;
 
-	@Scheduled (cron ="0 */2 * * *")
+	@Scheduled(cron = "0 */2 * * *")
 	public void update17days() {
 		List<String> dates = getDates();
 		// List<String> dates = new ArrayList<String>();
@@ -155,7 +155,7 @@ public class FixtureUpdate {
 		// dates.add("2020-05-09");
 		List<Fixture> fixtures = apiFixturesDate(dates);
 
-		ExecutorService executor = Executors.newFixedThreadPool(6);
+		ExecutorService executor = Executors.newFixedThreadPool(7);
 
 		executor.execute(() -> {
 			apiLineUpDate(fixtures);
@@ -178,6 +178,9 @@ public class FixtureUpdate {
 		});
 		executor.execute(() -> {
 			apiPrediction(fixtures);
+		});
+		executor.execute(() -> {
+			apiEvent(fixtures);
 		});
 	}
 
@@ -1267,17 +1270,15 @@ public class FixtureUpdate {
 	}
 
 	public void apiPrediction(List<Fixture> fixtures) {
-		
 
 		for (Fixture f : fixtures) {
-			
+
 			List<Comparison> retComparisons = new ArrayList<Comparison>();
-			
+
 			HttpResponse<String> response = null;
 			try {
 				response = Unirest.get(param.getAdd() + "/predictions/" + f.getIdFixtures())
-						.header("x-rapidapi-host", param.getH1())
-						.header("x-rapidapi-key", param.getH2()).asString();
+						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
 			} catch (UnirestException e1) {
 				e1.printStackTrace();
 			}
@@ -1286,170 +1287,150 @@ public class FixtureUpdate {
 
 			JSONParser parse = new JSONParser();
 			JSONObject o;
-			
-			
+
 			Prediction delete = predictionRepo.findByFixture(f);
 			predictionRepo.delete(delete);
-			
+
 			Prediction prediction = new Prediction();
-			
-			
-			
+
 			try {
-				o = (JSONObject)parse.parse(json);
-				JSONObject o1 =  (JSONObject) o.get("api");
-				
+				o = (JSONObject) parse.parse(json);
+				JSONObject o1 = (JSONObject) o.get("api");
+
 				JSONArray n1 = (JSONArray) o1.get("predictions");
-				
-				for(int i=0;i<n1.size();i++){
-					
-					JSONObject o2 = (JSONObject)n1.get(i);
-			
-					
+
+				for (int i = 0; i < n1.size(); i++) {
+
+					JSONObject o2 = (JSONObject) n1.get(i);
+
 					String advice = (String) o2.get("advice");
 					prediction.setAdvice(advice == null ? null : advice);
 					System.out.println(" Naziv kluba " + advice);
-					
+
 					String matchWinner = (String) o2.get("match_winner");
 					prediction.setMatchWinner(matchWinner == null ? null : matchWinner);
-					
+
 					String underOver = (String) o2.get("under_over");
 					prediction.setUnderOver(underOver == null ? null : underOver);
-					
+
 					String goalsHome = (String) o2.get("goals_home");
 					prediction.setGoalsHome(goalsHome == null ? null : goalsHome);
-					
+
 					String goalsAway = (String) o2.get("goals_away");
 					prediction.setGoalsAway(goalsAway == null ? null : goalsAway);
-					
-					JSONObject o3 =  (JSONObject) o2.get("winning_percent");
-					
+
+					JSONObject o3 = (JSONObject) o2.get("winning_percent");
+
 					String home = (String) o3.get("home");
 					prediction.setWinningPercenteHome(home == null ? null : home);
-					
+
 					String away = (String) o3.get("away");
 					prediction.setWinningPercenteAway(away == null ? null : away);
-					
+
 					String draws = (String) o3.get("draws");
 					prediction.setWinningPercenteDraws(draws == null ? null : draws);
-					
-					
-					prediction.setFixture(f);
-					
-				   predictionRepo.save(prediction);
-				   
-				  
-				   Comparison forme = new Comparison();
-				  
-					
-                  JSONObject comparation = (JSONObject) o2.get("comparison");
-					
-					//Formaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                     
-             
-					JSONObject o4 = (JSONObject) comparation.get("forme");
-					
-					
-		    		forme.setComparisonName("forme");
 
-					 home = (String) o4.get("home");
+					prediction.setFixture(f);
+
+					predictionRepo.save(prediction);
+
+					Comparison forme = new Comparison();
+
+					JSONObject comparation = (JSONObject) o2.get("comparison");
+
+					// Formaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+					JSONObject o4 = (JSONObject) comparation.get("forme");
+
+					forme.setComparisonName("forme");
+
+					home = (String) o4.get("home");
 					forme.setHome(home == null ? null : home);
 
-					 away = (String) o4.get("away");
-					 forme.setAway(away == null ? null : away);
-					 
-					 forme.setPrediction(prediction);
-					
-					 retComparisons.add(forme);
-					
-					//Napaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-                    
-					 Comparison att = new Comparison(); 
+					away = (String) o4.get("away");
+					forme.setAway(away == null ? null : away);
+
+					forme.setPrediction(prediction);
+
+					retComparisons.add(forme);
+
+					// Napaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+					Comparison att = new Comparison();
 
 					JSONObject o5 = (JSONObject) comparation.get("att");
-					 att.setComparisonName("att");
-					
+					att.setComparisonName("att");
 
 					home = (String) o5.get("home");
 					att.setHome(home == null ? null : home);
 
 					away = (String) o5.get("away");
 					att.setAway(away == null ? null : away);
-					
+
 					att.setPrediction(prediction);
-					
-					 retComparisons.add(att);
-					
-					      
-					
-					//Odbranaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                    
-					 Comparison def = new Comparison(); 
+
+					retComparisons.add(att);
+
+					// Odbranaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+					Comparison def = new Comparison();
 
 					JSONObject o6 = (JSONObject) comparation.get("def");
-					
-				
+
 					def.setComparisonName("def");
 
-					 home = (String) o6.get("home");
-					 def.setHome(home == null ? null : home);
+					home = (String) o6.get("home");
+					def.setHome(home == null ? null : home);
 
 					away = (String) o6.get("away");
-					 def.setAway(away == null ? null : away);
-					
-					 def.setPrediction(prediction);
+					def.setAway(away == null ? null : away);
 
-					        retComparisons.add(def);
-					
-					
-					//FishLawwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-  
-					   Comparison fishLaw  = new Comparison(); 
+					def.setPrediction(prediction);
+
+					retComparisons.add(def);
+
+					// FishLawwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+
+					Comparison fishLaw = new Comparison();
 
 					JSONObject o7 = (JSONObject) comparation.get("fish_law");
-					
+
 					fishLaw.setComparisonName("fish_law");
 
 					home = (String) o7.get("home");
-				     fishLaw.setHome(home == null ? null : home);
+					fishLaw.setHome(home == null ? null : home);
 
 					away = (String) o7.get("away");
 					fishLaw.setAway(away == null ? null : away);
-					
+
 					fishLaw.setPrediction(prediction);
 
-					     retComparisons.add(fishLaw);
-					
-                    
-					
-					//H2Hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+					retComparisons.add(fishLaw);
 
-					     Comparison h2h  = new Comparison();
-                    
+					// H2Hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+
+					Comparison h2h = new Comparison();
+
 					JSONObject o8 = (JSONObject) comparation.get("h2h");
 					h2h.setComparisonName("h2h");
-					
 
 					home = (String) o8.get("home");
 					h2h.setHome(home == null ? null : home);
 
 					away = (String) o8.get("away");
 					h2h.setAway(away == null ? null : away);
-					
-					h2h.setPrediction(prediction);
-					
-					    retComparisons.add(h2h);
-					
-                   
-					
-					//Goals H2Hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 
-                 
-					    Comparison goalsH2h  = new Comparison();
-                  
+					h2h.setPrediction(prediction);
+
+					retComparisons.add(h2h);
+
+					// Goals
+					// H2Hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+
+					Comparison goalsH2h = new Comparison();
 
 					JSONObject o9 = (JSONObject) comparation.get("goals_h2h");
-					
+
 					goalsH2h.setComparisonName("goals_h2h");
 
 					home = (String) o9.get("home");
@@ -1459,26 +1440,22 @@ public class FixtureUpdate {
 					goalsH2h.setAway(away == null ? null : away);
 
 					goalsH2h.setPrediction(prediction);
-					  
-					   retComparisons.add(goalsH2h);
-					    
-					    
-					comparisonRepo.saveAll(retComparisons);	
-					
+
+					retComparisons.add(goalsH2h);
+
+					comparisonRepo.saveAll(retComparisons);
+
 				}
-				
-				
-				
+
 			} catch (ParseException e) {
-				
+
 				e.printStackTrace();
-			}	
-					
+			}
+
 		}
-		
-		
+
 	}
-	
+
 	public void apiEventDate(List<Fixture> fixtures) {
 
 		for (Fixture f : fixtures) {
@@ -1581,4 +1558,143 @@ public class FixtureUpdate {
 		}
 
 	}
+
+	public void apiEvent(List<Fixture> fixtures) {
+
+		for (Fixture f : fixtures) {
+
+			List<Event> eventDelete = eventRepo.findByFixture(f);
+
+			for (Event e : eventDelete) {
+
+				eventRepo.delete(e);
+
+			}
+
+			System.out.println("Mecevi " + f.getIdFixtures());
+
+			HttpResponse<String> response = null;
+			try {
+				response = Unirest.get(param.getAdd() + "/events/" + f.getIdFixtures())
+						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
+			} catch (UnirestException e1) {
+				e1.printStackTrace();
+			}
+
+			String json = response.getBody();
+
+			JSONParser parse = new JSONParser();
+			JSONObject o;
+
+			try {
+				o = (JSONObject) parse.parse(json);
+				JSONObject o1 = (JSONObject) o.get("api");
+
+				JSONArray n1 = (JSONArray) o1.get("events");
+
+				for (int i = 0; i < n1.size(); i++) {
+
+					JSONObject o2 = (JSONObject) n1.get(i);
+
+					Event event = new Event();
+
+					Object elapsedLong = o2.get("elapsed");
+					Integer elapsed = elapsedLong instanceof Long ? ((Long) elapsedLong).intValue() : 0;
+					event.setElapsed(elapsed);
+
+					String type = (String) o2.get("type") == null ? null : (String) o2.get("type");
+					event.setType(type);
+
+					event.setDetail((String) o2.get("detail") == null ? null : (String) o2.get("detail"));
+
+					event.setFixture(f);
+
+					Object playerLong = o2.get("player_id");
+					Integer playerId = playerLong instanceof Long ? ((Long) playerLong).intValue() : 0;
+
+					Player player = playerRepo.getOne(playerId);
+
+					List<TeamPlayer> teamplayers = teamplayerRepo.findByPlayer(player);
+
+					for (TeamPlayer tp : teamplayers) {
+
+						if (tp.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()) {
+							event.setTeamPlayer(tp);
+
+						}
+					}
+
+					Object playerAssistLong = o2.get("assist_id");
+
+					Integer playerAssistId = playerAssistLong instanceof Long ? ((Long) playerAssistLong).intValue()
+							: 0;
+
+					String playerAssistName = (String) o2.get("assist");
+
+					Object teamAssistLong = o2.get("team_id");
+
+					Integer teamAssistId = teamAssistLong instanceof Long ? ((Long) teamAssistLong).intValue() : 0;
+
+					Team t = teamRepo.getOne(teamAssistId);
+
+					if (playerAssistId == 0 && playerAssistName != null) {
+						List<TeamPlayer> teamPlayers2 = teamplayerRepo.findByTeamAndSeason(t,
+								f.getRound().getLeague().getSeasonBean());
+
+						for (TeamPlayer t2 : teamPlayers2) {
+
+							if (playerAssistName.equals(t2.getPlayer().getPlayerName())) {
+								Assist assist = new Assist();
+								assist.setTeamPlayer(t2);
+								assist = assistRepo.save(assist);
+
+								event.setAssist(assist);
+								event = eventRepo.save(event);
+								System.out.println("Uspesno  " + assist.getIdAssist() + " " + event.getIdEvent() + " "
+										+ event.getAssist().getIdAssist());
+								eventRepo.save(event);
+
+							}
+//							 else {
+//								event.setAssist(null);
+//								event = eventRepo.save(event);
+//							}
+
+						}
+
+					} else {
+						player = playerRepo.getOne(playerAssistId);
+
+						List<TeamPlayer> teamPlayers2 = teamplayerRepo.findByPlayerAndTeamAndSeason(player, t,
+								f.getRound().getLeague().getSeasonBean());
+
+						if (teamPlayers2.size() > 0) {
+
+							TeamPlayer player2 = teamPlayers2.get(0);
+
+							Assist assist = new Assist();
+							assist.setTeamPlayer(player2);
+							assist = assistRepo.save(assist);
+
+							event.setAssist(assist);
+							event = eventRepo.save(event);
+						}
+
+						else {
+							event.setAssist(null);
+							event = eventRepo.save(event);
+						}
+					}
+
+				}
+
+			} catch (ParseException e) {
+
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
 }
