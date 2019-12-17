@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import model.Assist;
 import model.Country;
+import model.Event;
 import model.Team;
 import model.TeamPlayer;
 

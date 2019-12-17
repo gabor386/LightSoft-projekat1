@@ -310,28 +310,6 @@ public class LeagueUpdate {
 		
 		}
 	
-		@Scheduled(cron = "0 0/2 * * * ?")
-		public void proba () {
-			
-			ExecutorService executorService = Executors.newFixedThreadPool(2);
-			
-		   //Kreira posebnu novu nitttt
-		   executorService.execute(()-> {
-			  for (int i = 0; i < 100; i++) {
-				System.out.println("A" + i);
-			}
-		   });
-		   
-		   executorService.execute(()-> {
-			   for (int i = 0; i < 100; i++) {
-				System.out.println("B" + i);
-			}
-		   });
-		   
-		   System.out.println("Ovde krecem ponovo");
-		   
-		}
-		   
 	
 	
 }
