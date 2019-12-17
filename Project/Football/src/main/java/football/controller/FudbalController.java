@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.PostConstruct;
 
@@ -26,14 +28,17 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+import football.repository.AssistRepo;
 import football.repository.AwayteamRepo;
 import football.repository.BetRepo;
 import football.repository.BookmakerRepo;
 import football.repository.CountryRepo;
+import football.repository.EventRepo;
 import football.repository.FixtureRepo;
 import football.repository.FixturestatRepo;
 import football.repository.HometeamRepo;
 import football.repository.LabelRepo;
+import football.repository.LastfivestatRepo;
 import football.repository.LeagueRepo;
 import football.repository.LineupRepo;
 import football.repository.OddRepo;
@@ -45,14 +50,18 @@ import football.repository.StartxiRepo;
 import football.repository.SubstituteRepo;
 import football.repository.TeamRepo;
 import football.repository.TeamplayerRepo;
+import football.repository.TopscorerRepo;
+import model.Assist;
 import model.AwayTeam;
 import model.Bet;
 import model.Bookmaker;
 import model.Country;
+import model.Event;
 import model.Fixture;
 import model.FixtureStat;
 import model.HomeTeam;
 import model.Label;
+import model.LastFiveStat;
 import model.League;
 import model.LineUp;
 import model.Odd;
@@ -64,6 +73,7 @@ import model.StartXI;
 import model.Substitute;
 import model.Team;
 import model.TeamPlayer;
+import model.TopScorer;
 
 @RestController
 public class FudbalController {
@@ -71,7 +81,6 @@ public class FudbalController {
 	// update-ovanje baze za prosla 3 dana i narednih 14 dana
 
 	private Param param = new Param();
-	
 
 	@Autowired
 	OddRepo or;
@@ -81,8 +90,13 @@ public class FudbalController {
 	BetRepo betr;
 	@Autowired
 	LabelRepo lr;
-	
 
+	@Autowired
+	AssistRepo assistRepo;
+	
+	@Autowired
+	EventRepo eventRepo;
+	
 	@Autowired
 	FixtureRepo fixtureRepo;
 
@@ -100,7 +114,7 @@ public class FudbalController {
 
 	@Autowired
 	AwayteamRepo awayTeamRepo;
-	
+
 	@Autowired
 	PlayerfixstatRepo pfr;
 
@@ -128,26 +142,43 @@ public class FudbalController {
 	@Autowired
 	FixturestatRepo fixtureStatRepo;
 
+	@Autowired
+	LastfivestatRepo lastFiveRepo;
 	
 	
-	@RequestMapping (value = "dateupdate")
+	private Date date;
+	
+	@RequestMapping(value = "dateupdate")
 	public void update17days() {
 		List<String> dates = getDates();
-		//List<String> dates = new ArrayList<String>();
-		//dates.add("2020-05-17");
-		//dates.add("2020-05-10");
-		//dates.add("2020-05-09");
+		// List<String> dates = new ArrayList<String>();
+		// dates.add("2020-05-17");
+		// dates.add("2020-05-10");
+		// dates.add("2020-05-09");
 		List<Fixture> fixtures = apiFixturesDate(dates);
-		apiLineUpDate(fixtures);
-		apiFixStatDate(fixtures);
-		apiPlayerFixStatDate(fixtures);
-		
-		apiOddsDate(fixtures);
-		
+
+		ExecutorService executor = Executors.newFixedThreadPool(4);
+
+		executor.execute(() -> {
+			apiLineUpDate(fixtures);
+		});
+		executor.execute(() -> {
+			apiFixStatDate(fixtures);
+		});
+		executor.execute(() -> {
+			apiPlayerFixStatDate(fixtures);
+		});
+		executor.execute(() -> {
+			Date now = new Date();
+			if (!date.equals(now)) {
+				date = now;
+				apiOddsDate(fixtures);
+			}
+		});
+
+		apiLastFiveStatisics(fixtures);
 	}
-	
-	
-	
+
 	public List<String> getDates() {
 		List<String> rez = new ArrayList<String>();
 		for (int i = -3; i < 14; i++) {
@@ -182,15 +213,12 @@ public class FudbalController {
 			JSONParser parse = new JSONParser();
 			JSONObject o;
 
-			
-
 			try {
 				o = (JSONObject) parse.parse(json);
 				JSONObject o1 = (JSONObject) o.get("api");
 
 				JSONArray n1 = (JSONArray) o1.get("fixtures");
 
-				
 				for (int i = 0; i < n1.size(); i++) {
 
 					Fixture fixture = new Fixture();
@@ -266,27 +294,27 @@ public class FudbalController {
 					Integer idHomeTeam = idHomeTeamLong instanceof Long ? ((Long) idHomeTeamLong).intValue() : 0;
 
 					Team team = teamRepo.getOne(idHomeTeam);
-			//		HomeTeam htB = homeTeamRepo.findByTeam(team); // HomeTeam iz baze
-			//		if (htB == null) {
-						homeTeam.setTeam(team);
-						homeTeam = homeTeamRepo.save(homeTeam);
-						fixture.setHomeTeam(homeTeam);
-			//		} else {
-			//			fixture.setHomeTeam(htB);
-			//		}
+					// HomeTeam htB = homeTeamRepo.findByTeam(team); // HomeTeam iz baze
+					// if (htB == null) {
+					homeTeam.setTeam(team);
+					homeTeam = homeTeamRepo.save(homeTeam);
+					fixture.setHomeTeam(homeTeam);
+					// } else {
+					// fixture.setHomeTeam(htB);
+					// }
 					Object idAwayTeamLong = o4.get("team_id");
 					Integer idAwayTeam = idAwayTeamLong instanceof Long ? ((Long) idAwayTeamLong).intValue() : 0;
 
 					team = teamRepo.getOne(idAwayTeam);
 
-			//		AwayTeam atB = awayTeamRepo.findByTeam(team); // AwayTeam iz baze
-			//		if (atB == null) {
-						awayTeam.setTeam(team);
-						awayTeam = awayTeamRepo.save(awayTeam);
-						fixture.setAwayTeam(awayTeam);
-			//		} else {
-			//			fixture.setAwayTeam(atB);
-			//		}
+					// AwayTeam atB = awayTeamRepo.findByTeam(team); // AwayTeam iz baze
+					// if (atB == null) {
+					awayTeam.setTeam(team);
+					awayTeam = awayTeamRepo.save(awayTeam);
+					fixture.setAwayTeam(awayTeam);
+					// } else {
+					// fixture.setAwayTeam(atB);
+					// }
 
 					JSONObject o5 = (JSONObject) o2.get("score");
 
@@ -306,7 +334,7 @@ public class FudbalController {
 					fixture.setScore(score);
 
 					fixture = fixtureRepo.save(fixture);
-					
+
 					retFixture.add(fixture);
 
 				}
@@ -318,11 +346,12 @@ public class FudbalController {
 
 		}
 		System.out.println(retFixture);
-		int j=1;
-		for (Fixture f :retFixture) {
+		int j = 1;
+		for (Fixture f : retFixture) {
 			System.out.println("****************");
-			System.out.println(j + ". "+f.getIdFixtures()+ "  " +f.getHomeTeam().getTeam().getTeamName() + " - " + f.getAwayTeam().getTeam().getTeamName());
-		j++;
+			System.out.println(j + ". " + f.getIdFixtures() + "  " + f.getHomeTeam().getTeam().getTeamName() + " - "
+					+ f.getAwayTeam().getTeam().getTeamName());
+			j++;
 		}
 		return retFixture;
 	}
@@ -500,8 +529,7 @@ public class FudbalController {
 
 	}
 
-	
-	//dodavanje statistike za date meceve
+	// dodavanje statistike za date meceve
 	public void apiFixStatDate(List<Fixture> fixtures) {
 
 		List<FixtureStat> retfixtureStats = new ArrayList<FixtureStat>();
@@ -520,7 +548,7 @@ public class FudbalController {
 			JSONObject o;
 
 			List<FixtureStat> deleteStat = fixtureStatRepo.findByFixture(f);
-			for(FixtureStat ds:deleteStat) {
+			for (FixtureStat ds : deleteStat) {
 				fixtureStatRepo.delete(ds);
 			}
 			try {
@@ -844,8 +872,7 @@ public class FudbalController {
 		}
 		fixtureStatRepo.saveAll(retfixtureStats);
 	}
-	
-	
+
 	public List<PlayerFixStat> apiPlayerFixStatDate(List<Fixture> fixtures) {
 		// pfr.deleteAll();
 		List<PlayerFixStat> listPlayerFixStat = new ArrayList<PlayerFixStat>();
@@ -1050,12 +1077,9 @@ public class FudbalController {
 		return listPlayerFixStat;
 	}
 	
-	
-	
 	public void apiOddsDate(List<Fixture> fs) {
 		System.out.println("ODDS UPDATE");
 		String json = null;
-		
 
 		for (Fixture f : fs) {
 
@@ -1086,7 +1110,7 @@ public class FudbalController {
 						JSONObject objectOdds = (JSONObject) odds.get(i);
 						// da ne ubacuje dva puta isto
 						Odd oddDelete = or.findByFixture(f);
-						if (oddDelete!=null)
+						if (oddDelete != null)
 							or.delete(oddDelete);
 						Odd odd = new Odd();
 						odd.setFixture(f);
@@ -1121,7 +1145,8 @@ public class FudbalController {
 									} else {
 										String betValueStr = (String) betValue;
 										b.setBetValues(betValueStr);
-									}if (betOdds instanceof Long) {
+									}
+									if (betOdds instanceof Long) {
 										Long lo = (Long) betValue;
 										String bos = lo + "";
 										b.setOdd(bos);
@@ -1130,7 +1155,6 @@ public class FudbalController {
 										b.setOdd(bos);
 									}
 
-									
 									betr.save(b);
 								}
 							}
@@ -1145,4 +1169,228 @@ public class FudbalController {
 		}
 	}
 
+	//dodavanje Last Five po date meceve
+	public void apiLastFiveStatisics(List<Fixture> listaFixutres) {
+
+		List<LastFiveStat> listaLastFiveStat = new ArrayList<LastFiveStat>();
+
+		
+
+		String json = "";
+
+		HttpResponse<String> response;
+
+		for (Fixture f : listaFixutres) {
+
+			try {
+				response = Unirest.get(param.getAdd() + "/predictions/" + f.getIdFixtures())
+						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
+				json = response.getBody();
+			} catch (UnirestException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			System.out.println(json);
+
+			try {
+				JSONParser parse = new JSONParser();
+				JSONObject o;
+
+				o = (JSONObject) parse.parse(json);
+
+				JSONObject o1 = (JSONObject) o.get("api");
+
+				Long result = (Long) o1.get("results");
+
+				JSONArray nizPlayers = (JSONArray) o1.get("predictions");
+
+				for (int i = 0; i < result; i++) {
+					JSONObject objectPrediction = (JSONObject) nizPlayers.get(i);
+
+					LastFiveStat lastFiveStatistics = new LastFiveStat();
+
+					JSONObject team = (JSONObject) objectPrediction.get("teams");
+
+					JSONObject home = (JSONObject) team.get("home");
+
+					// team_id
+					Long teamIdPom = (Long) home.get("team_id");
+					Integer teamId = teamIdPom.intValue();
+
+					JSONObject lastFiveMatches = (JSONObject) home.get("last_5_matches");
+
+					lastFiveStatistics.setForme((String) lastFiveMatches.get("forme"));
+
+					lastFiveStatistics.setAtt((String) lastFiveMatches.get("att"));
+
+					lastFiveStatistics.setDef((String) lastFiveMatches.get("def"));
+
+					// Goals
+					Long goalsPom = (Long) lastFiveMatches.get("goals");
+					Integer goals = goalsPom.intValue();
+					lastFiveStatistics.setGoals(goals);
+
+					// Goals avg
+					Long goalsAVGPom = (Long) lastFiveMatches.get("goals_avg");
+					Integer goalsAVG = goalsAVGPom.intValue();
+					lastFiveStatistics.setGoalsAvg(goalsAVG);
+
+					// goals Against
+					Long goalsAgainstPom = (Long) lastFiveMatches.get("goals_against");
+					Integer goalsAgainst = goalsAgainstPom.intValue();
+					lastFiveStatistics.setGoalsAgainst(goalsAgainst);
+
+					// goals against avg
+					Long goalsAgainstAVGPom = (Long) lastFiveMatches.get("goals_against_avg");
+					Integer goalsAgainstAVG = goalsAgainstAVGPom.intValue();
+					lastFiveStatistics.setGoalsAgainstAvg(goalsAgainstAVG);
+
+					// team_id
+
+					Team teamPom = teamRepo.getOne(teamId);
+					if (teamPom != null) {
+						lastFiveStatistics.setTeam(teamPom);
+					}
+
+					lastFiveRepo.save(lastFiveStatistics);
+
+					listaLastFiveStat.add(lastFiveStatistics);
+				}
+
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
+		}
+		
+
+	
+		
+	}
+
+	
+	
+	public void apiEventDate(List<Fixture>fixtures) {
+
+
+
+
+		for (Fixture f : fixtures) {
+			
+		List<Event> retEvent = new ArrayList<Event>();	
+			
+		List<Event> eventDelete = eventRepo.findByFixture(f);
+		
+		for(Event e : eventDelete) {
+			eventRepo.delete(e);
+		}
+		
+		System.out.println("Mecevi " + f.getIdFixtures());
+		
+			
+		
+		
+
+		HttpResponse<String> response = null;
+		try {
+			response = Unirest.get(param.getAdd() + "/events/" + f.getIdFixtures())
+					.header("x-rapidapi-host", param.getH1())
+					.header("x-rapidapi-key", param.getH2()).asString();
+		} catch (UnirestException e1) {
+			e1.printStackTrace();
+		}
+
+		String json = response.getBody();
+
+		JSONParser parse = new JSONParser();
+		JSONObject o;
+		
+		Event event = new Event();
+		
+		try {
+			o = (JSONObject)parse.parse(json);
+			JSONObject o1 =  (JSONObject) o.get("api");
+			
+			JSONArray n1 = (JSONArray) o1.get("events");
+			
+			for(int i=0;i<n1.size();i++){
+				
+				JSONObject o2 = (JSONObject)n1.get(i);
+				
+				   Object elapsedLong =  o2.get("elapsed"); 
+				   Integer elapsed  =   elapsedLong instanceof Long ? ((Long) elapsedLong).intValue() :0;
+				   event.setElapsed(elapsed);
+				
+				   event.setType((String) o2.get("type") == null ? null : (String) o2.get("type"));
+				   
+				   event.setDetail((String) o2.get("detail") == null ? null : (String) o2.get("detail"));
+				   
+				   event.setFixture(f);
+				   
+				   Object playerLong =  o2.get("player_id"); 
+				   Integer playerId  =   playerLong instanceof Long ? ((Long) playerLong).intValue() : 0;
+				   
+				
+				    Player player =  playerRepo.getOne(playerId);
+				    
+				    List<TeamPlayer> teamplayers = teamplayerRepo.findByPlayer(player);
+				    
+				    
+				    for(TeamPlayer tp : teamplayers) {
+				    	if(tp.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()) {
+				    		 event.setTeamPlayer(tp);
+				    	}
+				    }
+				    
+				   
+				    
+				    Object playerAssistLong = o2.get("assist_id");
+				    
+					Integer playerAssistId  =   playerAssistLong instanceof Long ? ((Long) playerAssistLong).intValue() : 0;
+					
+					Assist assist = new Assist();
+					
+					
+					  player =  playerRepo.getOne(playerAssistId);
+					  	  
+					
+					 teamplayers = teamplayerRepo.findByPlayer(player);
+					 
+					
+					 for(TeamPlayer tp : teamplayers) {
+						 
+					    	if(tp.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()) {
+					    			
+								   assist.setTeamPlayer(tp);
+								   assistRepo.save(assist);
+					    		
+								   event.setAssist(assist);
+					    	  }else {
+					    		 assist.setTeamPlayer(null);
+						    	 assistRepo.save(assist);
+						    	 event.setAssist(assist);
+					    	  }
+					    		
+					    	} 	
+					    
+					 
+				
+				 retEvent.add(event);
+			     eventRepo.saveAll(retEvent);
+				
+			}
+			
+			
+			
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
+		
+		}
+	
+	}
 }
+
+

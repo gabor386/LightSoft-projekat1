@@ -30,10 +30,10 @@ public class LastFiveStatisicsController {
 
 	@Autowired
 	FixtureRepo fr;
-	
+
 	@Autowired
 	TeamRepo tr;
-	
+
 	@Autowired
 	LastfivestatRepo lfr;
 
@@ -52,7 +52,7 @@ public class LastFiveStatisicsController {
 		for (Fixture f : listaFixutres) {
 
 			try {
-				response = Unirest.get(param.getAdd() + "/predictions/"+f.getIdFixtures())
+				response = Unirest.get(param.getAdd() + "/predictions/" + f.getIdFixtures())
 						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
 				json = response.getBody();
 			} catch (UnirestException e) {
@@ -76,56 +76,54 @@ public class LastFiveStatisicsController {
 
 				for (int i = 0; i < result; i++) {
 					JSONObject objectPrediction = (JSONObject) nizPlayers.get(i);
-					
-					LastFiveStat lastFiveStatistics=new LastFiveStat();
-					
-					JSONObject team=(JSONObject) objectPrediction.get("teams");
-					
-					JSONObject home=(JSONObject)team.get("home");
-					
-					//team_id
-					Long teamIdPom=(Long) home.get("team_id");
-					Integer teamId=teamIdPom.intValue();
-					
-					JSONObject lastFiveMatches=(JSONObject) home.get("last_5_matches");
-					
-					lastFiveStatistics.setForme((String)lastFiveMatches.get("forme"));
-					
-					lastFiveStatistics.setAtt((String)lastFiveMatches.get("att"));
-					
-					lastFiveStatistics.setDef((String)lastFiveMatches.get("def"));
-					
-					//Goals
-					Long goalsPom=(Long)lastFiveMatches.get("goals");
-					Integer goals=goalsPom.intValue();
+
+					LastFiveStat lastFiveStatistics = new LastFiveStat();
+
+					JSONObject team = (JSONObject) objectPrediction.get("teams");
+
+					JSONObject home = (JSONObject) team.get("home");
+
+					// team_id
+					Long teamIdPom = (Long) home.get("team_id");
+					Integer teamId = teamIdPom.intValue();
+
+					JSONObject lastFiveMatches = (JSONObject) home.get("last_5_matches");
+
+					lastFiveStatistics.setForme((String) lastFiveMatches.get("forme"));
+
+					lastFiveStatistics.setAtt((String) lastFiveMatches.get("att"));
+
+					lastFiveStatistics.setDef((String) lastFiveMatches.get("def"));
+
+					// Goals
+					Long goalsPom = (Long) lastFiveMatches.get("goals");
+					Integer goals = goalsPom.intValue();
 					lastFiveStatistics.setGoals(goals);
-					
-					//Goals avg
-					Long goalsAVGPom=(Long)lastFiveMatches.get("goals_avg");
-					Integer goalsAVG=goalsAVGPom.intValue();
+
+					// Goals avg
+					Long goalsAVGPom = (Long) lastFiveMatches.get("goals_avg");
+					Integer goalsAVG = goalsAVGPom.intValue();
 					lastFiveStatistics.setGoalsAvg(goalsAVG);
-					
-					//goals Against
-					Long goalsAgainstPom=(Long)lastFiveMatches.get("goals_against");
-					Integer goalsAgainst=goalsAgainstPom.intValue();
+
+					// goals Against
+					Long goalsAgainstPom = (Long) lastFiveMatches.get("goals_against");
+					Integer goalsAgainst = goalsAgainstPom.intValue();
 					lastFiveStatistics.setGoalsAgainst(goalsAgainst);
-					
-					//goals against avg
-					Long goalsAgainstAVGPom=(Long)lastFiveMatches.get("goals_against_avg");
-					Integer goalsAgainstAVG=goalsAgainstAVGPom.intValue();
+
+					// goals against avg
+					Long goalsAgainstAVGPom = (Long) lastFiveMatches.get("goals_against_avg");
+					Integer goalsAgainstAVG = goalsAgainstAVGPom.intValue();
 					lastFiveStatistics.setGoalsAgainstAvg(goalsAgainstAVG);
-					
-					
-					//team_id
-					
-					
-					Team teamPom=tr.getOne(teamId);
-					
-					lastFiveStatistics.setTeam(teamPom);
-					
-					
+
+					// team_id
+
+					Team teamPom = tr.getOne(teamId);
+					if (teamPom != null) {
+						lastFiveStatistics.setTeam(teamPom);
+					}
+
 					lfr.save(lastFiveStatistics);
-					
+
 					listaLastFiveStat.add(lastFiveStatistics);
 				}
 
