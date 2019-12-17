@@ -12,6 +12,8 @@ import model.TeamPlayer;
 
 public interface TeamplayerRepo extends JpaRepository<TeamPlayer, Integer>{
 
+	List <TeamPlayer> findByPlayerAndTeam(Player player , Team team);
+	
 	List <TeamPlayer> findByPlayer(Player player);
 	
 	//List<Teamplayer> findByPlayerAndTeamAndSeason(Player p , Team t , Season s);

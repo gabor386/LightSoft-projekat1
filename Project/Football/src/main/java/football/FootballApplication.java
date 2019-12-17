@@ -15,7 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 //@EnableJpaAuditing
 @EntityScan("model")
 public class FootballApplication  {
