@@ -51,7 +51,7 @@ public class EventController {
 
 	@Autowired
 	AssistRepo assistRepo;
-	
+
 	@Autowired
 	TeamRepo teamRepo;
 
@@ -62,12 +62,17 @@ public class EventController {
 
 		for (Fixture f : fixtures) {
 
-			List<Event> retEvent = new ArrayList<Event>();
 
 			List<Event> eventDelete = eventRepo.findByFixture(f);
 
 			for (Event e : eventDelete) {
+				
 				eventRepo.delete(e);
+				
+				
+				
+				
+				
 			}
 
 			System.out.println("Mecevi " + f.getIdFixtures());
@@ -94,7 +99,7 @@ public class EventController {
 				for (int i = 0; i < n1.size(); i++) {
 
 					JSONObject o2 = (JSONObject) n1.get(i);
-					
+
 					Event event = new Event();
 
 					Object elapsedLong = o2.get("elapsed");
@@ -107,7 +112,7 @@ public class EventController {
 					event.setDetail((String) o2.get("detail") == null ? null : (String) o2.get("detail"));
 
 					event.setFixture(f);
-					
+
 					Object playerLong = o2.get("player_id");
 					Integer playerId = playerLong instanceof Long ? ((Long) playerLong).intValue() : 0;
 
@@ -116,65 +121,88 @@ public class EventController {
 					List<TeamPlayer> teamplayers = teamPlayerRepo.findByPlayer(player);
 
 					for (TeamPlayer tp : teamplayers) {
-						
+
 						if (tp.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()) {
 							event.setTeamPlayer(tp);
 
 						}
 					}
 
-						Object playerAssistLong = o2.get("assist_id");
+					Object playerAssistLong = o2.get("assist_id");
 
-						Integer playerAssistId = playerAssistLong instanceof Long ? ((Long) playerAssistLong).intValue(): 0;
-						
-						String playerAssistName = (String) o2.get("assist");
-						
+					Integer playerAssistId = playerAssistLong instanceof Long ? ((Long) playerAssistLong).intValue()
+							: 0;
 
-						Object teamAssistLong = o2.get("team_id");
+					String playerAssistName = (String) o2.get("assist");
 
-						Integer teamAssistId = teamAssistLong instanceof Long ? ((Long) teamAssistLong).intValue(): 0;
-						
-						
-						if( playerRepo.getOne(playerAssistId) == null) {
-							 player = playerRepo.getOneByplayerName(playerAssistName);   
-						}else {
-							 player = playerRepo.getOne(playerAssistId);
-						      
-						}
-						
-						
-						Team t = teamRepo.getOne(teamAssistId);
+					Object teamAssistLong = o2.get("team_id");
 
-						teamplayers = teamPlayerRepo.findByPlayerAndTeam(player,t);
-			
-						
-						for (TeamPlayer tps : teamplayers) {
-							Assist assist = new Assist();
+					Integer teamAssistId = teamAssistLong instanceof Long ? ((Long) teamAssistLong).intValue() : 0;
 
-							if (tps.getSeason().getSeason() == f.getRound().getLeague().getSeasonBean().getSeason()&& tps != null) {
-								assist.setTeamPlayer(tps);
-								assistRepo.save(assist);
+					Team t = teamRepo.getOne(teamAssistId);
 
-								event.setAssist(assist);
-								
-							} else {
-								event.setAssist(null);
-							}
+					if (  playerAssistId == 0 && playerAssistName != null) {
+						List<TeamPlayer> teamPlayers2 = teamPlayerRepo.findByTeamAndSeason(t,
+								f.getRound().getLeague().getSeasonBean());
+
+						for (TeamPlayer t2 : teamPlayers2) {
 							
+							if (playerAssistName.equals(t2.getPlayer().getPlayerName())) {
+								Assist assist = new Assist();
+								assist.setTeamPlayer(t2);
+								assist = assistRepo.save(assist);
+								
+							
+								event.setAssist(assist);
+								event = eventRepo.save(event);
+								System.out.println("Uspesno  "+ assist.getIdAssist()+" "  + event.getIdEvent() +" "+event.getAssist().getIdAssist() );
+								eventRepo.save(event);
+
+							}
+//							 else {
+//								event.setAssist(null);
+//								event = eventRepo.save(event);
+//							}
+
 						}
-						retEvent.add(event);
+
+					} else {
+						player = playerRepo.getOne(playerAssistId);
+
+						List<TeamPlayer> teamPlayers2 = teamPlayerRepo.findByPlayerAndTeamAndSeason(player, t,
+								f.getRound().getLeague().getSeasonBean());
+
+						if (teamPlayers2.size() > 0) {
+
+							TeamPlayer player2 = teamPlayers2.get(0);
+
+							Assist assist = new Assist();
+							assist.setTeamPlayer(player2);
+							assist = assistRepo.save(assist);
+
+							event.setAssist(assist);
+							event = eventRepo.save(event);
+						}
+
+						else {
+							event.setAssist(null);
+							event = eventRepo.save(event);
+						}
+					}
+
+					
+				
 
 				}
-				
 
 			} catch (ParseException e) {
 
 				e.printStackTrace();
 			}
+
 			
-			eventRepo.saveAll(retEvent);
 		}
-		
+
 	}
 
 }
