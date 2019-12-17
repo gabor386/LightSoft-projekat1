@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+//import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ public class CountryController {
 	CountryRepo cr;
 
 	// Dodavanje drzava u bazu
-	//jednom mesecno
+	//jednom mesecno prvog u ponoc
 	//@Scheduled(cron="0 0 0 1 1-12 *")
 	
 	public void apiCountry() {
