@@ -73,7 +73,6 @@ public class FudbalController {
 	// update-ovanje baze za prosla 3 dana i narednih 14 dana
 
 	private Param param = new Param();
-	
 
 	@Autowired
 	OddRepo or;
@@ -83,7 +82,6 @@ public class FudbalController {
 	BetRepo betr;
 	@Autowired
 	LabelRepo lr;
-	
 
 	@Autowired
 	FixtureRepo fixtureRepo;
@@ -102,7 +100,7 @@ public class FudbalController {
 
 	@Autowired
 	AwayteamRepo awayTeamRepo;
-	
+
 	@Autowired
 	PlayerfixstatRepo pfr;
 
@@ -130,36 +128,38 @@ public class FudbalController {
 	@Autowired
 	FixturestatRepo fixtureStatRepo;
 
-	
-	
-	@RequestMapping (value = "dateupdate")
+	private Date date;
+
+	@RequestMapping(value = "dateupdate")
 	public void update17days() {
 		List<String> dates = getDates();
-		//List<String> dates = new ArrayList<String>();
-		//dates.add("2020-05-17");
-		//dates.add("2020-05-10");
-		//dates.add("2020-05-09");
+		// List<String> dates = new ArrayList<String>();
+		// dates.add("2020-05-17");
+		// dates.add("2020-05-10");
+		// dates.add("2020-05-09");
 		List<Fixture> fixtures = apiFixturesDate(dates);
-		
+
 		ExecutorService executor = Executors.newFixedThreadPool(4);
-		
+
 		executor.execute(() -> {
-		apiLineUpDate(fixtures);
+			apiLineUpDate(fixtures);
 		});
 		executor.execute(() -> {
-		apiFixStatDate(fixtures);
+			apiFixStatDate(fixtures);
 		});
 		executor.execute(() -> {
-		apiPlayerFixStatDate(fixtures);
+			apiPlayerFixStatDate(fixtures);
 		});
 		executor.execute(() -> {
-		apiOddsDate(fixtures);
+			Date now = new Date();
+			if (!date.equals(now)) {
+				date = now;
+				apiOddsDate(fixtures);
+			}
 		});
-		
+
 	}
-	
-	
-	
+
 	public List<String> getDates() {
 		List<String> rez = new ArrayList<String>();
 		for (int i = -3; i < 14; i++) {
@@ -194,15 +194,12 @@ public class FudbalController {
 			JSONParser parse = new JSONParser();
 			JSONObject o;
 
-			
-
 			try {
 				o = (JSONObject) parse.parse(json);
 				JSONObject o1 = (JSONObject) o.get("api");
 
 				JSONArray n1 = (JSONArray) o1.get("fixtures");
 
-				
 				for (int i = 0; i < n1.size(); i++) {
 
 					Fixture fixture = new Fixture();
@@ -278,27 +275,27 @@ public class FudbalController {
 					Integer idHomeTeam = idHomeTeamLong instanceof Long ? ((Long) idHomeTeamLong).intValue() : 0;
 
 					Team team = teamRepo.getOne(idHomeTeam);
-			//		HomeTeam htB = homeTeamRepo.findByTeam(team); // HomeTeam iz baze
-			//		if (htB == null) {
-						homeTeam.setTeam(team);
-						homeTeam = homeTeamRepo.save(homeTeam);
-						fixture.setHomeTeam(homeTeam);
-			//		} else {
-			//			fixture.setHomeTeam(htB);
-			//		}
+					// HomeTeam htB = homeTeamRepo.findByTeam(team); // HomeTeam iz baze
+					// if (htB == null) {
+					homeTeam.setTeam(team);
+					homeTeam = homeTeamRepo.save(homeTeam);
+					fixture.setHomeTeam(homeTeam);
+					// } else {
+					// fixture.setHomeTeam(htB);
+					// }
 					Object idAwayTeamLong = o4.get("team_id");
 					Integer idAwayTeam = idAwayTeamLong instanceof Long ? ((Long) idAwayTeamLong).intValue() : 0;
 
 					team = teamRepo.getOne(idAwayTeam);
 
-			//		AwayTeam atB = awayTeamRepo.findByTeam(team); // AwayTeam iz baze
-			//		if (atB == null) {
-						awayTeam.setTeam(team);
-						awayTeam = awayTeamRepo.save(awayTeam);
-						fixture.setAwayTeam(awayTeam);
-			//		} else {
-			//			fixture.setAwayTeam(atB);
-			//		}
+					// AwayTeam atB = awayTeamRepo.findByTeam(team); // AwayTeam iz baze
+					// if (atB == null) {
+					awayTeam.setTeam(team);
+					awayTeam = awayTeamRepo.save(awayTeam);
+					fixture.setAwayTeam(awayTeam);
+					// } else {
+					// fixture.setAwayTeam(atB);
+					// }
 
 					JSONObject o5 = (JSONObject) o2.get("score");
 
@@ -318,7 +315,7 @@ public class FudbalController {
 					fixture.setScore(score);
 
 					fixture = fixtureRepo.save(fixture);
-					
+
 					retFixture.add(fixture);
 
 				}
@@ -330,11 +327,12 @@ public class FudbalController {
 
 		}
 		System.out.println(retFixture);
-		int j=1;
-		for (Fixture f :retFixture) {
+		int j = 1;
+		for (Fixture f : retFixture) {
 			System.out.println("****************");
-			System.out.println(j + ". "+f.getIdFixtures()+ "  " +f.getHomeTeam().getTeam().getTeamName() + " - " + f.getAwayTeam().getTeam().getTeamName());
-		j++;
+			System.out.println(j + ". " + f.getIdFixtures() + "  " + f.getHomeTeam().getTeam().getTeamName() + " - "
+					+ f.getAwayTeam().getTeam().getTeamName());
+			j++;
 		}
 		return retFixture;
 	}
@@ -512,8 +510,7 @@ public class FudbalController {
 
 	}
 
-	
-	//dodavanje statistike za date meceve
+	// dodavanje statistike za date meceve
 	public void apiFixStatDate(List<Fixture> fixtures) {
 
 		List<FixtureStat> retfixtureStats = new ArrayList<FixtureStat>();
@@ -532,7 +529,7 @@ public class FudbalController {
 			JSONObject o;
 
 			List<FixtureStat> deleteStat = fixtureStatRepo.findByFixture(f);
-			for(FixtureStat ds:deleteStat) {
+			for (FixtureStat ds : deleteStat) {
 				fixtureStatRepo.delete(ds);
 			}
 			try {
@@ -856,8 +853,7 @@ public class FudbalController {
 		}
 		fixtureStatRepo.saveAll(retfixtureStats);
 	}
-	
-	
+
 	public List<PlayerFixStat> apiPlayerFixStatDate(List<Fixture> fixtures) {
 		// pfr.deleteAll();
 		List<PlayerFixStat> listPlayerFixStat = new ArrayList<PlayerFixStat>();
@@ -1061,13 +1057,10 @@ public class FudbalController {
 		}
 		return listPlayerFixStat;
 	}
-	
-	
-	
+
 	public void apiOddsDate(List<Fixture> fs) {
 		System.out.println("ODDS UPDATE");
 		String json = null;
-		
 
 		for (Fixture f : fs) {
 
@@ -1098,7 +1091,7 @@ public class FudbalController {
 						JSONObject objectOdds = (JSONObject) odds.get(i);
 						// da ne ubacuje dva puta isto
 						Odd oddDelete = or.findByFixture(f);
-						if (oddDelete!=null)
+						if (oddDelete != null)
 							or.delete(oddDelete);
 						Odd odd = new Odd();
 						odd.setFixture(f);
@@ -1133,7 +1126,8 @@ public class FudbalController {
 									} else {
 										String betValueStr = (String) betValue;
 										b.setBetValues(betValueStr);
-									}if (betOdds instanceof Long) {
+									}
+									if (betOdds instanceof Long) {
 										Long lo = (Long) betValue;
 										String bos = lo + "";
 										b.setOdd(bos);
@@ -1142,7 +1136,6 @@ public class FudbalController {
 										b.setOdd(bos);
 									}
 
-									
 									betr.save(b);
 								}
 							}
