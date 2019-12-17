@@ -130,7 +130,7 @@ public class SquadPlayer {
 				}
 				
 				//weigth
-				String weigthPom=(String)objectPlayers.get("weigth");
+				String weigthPom=(String)objectPlayers.get("weight");
 				if(weigthPom!=null && weigthPom!="") {
 					player.setWeight(weigthPom);
 				}
