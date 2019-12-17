@@ -164,7 +164,7 @@ public class EventController {
 //								event = eventRepo.save(event);
 //							}
 
-						}
+			 			}
 
 					} else {
 						player = playerRepo.getOne(playerAssistId);
