@@ -24,9 +24,9 @@ public class BookmakerController {
 	@Autowired
 	BookmakerRepo bkr;
 	
-	// dodaavanje bookmaker-a u bazu
+	// dodavanje bookmaker-a u bazu
 	@RequestMapping (value = "try3")
-		public void apiLabel() {
+		public void apiBookmaker() {
 			String json = null;
 
 			try {
