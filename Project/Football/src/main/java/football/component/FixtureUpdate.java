@@ -145,7 +145,7 @@ public class FixtureUpdate {
 
 	private Date date;
 
-	@Scheduled(cron = "1 1 */2 * * ?")
+	@Scheduled(cron = "0 0 0/2 * * ?")
 	public void update17days() {
 		List<String> dates = getDates();
 		// List<String> dates = new ArrayList<String>();
