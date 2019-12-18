@@ -79,7 +79,7 @@ public class LeagueUpdate {
 
 	private Date date;
 
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 0 0 * * ?")  
 	public void update() {
 		int y = getYear();
 		Season s = getSeason(y);
