@@ -70,7 +70,7 @@ public class Timer3Months {
 	@Autowired
 	TeamoutRepo tor;
 
-	@Scheduled(cron = "0 0 1 */3 *")
+	@Scheduled(cron = "1 1 1 1 1,4,7,10 ?")
 	public void update() {
 		ExecutorService executor = Executors.newFixedThreadPool(6);
 

@@ -13,7 +13,6 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -146,7 +145,7 @@ public class FixtureUpdate {
 
 	private Date date;
 
-	@Scheduled(cron = "0 */2 * * *")
+	@Scheduled(cron = "1 1 */2 * * ?")
 	public void update17days() {
 		List<String> dates = getDates();
 		// List<String> dates = new ArrayList<String>();
