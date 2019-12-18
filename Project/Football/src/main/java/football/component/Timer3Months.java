@@ -68,7 +68,7 @@ public class Timer3Months {
 	@Autowired
 	TeaminRepo tir;
 	@Autowired
-	TeamoutRepo tor;
+	TeamoutRepo tor; 
 
 	@Scheduled(cron = "0 0 0 1 1,4,7,10 ?")
 	public void update() {
