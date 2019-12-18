@@ -168,7 +168,7 @@ public class FixtureUpdate {
 		});
 		executor.execute(() -> {
 			Date now = new Date();
-			if (!date.equals(now)) {
+			if (date.getDate()!=now.getDate()) {
 				date = now;
 				apiOddsDate(fixtures);
 			}

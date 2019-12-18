@@ -23,7 +23,9 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import football.controller.Param;
+import football.repository.BookmakerRepo;
 import football.repository.CountryRepo;
+import football.repository.LabelRepo;
 import football.repository.PlayerRepo;
 import football.repository.SeasonRepo;
 import football.repository.TeamRepo;
@@ -31,7 +33,9 @@ import football.repository.TeaminRepo;
 import football.repository.TeamoutRepo;
 import football.repository.TeamplayerRepo;
 import football.repository.TransferRepo;
+import model.Bookmaker;
 import model.Country;
+import model.Label;
 import model.Player;
 import model.Season;
 import model.Team;
@@ -56,6 +60,10 @@ public class Timer3Months {
 	TeamRepo tr;
 	@Autowired
 	TransferRepo transr;
+	@Autowired
+	BookmakerRepo bkr;
+	@Autowired
+	LabelRepo lr;
 	
 	@Autowired
 	TeaminRepo tir;
@@ -64,7 +72,7 @@ public class Timer3Months {
 
 	@Scheduled(cron = "0 0 1 */3 *")
 	public void update() {
-		ExecutorService executor = Executors.newFixedThreadPool(4);
+		ExecutorService executor = Executors.newFixedThreadPool(6);
 
 		executor.execute(() -> {
 			apiCountry();
@@ -78,6 +86,12 @@ public class Timer3Months {
 		});
 		executor.execute(() -> {
 			apiTransfer();
+		});
+		executor.execute(() -> {
+			apiBookmaker();
+		});
+		executor.execute(() -> {
+			apiLabel();
 		});
 	}
 	
@@ -388,4 +402,113 @@ public class Timer3Months {
 		transferi.add(t);
 	}
 	
+	public void apiBookmaker() {
+		String json = null;
+
+		try {
+			HttpResponse<String> response = Unirest.get(param.getAdd() + "/odds/bookmakers/")
+					.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
+			json = response.getBody();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (json != null) {
+			List<Bookmaker> bms=bkr.findAll();
+			JsonFactory factory = new JsonFactory();
+			try {
+				JsonParser parser = factory.createParser(json);
+
+				while (!parser.isClosed()) {
+					JsonToken jsonToken = parser.nextToken();
+					if (JsonToken.FIELD_NAME.equals(jsonToken)) {
+						String fieldName = parser.getCurrentName();
+						if ("results".equals(fieldName)) {
+							jsonToken = parser.nextToken();
+							int br = parser.getIntValue();
+							jsonToken = parser.nextToken();
+							jsonToken = parser.nextToken();
+							for (int i = 0; i < br; i++) {
+								Bookmaker b = new Bookmaker();
+								jsonToken = parser.nextToken();
+								jsonToken = parser.nextToken();
+								jsonToken = parser.nextToken();
+								b.setIdBookmaker(parser.getIntValue());
+								jsonToken = parser.nextToken();
+								jsonToken = parser.nextToken();
+								b.setName(parser.getValueAsString());
+								jsonToken = parser.nextToken();
+								if (!bms.contains(b)) {
+									bms.add(b);
+									bkr.save(b);
+								}
+								
+							}
+						}
+					}
+				}
+			}
+
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+	
+	public void apiLabel() {
+		String json = null;
+
+		try {
+			HttpResponse<String> response = Unirest.get(param.getAdd() + "/odds/labels/")
+					.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
+			json = response.getBody();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (json != null) {
+			List<Label> labels=lr.findAll();
+			JsonFactory factory = new JsonFactory();
+			try {
+				JsonParser parser = factory.createParser(json);
+
+				while (!parser.isClosed()) {
+					JsonToken jsonToken = parser.nextToken();
+					if (JsonToken.FIELD_NAME.equals(jsonToken)) {
+						String fieldName = parser.getCurrentName();
+						if ("results".equals(fieldName)) {
+							jsonToken = parser.nextToken();
+							int br = parser.getIntValue();
+							jsonToken = parser.nextToken();
+							jsonToken = parser.nextToken();
+							for (int i = 0; i < br; i++) {
+								Label l = new Label();
+								jsonToken = parser.nextToken();
+								jsonToken = parser.nextToken();
+								jsonToken = parser.nextToken();
+								l.setIdLabel(parser.getIntValue());
+								jsonToken = parser.nextToken();
+								jsonToken = parser.nextToken();
+								l.setLabel(parser.getValueAsString());
+								jsonToken = parser.nextToken();
+								if (!labels.contains(l)) {
+									labels.add(l);
+									lr.save(l);
+								}
+								
+							}
+						}
+					}
+				}
+			}
+
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
 }
