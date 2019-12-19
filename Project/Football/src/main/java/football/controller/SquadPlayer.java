@@ -130,7 +130,7 @@ public class SquadPlayer {
 				}
 				
 				//weigth
-				String weigthPom=(String)objectPlayers.get("weigth");
+				String weigthPom=(String)objectPlayers.get("weight");
 				if(weigthPom!=null && weigthPom!="") {
 					player.setWeight(weigthPom);
 				}
@@ -138,15 +138,15 @@ public class SquadPlayer {
 				// save u bazi
 				
 				  pr.save(player);
-				  
+				  List<TeamPlayer> tpb=tpr.findByPlayerAndTeamAndSeason(player, t, s);
 				  TeamPlayer tp=new TeamPlayer();
 				  
 				  tp.setPlayer(player); tp.setSeason(s);
 				  
 				  tp.setTeam(t);
-				  
+				  if (tpb.size()==0) {
 				  tpr.save(tp);
-				 
+				  }
 				
 				listSquadPlayer.add(player);
 				

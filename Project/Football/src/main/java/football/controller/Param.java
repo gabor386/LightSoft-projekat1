@@ -5,7 +5,7 @@ public class Param {
 	private String h1;
 	private String h2;
 	
-	public Param() {
+	public Param()  {
 
 //		add="https://server1.api-football.com";
 //		h1= "https://server1.api-football.com";
