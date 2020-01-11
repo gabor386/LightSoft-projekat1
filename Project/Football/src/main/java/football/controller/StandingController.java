@@ -92,7 +92,7 @@ public class StandingController {
 							Stading standing = new Stading();
 
 							Object rank = o2.get("rank");
-							standing.setRank(rank instanceof Long ? ((Long) rank).intValue() : 0);
+							//standing.setRank(rank instanceof Long ? ((Long) rank).intValue() : 0);
 							
 							String group = (String) o2.get("group");
 							standing.setGroup(group);
