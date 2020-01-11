@@ -32,8 +32,11 @@ import football.repository.PlayerRepo;
 import football.repository.PlayerstatisticRepo;
 import football.repository.RoundRepo;
 import football.repository.SeasonRepo;
+import football.repository.StandingRepo;
+import football.repository.StandingstatsRepo;
 import football.repository.TeamRepo;
 import football.repository.TeamplayerRepo;
+import football.repository.TeamstatisticRepo;
 import football.repository.TopscorerRepo;
 import model.Country;
 import model.League;
@@ -41,8 +44,11 @@ import model.Player;
 import model.PlayerStatistic;
 import model.Round;
 import model.Season;
+import model.Stading;
+import model.StandingStat;
 import model.Team;
 import model.TeamPlayer;
+import model.TeamStatistic;
 import model.TopScorer;
 
 @Component
@@ -67,6 +73,9 @@ public class LeagueUpdate {
 
 	@Autowired
 	TeamRepo teamRepo;
+	
+	@Autowired
+	StandingRepo standingRepo;
 
 	@Autowired
 	TeamplayerRepo teamplayerRepo;
@@ -76,6 +85,12 @@ public class LeagueUpdate {
 
 	@Autowired
 	PlayerstatisticRepo psr;
+	
+	@Autowired
+	StandingstatsRepo standingStatsRepo;
+	
+	@Autowired
+	TeamstatisticRepo teamStatRepo;
 
 	private Date date;
 
@@ -88,7 +103,7 @@ public class LeagueUpdate {
 		LocalDateTime now = LocalDateTime.now();
 		System.out.println(dtf.format(now));
 
-		ExecutorService executorService = Executors.newFixedThreadPool(4);
+		ExecutorService executorService = Executors.newFixedThreadPool(6);
 
 		// Kreira posebnu novu nitttt
 		executorService.execute(() -> {
@@ -116,8 +131,15 @@ public class LeagueUpdate {
 		executorService.execute(() -> {
 			getApiPlayerStatistic(s);
 		});
+		
+		executorService.execute(() -> {
+			 apiStandings(ls);
+		});
+		
+		executorService.execute(() -> {
+			 apiTeamStat(ls);
+		});
 
-		// jos standing i statistic team
 	}
 
 	public int getYear() {
@@ -667,6 +689,427 @@ public class LeagueUpdate {
 
 		return listaPlayerStaticis;
 
+	}
+	
+	public void apiStandings(List<League> leagues) {
+
+
+		for (League l : leagues) {
+
+			List<Stading> standingDelete = standingRepo.findByLeague(l);
+
+			for (Stading s : standingDelete) {
+				List<StandingStat> standingStat = standingStatsRepo.findByStading(s);
+				for(StandingStat ssd : standingStat) {
+					standingStatsRepo.delete(ssd);
+				}
+				standingRepo.delete(s);
+			}
+
+			String json = null;
+
+			try {
+				HttpResponse<String> response = Unirest.get(param.getAdd() + "/leagueTable/" + l.getIdLeague())
+						.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2()).asString();
+				json = response.getBody();
+			} catch (UnirestException e1) {
+				e1.printStackTrace();
+			}
+
+			if (json != null) {
+				JSONParser parse = new JSONParser();
+				JSONObject o;
+
+				try {
+
+					o = (JSONObject) parse.parse(json);
+					JSONObject o1 = (JSONObject) o.get("api");
+
+					JSONArray n = (JSONArray) o1.get("standings");
+
+					for (int i = 0; i < n.size(); i++) {
+
+						JSONArray n1 = (JSONArray) n.get(i);
+						
+						for (int j = 0; j < n1.size(); j++) {
+							
+						
+
+							JSONObject o2 = (JSONObject) n1.get(j);
+							Stading standing = new Stading();
+
+							Object rank = o2.get("rank");
+							//standing.setRank(rank instanceof Long ? ((Long) rank).intValue() : 0);
+							//visak
+							
+							String group = (String) o2.get("group");
+							standing.setGroup(group);
+
+							String forme = (String) o2.get("forme");
+							standing.setForm(forme);
+
+							String description = (String) o2.get("description");
+							standing.setDescription(description);
+
+							Object teamId = o2.get("team_id");
+							Team t = teamRepo.getOne(teamId instanceof Long ? ((Long) teamId).intValue() : 0);
+
+							//Stading deleteStading = standingRepo.findByLeagueAndTeam(l, t);
+							//if (deleteStading != null) {
+							//	standingRepo.delete(deleteStading);
+							//}
+
+							standing.setTeam(t);
+							
+							standing.setLeague(l);
+
+							Object goalsDiff = o2.get("goalsDiff");
+							standing.setGoalsDiff(goalsDiff instanceof Long ? ((Long) goalsDiff).intValue() : 0);
+
+							Object points = o2.get("points");
+							standing.setPoints(points instanceof Long ? ((Long) points).intValue() : 0);
+
+							String lastUpdate = (String) o2.get("lastUpdate");
+							standing.setLastUpdate(lastUpdate);
+
+							standing = standingRepo.save(standing);
+
+							JSONObject o3 = (JSONObject) o2.get("all");
+							StandingStat standingStatAll = new StandingStat();
+							StandingStat standingStatHome = new StandingStat();
+							StandingStat standingStatAway = new StandingStat();
+
+							standingStatAll.setStading(standing);
+							
+							
+
+							// ALL
+							standingStatAll.setStandingStatName("all");
+
+							Object matchesPlayed =  o3.get("matchesPlayed");
+							standingStatAll.setMatchesPlayed(matchesPlayed instanceof Long ? ((Long) matchesPlayed).intValue() : 0);
+
+							Object win = o3.get("win");
+							standingStatAll.setWin(win instanceof Long ? ((Long) win).intValue() : 0);
+
+							Object draw = o3.get("draw");
+							standingStatAll.setDraw(draw instanceof Long ? ((Long) draw).intValue() : 0);
+
+							Object lose = o3.get("lose");
+							standingStatAll.setLose(lose instanceof Long ? ((Long) lose).intValue() : 0);
+
+							Object goalsFor = o3.get("goalsFor");
+							standingStatAll.setGoalsFor(goalsFor instanceof Long ? ((Long) goalsFor).intValue() : 0);
+
+							Object goalsAgainst = o3.get("goalsAgainst");
+							standingStatAll.setGoalsAgainst(goalsAgainst instanceof Long ? ((Long) goalsAgainst).intValue() : 0);
+							
+							standingStatsRepo.save(standingStatAll);
+							
+							JSONObject o4 = (JSONObject) o2.get("home");
+
+							
+							standingStatHome.setStading(standing);
+							// HOME
+							standingStatHome.setStandingStatName("home");
+
+							matchesPlayed = (Long) o4.get("matchesPlayed");
+							standingStatHome.setMatchesPlayed(matchesPlayed instanceof Long ? ((Long) matchesPlayed).intValue() : 0);
+
+							win = (Long) o4.get("win");
+							standingStatHome.setWin(win instanceof Long ? ((Long) win).intValue() : 0);
+
+							draw = (Long) o4.get("draw");
+							standingStatHome.setDraw(draw instanceof Long ? ((Long) draw).intValue() : 0);
+
+							lose = (Long) o4.get("lose");
+							standingStatHome.setLose(lose instanceof Long ? ((Long) lose).intValue() : 0);
+
+							goalsFor = (Long) o4.get("goalsFor");
+							standingStatHome.setGoalsFor(goalsFor instanceof Long ? ((Long) goalsFor).intValue() : 0);
+
+							goalsAgainst = (Long) o4.get("goalsAgainst");
+							standingStatHome.setGoalsAgainst(goalsAgainst instanceof Long ? ((Long) goalsAgainst).intValue() : 0);
+							
+							standingStatsRepo.save(standingStatHome);
+							
+							JSONObject o5 = (JSONObject) o2.get("away");
+
+							standingStatAway.setStading(standing);
+							// AWAY
+							standingStatAway.setStandingStatName("away");
+
+							matchesPlayed = (Long) o5.get("matchesPlayed");
+							standingStatAway.setMatchesPlayed(matchesPlayed instanceof Long ? ((Long) matchesPlayed).intValue() : 0);
+
+							win = (Long) o5.get("win");
+							standingStatAway.setWin(win instanceof Long ? ((Long) win).intValue() : 0);
+
+							draw = (Long) o5.get("draw");
+							standingStatAway.setDraw(draw instanceof Long ? ((Long) draw).intValue() : 0);
+
+							lose = (Long) o5.get("lose");
+							standingStatAway.setLose(lose instanceof Long ? ((Long) lose).intValue() : 0);
+
+							goalsFor = (Long) o5.get("goalsFor");
+							standingStatAway.setGoalsFor(goalsFor instanceof Long ? ((Long) goalsFor).intValue() : 0);
+
+							goalsAgainst = (Long) o5.get("goalsAgainst");
+							standingStatAway.setGoalsAgainst(goalsAgainst instanceof Long ? ((Long) goalsAgainst).intValue() : 0);
+							
+							standingStatsRepo.save(standingStatAway);
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void apiTeamStat(List<League> leagues) {
+
+	
+		List<Team> teams = teamRepo.findAll();
+
+		for (League l : leagues) {
+
+			for (Team t : teams) {
+
+				List<TeamStatistic> teamStatDelete = teamStatRepo.findByTeamAndLeague(t, l);
+
+				for (TeamStatistic ts : teamStatDelete) {
+					teamStatRepo.delete(ts);
+				}
+
+				HttpResponse<String> response = null;
+				try {
+					System.out.println("league " + l.getIdLeague() + " team " + t.getIdTeam());
+					response = Unirest.get(param.getAdd() + "/statistics/" + l.getIdLeague() + "/" + t.getIdTeam())
+							.header("x-rapidapi-host", param.getH1()).header("x-rapidapi-key", param.getH2())
+							.asString();
+				} catch (UnirestException e1) {
+					e1.printStackTrace();
+				}
+
+				String json = response.getBody();
+
+				JSONParser parse = new JSONParser();
+				JSONObject o;
+
+				try {
+
+					o = (JSONObject) parse.parse(json);
+					JSONObject o1 = (JSONObject) o.get("api");
+
+					JSONObject o2 = (JSONObject) o1.get("statistics");
+
+					JSONObject o3 = (JSONObject) o2.get("matchs");
+					// TeamStatistic teamStat = new TeamStatistic();
+					TeamStatistic teamStatMP = new TeamStatistic();
+
+					teamStatMP.setTeam(t);
+
+					teamStatMP.setLeague(l);
+
+					JSONObject o4 = (JSONObject) o3.get("matchsPlayed");
+
+					// TeamStatistic teamStatMP = new TeamStatistic();
+					// odigrani mecevi
+					teamStatMP.setStatName("matchsPlayed");
+
+				
+					String h =  (Long)o4.get("home") + "";
+					teamStatMP.setHome(h);
+
+					String a = (Long) o4.get("away") + "";
+					teamStatMP.setAway(a);
+					
+			
+
+					String tot = (Long) o4.get("total") + "";
+					teamStatMP.setTotal(tot);
+				
+
+					if (!tot.equals("0")) {
+
+					teamStatRepo.save(teamStatMP);
+					
+					
+					JSONObject obWins = (JSONObject) o3.get("wins");
+
+					TeamStatistic teamStatWins = new TeamStatistic();
+					// pobede
+					teamStatWins.setStatName("wins");
+
+					 h  = (Long)obWins.get("home")+ "";
+					teamStatWins.setHome(h);
+
+					 a = (Long)obWins.get("away") + "";
+					teamStatWins.setAway(a);
+
+					tot = (Long)obWins.get("total")+ "";
+					teamStatWins.setTotal(tot);
+					
+					teamStatWins.setTeam(t);
+
+					teamStatWins.setLeague(l);
+
+
+					teamStatRepo.save(teamStatWins);
+					
+
+					JSONObject obDraws = (JSONObject) o3.get("draws");
+					
+					TeamStatistic teamStatDraws = new TeamStatistic();
+					// neresene
+					teamStatDraws.setStatName("draws");
+
+
+					 h  = (Long)obDraws.get("home")+ "";
+					teamStatDraws.setHome(h);
+
+					 a = (Long)obDraws.get("away") + "";
+					teamStatDraws.setAway(a);
+
+					tot = (Long)obDraws.get("total")+ "";
+					teamStatDraws.setTotal(tot);
+					
+					teamStatDraws.setTeam(t);
+
+					teamStatDraws.setLeague(l);
+
+
+					teamStatRepo.save(teamStatDraws);
+					
+
+					JSONObject obLoses = (JSONObject) o3.get("loses");
+					
+					TeamStatistic teamStatLoses = new TeamStatistic();
+					// izgubljene
+					teamStatLoses.setStatName("loses");
+
+					 h  = (Long)obLoses.get("home")+ "";
+					teamStatLoses.setHome(h);
+
+					 a = (Long)obLoses.get("away") + "";
+					teamStatLoses.setAway(a);
+
+					tot = (Long)obLoses.get("total")+ "";
+					teamStatLoses.setTotal(tot);
+					
+					teamStatLoses.setTeam(t);
+
+					teamStatLoses.setLeague(l);
+
+
+					teamStatRepo.save(teamStatLoses);
+
+					
+					
+					
+					JSONObject o5 = (JSONObject) o2.get("goals");
+					
+					JSONObject obGF = (JSONObject) o5.get("goalsFor");
+					
+					TeamStatistic teamStatGF = new TeamStatistic();	
+					// dati golovi
+					teamStatGF.setStatName("goalsFor");
+
+					h = (Long) obGF.get("home") + "";
+					teamStatGF.setHome(h);
+
+					a = (Long) obGF.get("away") + "";
+					teamStatGF.setAway(a);
+
+					tot = (Long) obGF.get("total") + "";
+					teamStatGF.setTotal(tot);
+					
+					teamStatGF.setTeam(t);
+
+					teamStatGF.setLeague(l);
+
+
+					teamStatRepo.save(teamStatGF);
+
+					
+					JSONObject obGA = (JSONObject) o5.get("goalsAgainst");
+					
+					TeamStatistic teamStatGA = new TeamStatistic();
+					// primljeni golovi
+					teamStatGA.setStatName("goalsAgainst");
+
+					h = (Long) obGA.get("home") + "";
+					teamStatGA.setHome(h);
+
+					a = (Long) obGA.get("away") + "";
+					teamStatGA.setAway(a);
+
+					tot = (Long) obGA.get("total") + "";
+					teamStatGA.setTotal(tot);
+					
+					teamStatGA.setTeam(t);
+
+					teamStatGA.setLeague(l);
+
+
+					teamStatRepo.save(teamStatGA);
+
+					
+					
+					
+					JSONObject o6 = (JSONObject) o2.get("goalsAvg");
+					
+					JSONObject obGFA = (JSONObject) o6.get("goalsFor");
+					
+					TeamStatistic teamStatGFA = new TeamStatistic();
+					// dati golovi po mecu
+					teamStatGFA.setStatName("goalsFor");
+					
+					String homeAvg = (String) obGFA.get("home");
+					teamStatGFA.setHome(homeAvg);
+
+					String awayAvg = (String) obGFA.get("away");
+					teamStatGFA.setAway(awayAvg);
+
+					String totalAvg = (String) obGFA.get("total");
+					teamStatGFA.setTotal(totalAvg);
+					
+					teamStatGFA.setTeam(t);
+
+					teamStatGFA.setLeague(l);
+
+
+					teamStatRepo.save(teamStatGFA);
+					
+					
+					JSONObject obGAA = (JSONObject) o6.get("goalsAgainst");
+					
+					TeamStatistic teamStatGAA = new TeamStatistic();
+					// primljeni golovi po mecu
+					teamStatGAA.setStatName("goalsAgainst");
+
+					String homeAvgA = (String) obGAA.get("home");
+					teamStatGAA.setHome(homeAvgA);
+
+					String awayAvgA = (String) obGAA.get("away");
+					teamStatGAA.setAway(awayAvgA);
+
+					String totalAvgA = (String) obGAA.get("total");
+					teamStatGAA.setTotal(totalAvgA);
+					
+					teamStatGAA.setTeam(t);
+
+					teamStatGAA.setLeague(l);
+
+
+					 teamStatRepo.save(teamStatGAA);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }
