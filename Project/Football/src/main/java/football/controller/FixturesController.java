@@ -9,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +34,7 @@ import model.League;
 import model.Round;
 import model.Score;
 import model.Team;
+import modelA.FixtureA;
 
 @RestController
 @RequestMapping(value = "/fixtureController")
@@ -213,5 +215,70 @@ public class FixturesController {
 
 		}
 	}
-
+	
+	@RequestMapping(value = "/getNsFixtures/{idLeague}", method = RequestMethod.GET)
+	public List<FixtureA> getNsFixtures (@PathVariable Integer idLeague) {
+		League l = leagueRepo.getOne(idLeague);
+		List<Round> rs= roundRepo.findByLeague(l);
+		List<FixtureA> fixtures = new ArrayList<FixtureA>();
+		for (Round r:rs) {
+			List<Fixture> fs = fixtureRepo.findByRound(r);
+			for (Fixture f:fs) {
+				if (f.getStatusShort().equals("NS") ) {
+				
+					int idFixture = f.getIdFixtures();
+					String date = f.getEventDate().split("T")[0];
+					int idRound = f.getRound().getIdRound();
+					String round = f.getRound().getReguralSeason();
+					int idHomeTeam = f.getHomeTeam().getTeam().getIdTeam();
+					String homeTeam = f.getHomeTeam().getTeam().getTeamName();
+					String homeLogo = f.getHomeTeam().getTeam().getLogo();
+					int idAwayTeam = f.getAwayTeam().getTeam().getIdTeam();
+					String awayTeam = f.getAwayTeam().getTeam().getTeamName();
+					String awayLogo = f.getAwayTeam().getTeam().getLogo();
+					String score = "Not started";
+					String status = f.getStatus();
+					String statusShort = f.getStatusShort();
+					
+					FixtureA fA = new FixtureA(idFixture, date, idRound, round, idHomeTeam, homeTeam, homeLogo, idAwayTeam, awayTeam, awayLogo, score, status, statusShort);
+			
+					fixtures.add(fA);
+				}
+			}
+		}
+		return fixtures;
+	}
+	
+	@RequestMapping(value = "/getFixtures/{idLeague}", method = RequestMethod.GET)
+	public List<FixtureA> getFixtures (@PathVariable Integer idLeague) {
+		League l = leagueRepo.getOne(idLeague);
+		List<Round> rs= roundRepo.findByLeague(l);
+		List<FixtureA> fixtures = new ArrayList<FixtureA>();
+		for (Round r:rs) {
+			List<Fixture> fs = fixtureRepo.findByRound(r);
+			for (Fixture f:fs) {
+				if (!f.getStatusShort().equals("NS") && !f.getStatusShort().equals("TBD")) {
+				
+					int idFixture = f.getIdFixtures();
+					String date = f.getEventDate().split("T")[0];
+					int idRound = f.getRound().getIdRound();
+					String round = f.getRound().getReguralSeason();
+					int idHomeTeam = f.getHomeTeam().getTeam().getIdTeam();
+					String homeTeam = f.getHomeTeam().getTeam().getTeamName();
+					String homeLogo = f.getHomeTeam().getTeam().getLogo();
+					int idAwayTeam = f.getAwayTeam().getTeam().getIdTeam();
+					String awayTeam = f.getAwayTeam().getTeam().getTeamName();
+					String awayLogo = f.getAwayTeam().getTeam().getLogo();
+					String score = f.getScore().getFullTime();
+					String status = f.getStatus();
+					String statusShort = f.getStatusShort();
+					
+					FixtureA fA = new FixtureA(idFixture, date, idRound, round, idHomeTeam, homeTeam, homeLogo, idAwayTeam, awayTeam, awayLogo, score, status, statusShort);
+			
+					fixtures.add(fA);
+				}
+			}
+		}
+		return fixtures;
+	}
 }
