@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class ProbaTimeZona {
 	TimezonaRepo timeZoneRepo;
 
 	@SuppressWarnings("rawtypes")
-	@Scheduled(cron = "0 0/5 * * * ?")
+	@Scheduled(cron = "0 0/2 * * * ?")
 	public void getApiTimeZone() {
 
 		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
@@ -45,36 +46,61 @@ public class ProbaTimeZona {
 				TimeZonePOJO.class);
 		// System.out.println(response.getApi().getTimezone());
 
-		List<String> timeZonaPOJO = response.getApi().getTimezone();
+		List<String> timeZonaPOJO = (ArrayList<String>) response.getApi().getTimezone();
 
 		List<TimeZona> list = timeZoneRepo.findAll().equals(null) ? null : timeZoneRepo.findAll();
 
+		ListIterator<String> listIterator = timeZonaPOJO.listIterator();
+		ListIterator<TimeZona> listIterator1 = list.listIterator();
+
 		if (list.isEmpty()) {
-			System.out.println("Ovde sam 1");
+			System.out.println("Tabela u bazi je skroz prazna");
 			for (String s : timeZonaPOJO) {
 				TimeZona j = new TimeZona();
 				j.setTimeZone(s);
 				timeZoneRepo.save(j);
 			}
+
+		} else if (!list.isEmpty() && timeZonaPOJO.size() > list.size()) {
+			
+			 
+			 for (TimeZona t : list) {	 
+				 timeZonaPOJO.remove(t.getTimeZone());
+			}
+			System.out.println(timeZonaPOJO);
+			
+			
+//			System.out.println("Ovde sam");
+//             int size = timeZonaPOJO.size();
+//            
+//			for (int j =0; j < size; j++) {
+//				if(j< list.size()) {
+//					TimeZona t = list.get(j);
+//					if(!t.getTimeZone().equals(timeZonaPOJO.get(j))) {
+//						t.setTimeZone(timeZonaPOJO.get(j));
+//						timeZoneRepo.save(t);
+//					}
+//					
+//					
+//				}else {
+//					TimeZona tz = new TimeZona();
+//					tz.setTimeZone(timeZonaPOJO.get(j));
+//					timeZoneRepo.save(tz);
+//				}
+//				
+//			}
 		} else {
-			System.out.println("Ovde sam 2");
+			System.out.println("Azuriram");
 
 			try {
-				ListIterator listIterator = timeZonaPOJO.listIterator();
-				ListIterator listIterator1 = list.listIterator();
 
 				while (listIterator.hasNext() && listIterator1.hasNext()) {
-					
+
 					String pom = ((String) listIterator.next());
 					TimeZona pom1 = ((TimeZona) listIterator1.next());
 
-					if(pom != null)
-					pom1.setTimeZone(pom);
-					if(pom1 != null)
-					timeZoneRepo.save(pom1);
-					
-					System.out.println(pom);
-					System.out.println(pom1);
+						pom1.setTimeZone(pom);
+						timeZoneRepo.save(pom1);		   
 
 				}
 
@@ -83,5 +109,5 @@ public class ProbaTimeZona {
 			}
 		}
 	}
-
+	
 }

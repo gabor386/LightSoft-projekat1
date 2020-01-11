@@ -1,0 +1,21 @@
+
+
+<div class="row">
+<div class="col-3">
+<div class="list-group">
+  <a *ngFor="let li of leagues"
+    routerLink="/leagues"
+    [queryParams]="{ leagues: li.id} "
+     class="list-group-item" class="list-group-item-action">
+      {{li.l}}
+  </a>
+</div>
+</div>
+<div class="col">
+
+</div>
+</div>
+
+
+
+
