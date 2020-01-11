@@ -21,4 +21,6 @@ public interface TeamplayerRepo extends JpaRepository<TeamPlayer, Integer>{
 	 List<TeamPlayer> findByTeam(Team t);
 	
 	 List<TeamPlayer> findByTeamAndSeason(Team t, Season s);
+	 
+	 List<TeamPlayer> findByPlayerAndSeason(Player p, Season s);
 }

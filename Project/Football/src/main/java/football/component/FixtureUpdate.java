@@ -180,7 +180,7 @@ public class FixtureUpdate {
 		});
 		executor.execute(() -> {
 			apiEvent(fixtures);
-		});
+		}); 
 	}
 
 	public List<String> getDates() {
