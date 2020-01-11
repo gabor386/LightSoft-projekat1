@@ -24,13 +24,13 @@ public class Stading implements Serializable {
 
 	private int goalsDiff;
 
-	private String group;
+	private String groupa;
 
 	private String lastUpdate;
 
 	private int points;
 
-	private int rank;
+	
 
 	//bi-directional many-to-one association to League
 	@ManyToOne
@@ -82,11 +82,11 @@ public class Stading implements Serializable {
 	}
 
 	public String getGroup() {
-		return this.group;
+		return this.groupa;
 	}
 
 	public void setGroup(String group) {
-		this.group = group;
+		this.groupa = group;
 	}
 
 	public String getLastUpdate() {
@@ -105,13 +105,7 @@ public class Stading implements Serializable {
 		this.points = points;
 	}
 
-	public int getRank() {
-		return this.rank;
-	}
-
-	public void setRank(int rank) {
-		this.rank = rank;
-	}
+	
 
 	public League getLeague() {
 		return this.league;
