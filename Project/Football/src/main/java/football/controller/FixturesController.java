@@ -206,7 +206,7 @@ public class FixturesController {
 					retFixture.add(fixture);
 					
 
-				}
+				} 
 
 			} catch (ParseException e) {
 
