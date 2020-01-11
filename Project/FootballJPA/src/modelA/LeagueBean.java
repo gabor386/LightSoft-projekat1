@@ -1,4 +1,4 @@
-package football.controllerTwo;
+package modelA;
 
 
 public class LeagueBean {

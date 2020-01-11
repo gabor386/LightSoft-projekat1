@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import football.repository.LeagueRepo;
 import model.League;
+import modelA.LeagueBean;
 
 @CrossOrigin(origins="http://localhost:4200" )
 @RestController
