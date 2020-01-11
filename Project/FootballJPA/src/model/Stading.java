@@ -30,7 +30,7 @@ public class Stading implements Serializable {
 
 	private int points;
 
-	private int pozicija;
+	
 
 	//bi-directional many-to-one association to League
 	@ManyToOne
@@ -105,13 +105,7 @@ public class Stading implements Serializable {
 		this.points = points;
 	}
 
-	public int getRank() {
-		return this.pozicija;
-	}
-
-	public void setRank(int rank) {
-		this.pozicija = rank;
-	}
+	
 
 	public League getLeague() {
 		return this.league;

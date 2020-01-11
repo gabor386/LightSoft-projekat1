@@ -133,6 +133,9 @@ public class LeagueUpdate {
 	public Season getSeason(int s) {
 
 		Season season = sr.getOne(s);
+		if (season==null) {
+			season=getSeason(s-1);
+		}
 		return season;
 
 	}
