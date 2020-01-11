@@ -2,9 +2,6 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 
@@ -23,25 +20,18 @@ public class Prediction implements Serializable {
 
 	private String advice;
 
-	@JsonProperty("goals_away")
 	private String goalsAway;
 
-	@JsonProperty("goals_home")
 	private String goalsHome;
 
-	@JsonProperty("match_winner")
 	private String matchWinner;
 
-	@JsonProperty("under_over")
 	private String underOver;
 
-	@JsonProperty("away")
 	private String winningPercenteAway;
 
-	@JsonProperty("draws")
 	private String winningPercenteDraws;
 
-	@JsonProperty("home")
 	private String winningPercenteHome;
 
 	//bi-directional many-to-one association to Comparison

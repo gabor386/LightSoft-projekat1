@@ -2,9 +2,6 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 
@@ -19,15 +16,12 @@ public class Fixture implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@JsonProperty("fixture_id")
 	private int idFixtures;
 
 	private int elapsed;
 
-	@JsonProperty("event_date")
 	private String eventDate;
 
-	@JsonProperty("event_timestamp")
 	private int eventTimeStamp;
 
 	private int fristHalfStart;

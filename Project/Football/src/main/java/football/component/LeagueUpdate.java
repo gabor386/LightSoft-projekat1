@@ -79,7 +79,7 @@ public class LeagueUpdate {
 
 	private Date date;
 
-	//@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 0 0 * * ?")  
 	public void update() {
 		int y = getYear();
 		Season s = getSeason(y);
@@ -133,6 +133,9 @@ public class LeagueUpdate {
 	public Season getSeason(int s) {
 
 		Season season = sr.getOne(s);
+		if (season==null) {
+			season=getSeason(s-1);
+		}
 		return season;
 
 	}

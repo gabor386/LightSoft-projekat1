@@ -22,7 +22,7 @@ import football.repository.AssistRepo;
 import football.repository.EventRepo;
 import football.repository.FixtureRepo;
 import football.repository.PlayerRepo;
-import football.repository.TeamRepo;
+import football.repository.TeamRepo; 
 import football.repository.TeamplayerRepo;
 import model.Assist;
 import model.Event;
@@ -164,7 +164,7 @@ public class EventController {
 //								event = eventRepo.save(event);
 //							}
 
-						}
+			 			}
 
 					} else {
 						player = playerRepo.getOne(playerAssistId);
