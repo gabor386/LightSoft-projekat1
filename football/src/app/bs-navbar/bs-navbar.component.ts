@@ -13,11 +13,7 @@ export class BsNavbarComponent implements OnInit {
 
   ngOnInit() {
     this.service.getAll()
-    .subscribe(response => {
-       this.leagues = response.json();
-    }, error => {
-      alert('An enexpected error occurrend');
-    });
+    .subscribe( leagues => this.leagues = leagues);
   }
 
 }
