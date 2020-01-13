@@ -1,0 +1,12 @@
+.column{
+    float:left;
+}
+.left{
+    width: 25%;
+}
+.rigth{
+    width: 50%;
+}
+h1{
+    font-family: 'Lato';
+}
