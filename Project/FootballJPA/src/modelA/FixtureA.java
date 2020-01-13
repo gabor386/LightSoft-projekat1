@@ -26,7 +26,7 @@ public class FixtureA implements Serializable{
 		this.date = date;
 	}
 	public int getIdRound() {
-		return idRound;
+		return idRound;   
 	}
 	public void setIdRound(int idRound) {
 		this.idRound = idRound;
