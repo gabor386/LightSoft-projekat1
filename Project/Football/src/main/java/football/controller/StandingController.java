@@ -93,6 +93,7 @@ public class StandingController {
 
 							Object rank = o2.get("rank");
 							//standing.setRank(rank instanceof Long ? ((Long) rank).intValue() : 0);
+							//visak
 							
 							String group = (String) o2.get("group");
 							standing.setGroup(group);

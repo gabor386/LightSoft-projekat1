@@ -1,0 +1,173 @@
+
+<div class="column left">
+    <img [src]="team.logo">
+    <h2>{{team.teamName}}</h2>
+    <p></p>
+    <footer class="blockquote-footer">Stadion name : {{team.stadionName}} ({{team.stadionSurface}})</footer><br>
+    <footer class="blockquote-footer">Team Couch: {{team.coaches[0].name}} </footer>
+
+</div>
+
+<div class="column rigth">
+    <h5>#Goalkeepers</h5>
+    <table class="table">
+        
+        <thead class="grey lighten-2">
+        <tr class="table-success">
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Birth Date</th>
+            <th scope="col">Nationality</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let p of team.teamPlayers" >
+            <ng-container *ngIf="p.player.position==='Goalkeeper'">
+            
+                <tr>
+                    <th scope="row">{{p.player.playerName}}</th>
+                    <td>{{p.player.age}}</td>
+                    <td>
+                        {{p.player.brithDate}}
+                    </td>
+                    <td><ng-container *ngIf="'Brazil' ===p.player.nationality">
+                        <img src="https://media.api-football.com/flags/br.svg" style="max-height: 15px;">
+
+                    </ng-container>
+                    <ng-container *ngIf="'England' ===p.player.nationality">
+                        <img src="https://media.api-football.com/flags/gb.svg" style="max-height: 15px;">
+                        
+                    </ng-container>
+                    <ng-container *ngIf="'Netherlands' ===p.player.nationality">
+                        <img src="https://media.api-football.com/flags/nl.svg" style="max-height: 15px;">
+                        
+                    </ng-container>
+                    {{p.player.nationality}}
+                </td>
+                </tr>
+            </ng-container>
+         
+        </tbody>
+    </table>
+    <br>
+
+    <h5>#Defenders</h5>
+    <table class="table">
+        
+        <thead class="grey lighten-2">
+        <tr class="table-success">
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Birth Date</th>
+            <th scope="col"> Nationality</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let p of team.teamPlayers" >
+            <ng-container *ngIf="p.player.position==='Defender'">
+            
+                <tr>
+                    <th scope="row">{{p.player.playerName}}</th>
+                    <td>{{p.player.age}}</td>
+                    <td>{{p.player.brithDate}}</td>
+                    <td><ng-container *ngIf="'Brazil' ===p.player.nationality">
+                            <img src="https://media.api-football.com/flags/br.svg" style="max-height: 15px;">
+
+                        </ng-container>
+                        <ng-container *ngIf="'England' ===p.player.nationality">
+                            <img src="https://media.api-football.com/flags/gb.svg" style="max-height: 15px;">
+                            
+                        </ng-container>
+                        <ng-container *ngIf="'Netherlands' ===p.player.nationality">
+                            <img src="https://media.api-football.com/flags/nl.svg" style="max-height: 15px;">
+                            
+                        </ng-container>
+                        {{p.player.nationality}}
+                    </td>
+                    
+                </tr>
+            </ng-container>
+         
+        </tbody>
+    </table>
+    <br>
+
+    <h5>#Midfielders</h5>
+    <table class="table">
+        
+        <thead class="grey lighten-2">
+        <tr class="table-success">
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Birth Date</th>
+            <th scope="col">Nationality</th>
+            
+        </tr>
+        </thead>
+        <tbody *ngFor="let p of team.teamPlayers" >
+            <ng-container *ngIf="p.player.position==='Midfielder'">
+            
+                <tr>
+                    <th scope="row">{{p.player.playerName}}</th>
+                    <td>{{p.player.age}}</td>
+                    <td>{{p.player.brithDate}}</td>
+                    <td><ng-container *ngIf="'Brazil' ===p.player.nationality">
+                        <img src="https://media.api-football.com/flags/br.svg" style="max-height: 15px;">
+
+                    </ng-container>
+                    <ng-container *ngIf="'England' ===p.player.nationality">
+                        <img src="https://media.api-football.com/flags/gb.svg" style="max-height: 15px;">
+                        
+                    </ng-container>
+                    <ng-container *ngIf="'Netherlands' ===p.player.nationality">
+                        <img src="https://media.api-football.com/flags/nl.svg" style="max-height: 15px;">
+                        
+                    </ng-container>
+                    {{p.player.nationality}}
+                    </td>
+                </tr>
+            </ng-container>
+         
+        </tbody>
+    </table>
+    
+    <br>
+    <h5>#Attackers</h5>
+    <table class="table">
+        
+        <thead class="grey lighten-2">
+        <tr class="table-success">
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Birth Date</th>
+            <th scope="col">Nationality</th>
+            
+        </tr>
+        </thead>
+        <tbody *ngFor="let p of team.teamPlayers" >
+            <ng-container *ngIf="p.player.position==='Attacker'">
+            
+                <tr>
+                    <th scope="row">{{p.player.playerName}}</th>
+                    <td>{{p.player.age}}</td>
+                    <td>{{p.player.brithDate}}</td>
+                    <td><ng-container *ngIf="'Brazil' ===p.player.nationality">
+                        <img src="https://media.api-football.com/flags/br.svg" style="max-height: 15px;">
+
+                    </ng-container>
+                    <ng-container *ngIf="'England' ===p.player.nationality">
+                        <img src="https://media.api-football.com/flags/gb.svg" style="max-height: 15px;">
+                        
+                    </ng-container>
+                    <ng-container *ngIf="'Netherlands' ===p.player.nationality">
+                        <img src="https://media.api-football.com/flags/nl.svg" style="max-height: 15px;">
+                        
+                    </ng-container>
+                    {{p.player.nationality}}
+                </td>
+                </tr>
+            </ng-container>
+         
+        </tbody>
+    </table>
+
+    
+</div>

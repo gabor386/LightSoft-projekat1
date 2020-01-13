@@ -21,13 +21,13 @@
         <tr *ngFor= "let fix of fixtures" >
             <td width="110px" align="center" valign="middle">{{fix.date}}</td>
             <td width="220px" align="left" valign="middle">
-                <a routerLink="/teams"
+                <a routerLink="/"
                 [queryParams]="{ teamID: fix.idHomeTeam} "
                  class="list-group-item" class="list-group-item-action">
                 <img [src]="fix.homeLogo" style="max-height: 35px;">
                 {{fix.homeTeam}}</a></td>
             <td width="75px" align="center" valign="middle">{{fix.score}}</td>
-            <td width="220px" align="right" valign="middle"><a routerLink="/teams"
+            <td width="220px" align="right" valign="middle"><a routerLink="/"
                 [queryParams]="{ teamID: fix.idAwayTeam} "
                  class="list-group-item" class="list-group-item-action">
                 {{fix.awayTeam}}

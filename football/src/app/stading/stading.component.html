@@ -1,1 +1,50 @@
-<p>stading works!</p>
+
+   
+  <div class="row">
+    <div class="col-9"  class="card" style="width: 50rem;">
+  <!-- <div id="table-scroll"> -->
+     <table class="table table-striped" >
+       <thead>
+         <tr>
+           <th scope="col">Position</th>
+           <th scope="col">Team</th>
+           <th scope="col">Form</th>
+           <th scope="col">Points</th>
+         </tr>
+       </thead>
+       <tbody>
+        <ng-container *ngFor="let s of stading$ | async; let i=index">
+         <tr>
+
+           <td scope="row">{{i+1}}</td>
+           <td scope="row"> <td><a routerLink="/"
+            [queryParams]="{ teamID:s.idTeam } "
+             class="list-group-item" class="list-group-item-action"><img [src]="s.logo" style="max-height:30px;">  {{s.teamName}}</a></td>
+           <td scope="row">{{s.form}}</td>
+           <td scope="row">{{s.points}}</td>
+         </tr>
+       </ng-container>
+
+       </tbody>
+
+       </table>
+
+      </div>
+    </div>
+
+  <!-- <div class="row">
+    <div>
+    <app-fixtures></app-fixtures>
+    </div>
+    <div >
+      <app-fixturesns></app-fixturesns>
+      </div>
+    </div> -->
+
+
+
+
+
+
+
+

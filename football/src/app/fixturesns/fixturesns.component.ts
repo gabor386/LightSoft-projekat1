@@ -12,15 +12,15 @@ import 'rxjs/add/operator/filter';
 export class FixturesnsComponent implements OnInit {
 
   fixtures: any [];
-  idLeage: any;
+  league: any;
   constructor(private service: FixtureServiceNs, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.queryParams
-    .filter(params => params.leagues)
+    .filter(params => params.league)
     .subscribe(params => {
-      this.idLeage = params.leagues;
-      this.service.getById(this.idLeage)
+      this.league = params.league;
+      this.service.getById(this.league)
       .subscribe( fixtures => { this.fixtures = fixtures;
       });
 

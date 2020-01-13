@@ -1,0 +1,14 @@
+#table-scroll {
+  height:450px;
+  width: 900px;
+  overflow:auto;
+  margin-top:0px;
+  margin-bottom: 50px;
+}
+#table-header {
+  height:75px;
+  width: 900px;
+  overflow:auto;
+  margin-top:0px;
+  border-style: solid;
+}

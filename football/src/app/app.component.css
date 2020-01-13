@@ -1,3 +1,23 @@
 
 
+#left{
+    width: 30%;
+    margin-top: -100px;
+    margin-left: 25px;
+float: left;
 
+}
+
+#right {
+    width: 67%;
+    margin-top: -260px;
+    margin-right: 25px;
+    float: right;
+    
+}
+
+#full {
+    width: 100%;
+    margin-top: -50px;
+    
+}

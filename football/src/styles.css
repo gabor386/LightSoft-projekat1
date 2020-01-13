@@ -2,4 +2,12 @@
 
 @import "~bootstrap/dist/css/bootstrap.CSS";
 
-body{ padding-top: 300px; }
+body{ 
+    padding-top: 250px;
+    background-image: url("/assets/images/bg1.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: bottom;
+    background-size: 100% 90%;
+    background-color: burlywood;
+}
