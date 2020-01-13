@@ -3,11 +3,11 @@
     width: 900px;
     overflow:auto;  
     margin-top:0px;
-    margin-bottom: 0px;
+    margin-bottom: 5px;
     border-style: solid;
   }
   #table-header {
-    height:75px;
+    height:80px;
     width: 900px;
     overflow:auto;  
     margin-top:0px;
