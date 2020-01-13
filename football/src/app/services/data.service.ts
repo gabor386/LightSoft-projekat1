@@ -15,10 +15,14 @@ export class DataService {
   }
 
   getById(id: any) {
-    return this.http.get(this.url+"/"+id)
+    console.log(this.url+id);
+    console.log(this.http.get(this.url+id).map(response => response.json()));
+    return this.http.get(this.url+id)
     .map( response => response.json());
-
+    
   }
+
+
 
 
 }

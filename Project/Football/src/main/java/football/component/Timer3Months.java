@@ -217,7 +217,7 @@ public class Timer3Months {
 		}
 	}
 
-	public List<Player> apiSquad(Season s) {
+	public void apiSquad(Season s) {
 		List<Team> teams = tr.findAll();
 		String json;
 
@@ -324,7 +324,7 @@ public class Timer3Months {
 				e.printStackTrace();
 			}
 		}
-		return listSquadPlayer;
+		
 	}
 
 	public void apiTransfer() {

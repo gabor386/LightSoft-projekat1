@@ -1,8 +1,38 @@
 
 <app-bs-navbar></app-bs-navbar>
 
-<div class="container">
+<ng-container *ngIf="idTeam !== null; else noTeam " >
+<div id="full">
+  <app-team></app-team>
+</div>
+</ng-container>
 
-<router-outlet></router-outlet>
 
-</div><!-- /.container -->
+
+<ng-template #noTeam >
+<div id="left"><app-leagues></app-leagues> </div>
+<div id= "right">
+  
+
+
+<ng-container *ngIf="choise === 'stading'">
+    <app-stading></app-stading>
+  </ng-container>
+
+  <ng-container *ngIf="choise === 'fixtures'">
+    <app-fixtures></app-fixtures>
+    <app-fixturesns></app-fixturesns>
+  </ng-container>
+
+  <ng-container *ngIf="choise === null || choise==='home'">
+    <h2> Wellcome!</h2>
+    <p>We provide football score in real time. <br>
+        Have a nice time :)
+    </p>
+  </ng-container>
+
+
+</div>
+</ng-template>
+
+

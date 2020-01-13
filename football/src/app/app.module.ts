@@ -12,6 +12,13 @@ import { LeaguesService } from './services/leagues.service';
 import { HttpModule } from '@angular/http';
 import { StadingComponent } from './stading/stading.component';
 import { StadingService } from './services/stading.service';
+import { TeamComponent } from './team/team.component';
+import { HttpClientModule } from '@angular/common/http';
+import { TeamService } from './services/team.service';
+import { FixturesComponent } from './fixtures/fixtures.component';
+import { FixtureService } from './services/fixtures.service';
+import { FixturesnsComponent } from './fixturesns/fixturesns.component';
+import { FixtureServiceNs } from './services/fixturesns.service';
 
 
 @NgModule({
@@ -20,19 +27,25 @@ import { StadingService } from './services/stading.service';
     StadingComponent,
     BsNavbarComponent,
     LeaguesComponent,
-    HomeComponent
+    HomeComponent,
+    StadingComponent,
+    TeamComponent,
+    FixturesComponent,
+    FixturesnsComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     HttpModule,
     RouterModule.forRoot([
-      {path: '' , component: HomeComponent },
-     // {path: '' , component: StadingComponent },
+      {path: 'teams' , component: TeamComponent},
+      {path: 'fixtures' , component: FixturesComponent},
       {path: 'stading' , component: StadingComponent },
-      {path: 'leagues' , component: LeaguesComponent }
+      {path: 'leagues' , component: LeaguesComponent },
+      {path: 'home' , component: HomeComponent },
     ])
   ],
-  providers: [LeaguesService, StadingService],
+  providers: [LeaguesService, FixtureService, FixtureServiceNs, TeamService , StadingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

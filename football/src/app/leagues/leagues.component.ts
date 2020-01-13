@@ -15,7 +15,8 @@ export class LeaguesComponent {
 
   constructor( router: ActivatedRoute , leagueService: LeaguesService) {
     router.queryParamMap.subscribe( params => {
-      this.league = params.get('choise');
+      this.league = params.get('league');
+      this.choise = params.get('choise');
 
     });
     this.leagues$ = leagueService.getAll();
