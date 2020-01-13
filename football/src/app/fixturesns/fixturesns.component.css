@@ -3,7 +3,7 @@
     width: 900px;
     overflow:auto;  
     margin-top:0px;
-    margin-bottom: 0px;
+    margin-bottom: 30px;
     border-style: solid;
   }
   #table-header {
@@ -12,4 +12,5 @@
     overflow:auto;  
     margin-top:0px;
     border-style: solid;
+    margin-bottom: 0px;
   }
