@@ -7,10 +7,11 @@
     border-style: solid;
   }
   #table-header {
-    height:80px;
+    height:75px;
     width: 900px;
-    overflow:auto;  
+    overflow:auto;     
     margin-top:0px;
     border-style: solid;
     margin-bottom: 0px;
+    
   }
