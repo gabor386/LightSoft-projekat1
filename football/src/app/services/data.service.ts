@@ -14,5 +14,11 @@ export class DataService {
     .map( response => response.json());
   }
 
+  getById(id: any) {
+    return this.http.get(this.url+"/"+id)
+    .map( response => response.json());
+
+  }
+
 
 }

@@ -1,7 +1,7 @@
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {RouterModule} from '@angular/router';
+import {RouterModule , Routes} from '@angular/router';
 
 
 import { AppComponent } from './app.component';
@@ -11,25 +11,28 @@ import { HomeComponent } from './home/home.component';
 import { LeaguesService } from './services/leagues.service';
 import { HttpModule } from '@angular/http';
 import { StadingComponent } from './stading/stading.component';
+import { StadingService } from './services/stading.service';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    StadingComponent,
     BsNavbarComponent,
     LeaguesComponent,
-    HomeComponent,
-    StadingComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
     RouterModule.forRoot([
-      {path: '' , component: HomeComponent},
-      {path: 'leagues' , component: LeaguesComponent}
+      {path: '' , component: HomeComponent },
+     // {path: '' , component: StadingComponent },
+      {path: 'stading' , component: StadingComponent },
+      {path: 'leagues' , component: LeaguesComponent }
     ])
   ],
-  providers: [LeaguesService],
+  providers: [LeaguesService, StadingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

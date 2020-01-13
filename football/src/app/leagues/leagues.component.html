@@ -1,20 +1,23 @@
 
 
-<div class="row">
-<div class="col-3">
-<div class="list-group">
-  <a *ngFor="let li of leagues"
-    routerLink="/leagues"
-    [queryParams]="{ leagues: li.id} "
-     class="list-group-item" class="list-group-item-action">
-      {{li.l}}
-  </a>
-</div>
-</div>
-<div class="col">
+  <div class="col-3">
+    <div class="list-group">
+      <div class="card" style="width: 20rem;">
+      <div class="card-body">
+ <a *ngFor="let li of leagues$ | async"
+ routerLink="/stading"
+ [queryParams]="{ choise: 'stading', league: li.id} "
+  [class.active]="league === li.id " class="list-group-item" class="list-group-item-action">
+  <div id="tab"><img [src]="li.logo" style="max-height:35px;"> {{ li.l | uppercase}}</div>
+ <!-- <div id="tab"><p class="text-black"><b>{{ li.l | uppercase}}</b></p></div> -->
+</a>
 
-</div>
-</div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+
 
 
 

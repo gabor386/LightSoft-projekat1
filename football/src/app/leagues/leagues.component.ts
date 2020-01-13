@@ -1,20 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { LeaguesService } from '../services/leagues.service';
+import { StadingService } from '../services/stading.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-leagues',
   templateUrl: './leagues.component.html',
   styleUrls: ['./leagues.component.css']
 })
-export class LeaguesComponent implements OnInit {
-  leagues: any [];
+export class LeaguesComponent {
+  leagues$ = null;
+  league: any;
+  choise: any;
 
-  constructor(private service: LeaguesService) { }
+  constructor( router: ActivatedRoute , leagueService: LeaguesService) {
+    router.queryParamMap.subscribe( params => {
+      this.league = params.get('choise');
 
-  ngOnInit() {
-    this.service.getAll()
-    .subscribe( leagues => this.leagues = leagues);
-
+    });
+    this.leagues$ = leagueService.getAll();
   }
 
 

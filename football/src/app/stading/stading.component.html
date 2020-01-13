@@ -1,1 +1,40 @@
-<p>stading works!</p>
+<div class="row">
+  <app-leagues></app-leagues>
+<div class="col">
+  <div class="row">
+    <div class="col">
+  <!-- <div id="table-scroll"> -->
+     <table class="table table-striped">
+       <thead>
+         <tr>
+           <th scope="col">Position</th>
+           <th scope="col">Team</th>
+           <th scope="col">Form</th>
+           <th scope="col">Points</th>
+         </tr>
+       </thead>
+       <tbody>
+        <ng-container *ngFor="let s of stading$ | async; let i=index">
+         <tr>
+
+           <td scope="row">{{i+1}}</td>
+           <td scope="row"> <img [src]="s.logo" style="max-height:30px;">  {{s.teamName}}</td>
+           <td scope="row">{{s.form}}</td>
+           <td scope="row">{{s.points}}</td>
+         </tr>
+       </ng-container>
+
+       </tbody>
+
+       </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
