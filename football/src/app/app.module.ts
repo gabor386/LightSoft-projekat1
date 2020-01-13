@@ -30,7 +30,6 @@ import { FixtureServiceNs } from './services/fixturesns.service';
     HomeComponent,
     StadingComponent,
     TeamComponent,
-    
     FixturesComponent,
     FixturesnsComponent
   ],
@@ -40,14 +39,13 @@ import { FixtureServiceNs } from './services/fixturesns.service';
     HttpModule,
     RouterModule.forRoot([
       {path: 'teams' , component: TeamComponent},
-      {path: 'fixtures' , component: FixturesComponent}
+      {path: 'fixtures' , component: FixturesComponent},
       {path: 'stading' , component: StadingComponent },
-      {path: 'leagues' , component: LeaguesComponent }
-      {path: '' , component: HomeComponent },
+      {path: 'leagues' , component: LeaguesComponent },
+      {path: 'home' , component: HomeComponent },
     ])
   ],
-  providers: [LeaguesService,FixtureService,FixtureServiceNs,TeamService],
-  providers: [LeaguesService, StadingService],
+  providers: [LeaguesService, FixtureService, FixtureServiceNs, TeamService , StadingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,16 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'football';
+
+  choise: any;
+  idTeam: any;
+
+  constructor( router: ActivatedRoute) {
+    router.queryParamMap.subscribe( params => {
+      this.choise = params.get('choise');
+      this.idTeam = params.get('teamID');
+      });
+
+
+    }
 }

@@ -7,6 +7,6 @@ import { DataService } from './data.service';
 export class StadingService extends DataService {
 
   constructor(http: Http) {
-    super('http://localhost:8082/Football/statding-bean', http);
+    super('http://localhost:8082/Football/statding-bean/', http);
   }
 }

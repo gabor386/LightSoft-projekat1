@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class BsNavbarComponent {
   leagues: any [];
   league: any ;
+ 
 
   constructor( router: ActivatedRoute, service: LeaguesService) {
     router.queryParamMap.subscribe( params => {

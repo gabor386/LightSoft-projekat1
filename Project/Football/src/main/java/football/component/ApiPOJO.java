@@ -18,7 +18,7 @@ public class ApiPOJO {
 	  	@Valid
 	    private List<String> timezone;
 	  	
-	  	
+	  	 
 	    
 	    
 	    public ApiPOJO() {
