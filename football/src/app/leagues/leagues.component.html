@@ -1,7 +1,22 @@
 
 
+  <div class="col-3">
+    <div class="list-group">
+      <div class="card" style="width: 20rem;">
+      <div class="card-body">
+ <a *ngFor="let li of leagues$ | async"
+ routerLink="/stading"
+ [queryParams]="{ choise: 'stading', league: li.id} "
+  [class.active]="league === li.id " class="list-group-item" class="list-group-item-action">
+  <div id="tab"><img [src]="li.logo" style="max-height:35px;"> {{ li.l | uppercase}}</div>
+ <!-- <div id="tab"><p class="text-black"><b>{{ li.l | uppercase}}</b></p></div> -->
+</a>
 <div class="row">
 
+ </div>
+ </div>
+ </div>
+ </div>
 <div>
 <app-fixtures></app-fixtures>
 </div>
@@ -9,6 +24,8 @@
   <app-fixturesns></app-fixturesns>
   </div>
 </div>
+
+
 
 
 

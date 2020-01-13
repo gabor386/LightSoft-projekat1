@@ -7,3 +7,10 @@
   top: 0;
   margin-top: -5px;
 }
+
+#tab {
+  padding: 10px;
+  height:  60px;
+  width:  200 px;
+  text-align: center;
+}
