@@ -11,6 +11,9 @@ import { HomeComponent } from './home/home.component';
 import { LeaguesService } from './services/leagues.service';
 import { HttpModule } from '@angular/http';
 import { StadingComponent } from './stading/stading.component';
+import { TeamComponent } from './team/team.component';
+import { HttpClientModule } from '@angular/common/http';
+import { TeamService } from './services/team.service';
 import { FixturesComponent } from './fixtures/fixtures.component';
 import { FixtureService } from './services/fixtures.service';
 import { FixturesnsComponent } from './fixturesns/fixturesns.component';
@@ -24,19 +27,23 @@ import { FixtureServiceNs } from './services/fixturesns.service';
     LeaguesComponent,
     HomeComponent,
     StadingComponent,
+    TeamComponent,
+    
     FixturesComponent,
     FixturesnsComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     HttpModule,
     RouterModule.forRoot([
       {path: '' , component: HomeComponent},
+      {path: 'teams' , component: TeamComponent},
       {path: 'leagues' , component: LeaguesComponent},
       {path: 'fixtures' , component: FixturesComponent}
     ])
   ],
-  providers: [LeaguesService,FixtureService,FixtureServiceNs],
+  providers: [LeaguesService,FixtureService,FixtureServiceNs,TeamService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -13,7 +13,7 @@ export class BsNavbarComponent implements OnInit {
 
   ngOnInit() {
     this.service.getAll()
-    .subscribe( leagues => this.leagues = leagues);
+    .subscribe(leagues=>this.leagues=leagues);
   }
 
 }
