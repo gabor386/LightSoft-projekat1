@@ -1,6 +1,7 @@
 package football.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -138,7 +139,7 @@ public class FixturesController {
 							: 0;
 					fixture.setGoalsAwayTeam(goalsAwayTeam);
 
-					fixture.setEventDate((String) o2.get("event_date") == null ? null : (String) o2.get("event_date"));
+					fixture.setEventDate((Date) o2.get("event_date") == null ? null : (Date) o2.get("event_date"));
 					fixture.setStatus((String) o2.get("status") == null ? null : (String) o2.get("status"));
 					fixture.setStatusShort(
 							(String) o2.get("statusShort") == null ? null : (String) o2.get("statusShort"));
@@ -229,7 +230,7 @@ public class FixturesController {
 				if (f.getStatusShort().equals("NS") ) {
 				
 					int idFixture = f.getIdFixtures();
-					String date = f.getEventDate().split("T")[0];
+					Date date = f.getEventDate();
 					int idRound = f.getRound().getIdRound();
 					String round = f.getRound().getReguralSeason();
 					int idHomeTeam = f.getHomeTeam().getTeam().getIdTeam();
@@ -262,7 +263,7 @@ public class FixturesController {
 				if (!f.getStatusShort().equals("NS") && !f.getStatusShort().equals("TBD")) {
 				
 					int idFixture = f.getIdFixtures();
-					String date = f.getEventDate().split("T")[0];
+					Date date = f.getEventDate();
 					int idRound = f.getRound().getIdRound();
 					String round = f.getRound().getReguralSeason();
 					int idHomeTeam = f.getHomeTeam().getTeam().getIdTeam();
