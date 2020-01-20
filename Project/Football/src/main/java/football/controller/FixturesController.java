@@ -38,15 +38,14 @@ import model.Score;
 import model.Team;
 import modelA.FixtureA;
 
-
-@CrossOrigin(origins="http://localhost:4200" )
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class FixturesController {
 
 	private Param param = new Param();
 
 	@Autowired
-	FixtureRepo fixtureRepo; 
+	FixtureRepo fixtureRepo;
 
 	@Autowired
 	ScoreRepo scoreRepo;
@@ -90,8 +89,6 @@ public class FixturesController {
 
 			JSONParser parse = new JSONParser();
 			JSONObject o;
-
-			
 
 			try {
 				o = (JSONObject) parse.parse(json);
@@ -205,11 +202,10 @@ public class FixturesController {
 					score = scoreRepo.save(score);
 					fixture.setScore(score);
 
-					fixture=fixtureRepo.save(fixture);
+					fixture = fixtureRepo.save(fixture);
 					retFixture.add(fixture);
-					
 
-				} 
+				}
 
 			} catch (ParseException e) {
 
@@ -218,70 +214,56 @@ public class FixturesController {
 
 		}
 	}
-	
+
 	@RequestMapping(value = "/getNsFixtures/{idLeague}", method = RequestMethod.GET)
-	public List<FixtureA> getNsFixtures (@PathVariable Integer idLeague) {
-		League l = leagueRepo.getOne(idLeague);
-		List<Round> rs= roundRepo.findByLeague(l);
+	public List<FixtureA> getNsFixtures(@PathVariable Integer idLeague) {
 		List<FixtureA> fixtures = new ArrayList<FixtureA>();
-		for (Round r:rs) {
-			List<Fixture> fs = fixtureRepo.findByRound(r);
-			for (Fixture f:fs) {
-				if (f.getStatusShort().equals("NS") ) {
-				
-					int idFixture = f.getIdFixtures();
-					Date date = f.getEventDate();
-					int idRound = f.getRound().getIdRound();
-					String round = f.getRound().getReguralSeason();
-					int idHomeTeam = f.getHomeTeam().getTeam().getIdTeam();
-					String homeTeam = f.getHomeTeam().getTeam().getTeamName();
-					String homeLogo = f.getHomeTeam().getTeam().getLogo();
-					int idAwayTeam = f.getAwayTeam().getTeam().getIdTeam();
-					String awayTeam = f.getAwayTeam().getTeam().getTeamName();
-					String awayLogo = f.getAwayTeam().getTeam().getLogo();
-					String score = "Not started";
-					String status = f.getStatus();
-					String statusShort = f.getStatusShort();
-					
-					FixtureA fA = new FixtureA(idFixture, date, idRound, round, idHomeTeam, homeTeam, homeLogo, idAwayTeam, awayTeam, awayLogo, score, status, statusShort);
-			
-					fixtures.add(fA);
-				}
+		List<FixtureA> rez = fixtureRepo.getAng(idLeague);
+
+		for (FixtureA f : rez) {
+			if (f.getStatusShort().equals("NS")) {
+
+				fixtures.add(f);
 			}
 		}
 		return fixtures;
 	}
-	
+
 	@RequestMapping(value = "/getFixtures/{idLeague}", method = RequestMethod.GET)
-	public List<FixtureA> getFixtures (@PathVariable Integer idLeague) {
-		League l = leagueRepo.getOne(idLeague);
-		List<Round> rs= roundRepo.findByLeague(l);
+	public List<FixtureA> getFixtures(@PathVariable Integer idLeague) {
+
 		List<FixtureA> fixtures = new ArrayList<FixtureA>();
-		for (Round r:rs) {
-			List<Fixture> fs = fixtureRepo.findByRound(r);
-			for (Fixture f:fs) {
-				if (!f.getStatusShort().equals("NS") && !f.getStatusShort().equals("TBD")) {
-				
-					int idFixture = f.getIdFixtures();
-					Date date = f.getEventDate();
-					int idRound = f.getRound().getIdRound();
-					String round = f.getRound().getReguralSeason();
-					int idHomeTeam = f.getHomeTeam().getTeam().getIdTeam();
-					String homeTeam = f.getHomeTeam().getTeam().getTeamName();
-					String homeLogo = f.getHomeTeam().getTeam().getLogo();
-					int idAwayTeam = f.getAwayTeam().getTeam().getIdTeam();
-					String awayTeam = f.getAwayTeam().getTeam().getTeamName();
-					String awayLogo = f.getAwayTeam().getTeam().getLogo();
-					String score = f.getScore().getFullTime();
-					String status = f.getStatus();
-					String statusShort = f.getStatusShort();
-					
-					FixtureA fA = new FixtureA(idFixture, date, idRound, round, idHomeTeam, homeTeam, homeLogo, idAwayTeam, awayTeam, awayLogo, score, status, statusShort);
-			
-					fixtures.add(fA);
-				}
+		List<FixtureA> rez = fixtureRepo.getAng(idLeague);
+
+		for (FixtureA f : rez) {
+			if (!f.getStatusShort().equals("NS") && !f.getStatusShort().equals("TBD")) {
+
+				fixtures.add(f);
 			}
 		}
+
 		return fixtures;
 	}
+
+	@RequestMapping(value = "/getA", method = RequestMethod.GET)
+	public List<FixtureA> getNsFixturesA() {
+		return fixtureRepo.getAng(357);
+		// List<Object[]> getA();
+
+//		public static final String FIND_PROJECTS = "SELECT projectId, projectName FROM projects";
+//
+//		@Query(value = FIND_PROJECTS, nativeQuery = true)
+//		public List<Object[]> findProjects();
+//		
+//		
+//		interface ProjectIdAndName{
+//		    String getId();
+//		    String getName();
+//		}
+//		
+//		@Query("select new com.foo.bar.entity.Document(d.docId, d.filename) from Document d where d.filterCol = ?1")
+//		List<Document> findDocumentsForListing(String filterValue);
+
+	}
+
 }

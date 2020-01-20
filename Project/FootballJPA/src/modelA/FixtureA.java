@@ -14,6 +14,20 @@ public class FixtureA implements Serializable{
 	private String round; 
 	
 	private int idHomeTeam;
+	private String homeTeam;
+	private String homeLogo;
+	
+	private int idAwayTeam;
+	private String awayTeam;
+	private String awayLogo;
+	
+	private String score;
+	
+	private String status;
+	private String statusShort;
+	
+	
+	
 	public int getIdFixture() {
 		return idFixture;
 	}
@@ -92,17 +106,7 @@ public class FixtureA implements Serializable{
 	public void setStatusShort(String statusShort) {
 		this.statusShort = statusShort;
 	}
-	private String homeTeam;
-	private String homeLogo;
 	
-	private int idAwayTeam;
-	private String awayTeam;
-	private String awayLogo;
-	
-	private String score;
-	
-	private String status;
-	private String statusShort;
 	public FixtureA(int idFixture, Date date, int idRound, String round, int idHomeTeam, String homeTeam,
 			String homeLogo, int idAwayTeam, String awayTeam, String awayLogo, String score, String status,
 			String statusShort) {
