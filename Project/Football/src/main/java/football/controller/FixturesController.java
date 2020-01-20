@@ -236,7 +236,7 @@ public class FixturesController {
 		List<FixtureA> rez = fixtureRepo.getAng(idLeague);
 
 		for (FixtureA f : rez) {
-			if (!f.getStatusShort().equals("NS") && !f.getStatusShort().equals("TBD")) {
+			if (f.getStatus().equals("Match Finished") ) {
 
 				fixtures.add(f);
 			}
