@@ -147,6 +147,7 @@ public class FixtureUpdate {
 
 	@Scheduled(cron = "0 0 0/2 * * ?")
 	public void update17days() {
+		System.out.println("updating.. "+ new Date());
 		List<String> dates = getDates();
 		// List<String> dates = new ArrayList<String>();
 		// dates.add("2020-05-17");
