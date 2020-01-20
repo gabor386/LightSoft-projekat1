@@ -1,31 +1,50 @@
 
-<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
 
-  <div class="site-logo">
-    <a href="/"><img src="/assets/images/logo.png"></a>
-  </div>
 
-  <a class="navbar-brand" routerLink="/">HOME</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+  <a class="navbar-brand" routerLink="/" [queryParams]="{ choise: 'home'} "><div class="site-logo">
+    <img src="/assets/images/logo.png" style="max-height: 70px;">Home</div></a>
+  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
-  </button>
+  </button> -->
+
+
 
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
-      <!-- <li class="nav-item active">
-        <a class="nav-link" routerLink="/">Home <span class="sr-only">(current)</span></a> -->
 
+      <ng-container *ngIf="league !== null ; else noLeagueS">
+        <a class="navbar-brand" routerLink="/" [queryParams]="{ choise: 'stading',league:league} ">Standing</a>
+      </ng-container>
+
+
+      <ng-template #noLeagueS>
+
+        <a class="navbar-brand" routerLink="/" [queryParams]="{ choise: 'stading'} ">Standing</a>
+
+      </ng-template>
+
+      <ng-container *ngIf="league !== null ; else noLeagueF">
+        <a class="navbar-brand" routerLink="/" [queryParams]="{ choise: 'fixtures',league:league} ">Fixtures</a>
+      </ng-container>
+
+
+      <ng-template #noLeagueF>
+
+        <a class="navbar-brand" routerLink="/" [queryParams]="{ choise: 'fixtures'} ">Fixtures</a>
+
+      </ng-template>
+
+
+       <!--
         <a *ngFor="let li of leagues"
-        routerLink="/leagues"
-        [queryParams]="{ leagues: li.id} "
-         class="list-group-item" class="list-group-item-action">
+        routerLink="/stading"
+        [queryParams]="{ league: li.id} "
+         [class]="league === li.id" class="list-group-item" class="list-group-item-action" >
          <br>
-         <br>
-         <br>
-          <b><p>{{ li.l | uppercase}}</p></b>
-      </a>
-
+        <div id="tab"><p class="text-white"><b>{{ li.l | uppercase}}</b></p></div>
+      </a> -->
     </ul>
-    
+
   </div>
 </nav>

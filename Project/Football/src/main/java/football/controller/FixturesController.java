@@ -46,7 +46,7 @@ public class FixturesController {
 	private Param param = new Param();
 
 	@Autowired
-	FixtureRepo fixtureRepo;
+	FixtureRepo fixtureRepo; 
 
 	@Autowired
 	ScoreRepo scoreRepo;

@@ -1,7 +1,7 @@
 <div>
     <h1 align="center">Future fixtures</h1>
     <div id="table-header" >
-        <table border="3" class="table table-striped" width="100%" height="100%" >
+        <table border="3" class="table table-striped" width="100%" height="100%" style="background-color:rgba(243, 235, 235, 0.863);" >
             <thead>
             <tr>
                 <th width="120px" align="center">Date</th>
@@ -15,18 +15,18 @@
         </table>
     </div>
     <div id="table-scroll" >
-        <table border="3" class="table table-striped" width="100%" >
+        <table border="3" class="table table-striped" width="100%" style="background-color:rgba(243, 235, 235, 0.863);" >
             <tbody>
             <tr *ngFor= "let fix of fixtures" >
                 <td width="120px" align="center" valign="middle">{{fix.date}}</td>
                 <td width="230px" align="left" valign="middle">
-                    <a routerLink="/teams"
+                    <a routerLink="/"
                     [queryParams]="{ teamID: fix.idHomeTeam} "
                      class="list-group-item" class="list-group-item-action">
                     <img [src]="fix.homeLogo" style="max-height: 35px;">
                     {{fix.homeTeam}}</a></td>
                 
-                <td width="230px" align="right" valign="middle"><a routerLink="/teams"
+                <td width="230px" align="right" valign="middle"><a routerLink="/"
                     [queryParams]="{ teamID: fix.idAwayTeam} "
                      class="list-group-item" class="list-group-item-action">
                     {{fix.awayTeam}}
