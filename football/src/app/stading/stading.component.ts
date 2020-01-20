@@ -21,6 +21,7 @@ export class StadingComponent {
       if (this.league != null){
       this.stading$ = serviceStading.getById(this.league);
       }
+      
 
       });
 

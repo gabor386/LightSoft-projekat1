@@ -1,12 +1,15 @@
 package modelA;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StadingBean {
 
 	private int idTeam;
 	
 	private String teamName;
 
-	private String form;
+	private List<String> form;
 
 	private String groupa;
 
@@ -19,7 +22,11 @@ public class StadingBean {
 	public StadingBean(int idTeam, String teamName, String form, String groupa, int points, int idLeague , String logo) {
 		this.idTeam = idTeam;
 		this.teamName = teamName;
-		this.form = form;
+		this.form=new ArrayList<String>();
+		String []formaNiz=form.split("");
+		for(int i=0;i<formaNiz.length;i++) {
+			this.form.add(formaNiz[i]);
+		}
 		this.groupa = groupa;
 		this.points = points;
 		this.idLeague = idLeague;
@@ -42,11 +49,11 @@ public class StadingBean {
 		this.teamName = teamName;
 	}
 
-	public String getForm() {
+	public List<String> getForm() {
 		return form;
 	}
 
-	public void setForm(String form) {
+	public void setForm(List<String> form) {
 		this.form = form;
 	}
 
