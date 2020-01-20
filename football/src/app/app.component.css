@@ -5,12 +5,13 @@
     margin-top: -100px;
     margin-left: 25px;
     float: left;
+    position: fixed;
     
 }
 
 #right {
     width: 67%;
-    margin-top: -260px;
+    margin-top: -100px;
     margin-right: 25px;
     float: right;
     /* background-color:hsla(0,0%,75%,0.9); */
