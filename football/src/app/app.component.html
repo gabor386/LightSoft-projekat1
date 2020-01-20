@@ -12,7 +12,7 @@
 <ng-template #noTeam >
 <div id="left" >
   <app-leagues></app-leagues>
-  <ng-container *ngIf="choise!=='home'">
+  <ng-container *ngIf="choise === null || choise!=='home'">
         <img src="/assets/images/f2.gif" style="max-height: 250px;">
   </ng-container>
 </div>
