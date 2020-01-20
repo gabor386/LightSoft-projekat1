@@ -21,14 +21,14 @@
                 <a routerLink="/"
                 [queryParams]="{ teamID: fix.idHomeTeam} "
                  class="list-group-item" class="list-group-item-action">
-                <img [src]="fix.homeLogo" style="max-height: 35px;">
+                <img [src]="fix.homeLogo!='Not available in demo' ? fix.homeLogo : '/assets/images/ball.png' " style="max-height: 35px;">
                 {{fix.homeTeam}}</a></td>
             <td width="75px" align="center" valign="middle">{{fix.score}}</td>
             <td width="220px" align="right" valign="middle"><a routerLink="/"
                 [queryParams]="{ teamID: fix.idAwayTeam} "
                  class="list-group-item" class="list-group-item-action">
                 {{fix.awayTeam}}
-                <img [src]="fix.awayLogo" style="max-height: 35px;"></a>
+                <img [src]="fix.awayLogo!='Not available in demo' ? fix.awayLogo : '/assets/images/ball.png' " style="max-height: 35px;"></a>
             </td>
             <td valign="middle">{{fix.round}}</td>
         </tr>
