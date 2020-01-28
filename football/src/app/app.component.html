@@ -10,7 +10,12 @@
 
 
 <ng-template #noTeam >
-<div id="left"><app-leagues></app-leagues> </div>
+<div id="left" >
+  <app-leagues></app-leagues>
+  <ng-container *ngIf="choise === null || choise!=='home'">
+        <img src="/assets/images/f2.gif" style="max-height: 250px;">
+  </ng-container>
+</div>
 <div id= "right">
   
 
@@ -21,6 +26,10 @@
 
   <ng-container *ngIf="choise === 'fixtures'">
     <app-fixtures></app-fixtures>
+    
+  </ng-container>
+  <ng-container *ngIf="choise === 'futurefixtures'">
+    
     <app-fixturesns></app-fixturesns>
   </ng-container>
 
@@ -28,6 +37,10 @@
     <h2> Wellcome!</h2>
     <p>We provide football score in real time. <br>
         Have a nice time :)
+        <br>
+
+
+        <img src="/assets/images/f3.gif" style="max-height: 350px;">
     </p>
   </ng-container>
 

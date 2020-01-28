@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 @SpringBootApplication
-//@EnableScheduling
+@EnableScheduling
 //@EnableJpaAuditing
 @EntityScan("model")
 public class FootballApplication  {

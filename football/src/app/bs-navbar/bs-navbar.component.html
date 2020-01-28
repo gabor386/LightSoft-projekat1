@@ -20,7 +20,7 @@
 
       <ng-template #noLeagueS>
 
-        <a class="navbar-brand" routerLink="/" [queryParams]="{ choise: 'stading'} ">Standing</a>
+        <a class="navbar-brand" routerLink="/" [queryParams]="{ choise: 'stading',league:524} ">Standing</a>
 
       </ng-template>
 
@@ -28,10 +28,19 @@
         <a class="navbar-brand" routerLink="/" [queryParams]="{ choise: 'fixtures',league:league} ">Fixtures</a>
       </ng-container>
 
+      <ng-container *ngIf="league !== null ; else noLeagueFF">
+        <a class="navbar-brand" routerLink="/" [queryParams]="{ choise: 'futurefixtures',league:league} ">Futrure Fixtures</a>
+      </ng-container>
+
 
       <ng-template #noLeagueF>
 
-        <a class="navbar-brand" routerLink="/" [queryParams]="{ choise: 'fixtures'} ">Fixtures</a>
+        <a class="navbar-brand" routerLink="/" [queryParams]="{ choise: 'fixtures',league:524} ">Fixtures</a>
+
+      </ng-template>
+      <ng-template #noLeagueFF>
+
+        <a class="navbar-brand" routerLink="/" [queryParams]="{ choise: 'futurefixtures',league:524} ">Future Fixtures</a>
 
       </ng-template>
 

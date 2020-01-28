@@ -1,28 +1,43 @@
 package modelA;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class FixtureA implements Serializable{
 
 	
 	private int idFixture;
 	
-	private String date;
+	private Date date;
 	
 	private int idRound;
 	private String round; 
 	
 	private int idHomeTeam;
+	private String homeTeam;
+	private String homeLogo;
+	
+	private int idAwayTeam;
+	private String awayTeam;
+	private String awayLogo;
+	
+	private String score;
+	
+	private String status;
+	private String statusShort;
+	
+	
+	
 	public int getIdFixture() {
 		return idFixture;
 	}
 	public void setIdFixture(int idFixture) {
 		this.idFixture = idFixture;
 	}
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	public int getIdRound() {
@@ -91,18 +106,8 @@ public class FixtureA implements Serializable{
 	public void setStatusShort(String statusShort) {
 		this.statusShort = statusShort;
 	}
-	private String homeTeam;
-	private String homeLogo;
 	
-	private int idAwayTeam;
-	private String awayTeam;
-	private String awayLogo;
-	
-	private String score;
-	
-	private String status;
-	private String statusShort;
-	public FixtureA(int idFixture, String date, int idRound, String round, int idHomeTeam, String homeTeam,
+	public FixtureA(int idFixture, Date date, int idRound, String round, int idHomeTeam, String homeTeam,
 			String homeLogo, int idAwayTeam, String awayTeam, String awayLogo, String score, String status,
 			String statusShort) {
 		

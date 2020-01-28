@@ -261,7 +261,7 @@ public class FudbalController {
 							: 0;
 					fixture.setGoalsAwayTeam(goalsAwayTeam);
 
-					fixture.setEventDate((String) o2.get("event_date") == null ? null : (String) o2.get("event_date"));
+					fixture.setEventDate((Date) o2.get("event_date") == null ? null : (Date) o2.get("event_date"));
 					fixture.setStatus((String) o2.get("status") == null ? null : (String) o2.get("status"));
 					fixture.setStatusShort(
 							(String) o2.get("statusShort") == null ? null : (String) o2.get("statusShort"));

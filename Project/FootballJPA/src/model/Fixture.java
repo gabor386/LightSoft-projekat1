@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import java.util.Date;
 import java.util.List;
 
 
@@ -20,7 +22,7 @@ public class Fixture implements Serializable {
 
 	private int elapsed;
 
-	private String eventDate;
+	private Date eventDate;
 
 	private int eventTimeStamp;
 
@@ -103,11 +105,11 @@ public class Fixture implements Serializable {
 		this.elapsed = elapsed;
 	}
 
-	public String getEventDate() {
+	public Date getEventDate() {
 		return this.eventDate;
 	}
 
-	public void setEventDate(String eventDate) {
+	public void setEventDate(Date eventDate) {
 		this.eventDate = eventDate;
 	}
 

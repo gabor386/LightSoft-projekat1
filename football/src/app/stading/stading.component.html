@@ -19,8 +19,26 @@
            <td scope="row">{{i+1}}</td>
            <td scope="row"> <a routerLink="/"
             [queryParams]="{ teamID:s.idTeam } "
-             class="list-group-item" class="list-group-item-action"><img [src]="s.logo" style="max-height:30px;">  {{s.teamName}}</a></td>
-           <td scope="row">{{s.form}}</td>
+             class="list-group-item" class="list-group-item-action">
+             
+             <img [src]="s.logo!='Not available in demo' ? s.logo : '/assets/images/ball.png' " style="max-height:30px;">
+               {{s.teamName}}
+              </a>
+            </td>
+           <td scope="row">
+             <ng-container *ngFor="let f of s.form">
+               <ng-container *ngIf="f==='W'">
+                <span class="span-class" style="background-color: rgb(78, 209, 78); ">{{f}}</span>
+                  
+              </ng-container>
+              <ng-container *ngIf="f==='D'">
+                <span class="span-class" style="background-color: rgb(247, 247, 89);">{{f}}</span>
+               </ng-container>
+               <ng-container *ngIf="f==='L'">
+                <span class="span-class" style="background-color: rgb(255, 53, 53);">{{f}}</span>
+               </ng-container>
+             </ng-container>
+           </td>
            <td scope="row">{{s.points}}</td>
          </tr>
        </ng-container>

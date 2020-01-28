@@ -17,7 +17,9 @@ export class LeaguesComponent {
     router.queryParamMap.subscribe( params => {
       this.league = params.get('league');
       this.choise = params.get('choise');
-
+      if(this.choise=='home'){
+        this.choise='fixtures'
+      }
     });
     this.leagues$ = leagueService.getAll();
   }

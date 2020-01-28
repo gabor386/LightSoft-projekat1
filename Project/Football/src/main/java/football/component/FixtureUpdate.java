@@ -147,6 +147,7 @@ public class FixtureUpdate {
 
 	@Scheduled(cron = "0 0 0/2 * * ?")
 	public void update17days() {
+		System.out.println("updating.. "+ new Date());
 		List<String> dates = getDates();
 		// List<String> dates = new ArrayList<String>();
 		// dates.add("2020-05-17");
@@ -264,7 +265,7 @@ public class FixtureUpdate {
 							: 0;
 					fixture.setGoalsAwayTeam(goalsAwayTeam);
 
-					fixture.setEventDate((String) o2.get("event_date") == null ? null : (String) o2.get("event_date"));
+					fixture.setEventDate((Date) o2.get("event_date") == null ? null : (Date) o2.get("event_date"));
 					fixture.setStatus((String) o2.get("status") == null ? null : (String) o2.get("status"));
 					fixture.setStatusShort(
 							(String) o2.get("statusShort") == null ? null : (String) o2.get("statusShort"));

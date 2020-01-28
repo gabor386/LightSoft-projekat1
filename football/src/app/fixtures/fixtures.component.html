@@ -1,37 +1,34 @@
 <div>
 
     <h1 align="center">Played fixtures</h1>
-<div id="table-header" >
-    <table border="3" class="table table-striped" width="100%" height="100%" style="background-color:rgba(243, 235, 235, 0.863);" >
-        <thead>
-        <tr>
-            <th width="110px" align="center">Date</th>
-            <th width="220px" align="left">Home Team</th>
-            <th width="75px" align="center">score</th>
-            <th width="220px" align="right">Away Team</th>
-            <th align="center">Round</th>
 
-        </tr>
-        </thead>
-    </table>
-</div>
-<div id="table-scroll" >
+
     <table border="3" class="table table-striped" width="100%" style="background-color:rgba(243, 235, 235, 0.863);" >
+        <thead>
+            <tr>
+                <th width="110px" align="center">Date</th>
+                <th width="220px" align="left">Home Team</th>
+                <th width="75px" align="center">score</th>
+                <th width="220px" align="right">Away Team</th>
+                <th align="center">Round</th>
+    
+            </tr>
+            </thead>
         <tbody>
         <tr *ngFor= "let fix of fixtures" >
-            <td width="110px" align="center" valign="middle">{{fix.date}}</td>
+            <td width="110px" align="center" valign="middle">{{fix.date | date }}</td>
             <td width="220px" align="left" valign="middle">
                 <a routerLink="/"
                 [queryParams]="{ teamID: fix.idHomeTeam} "
                  class="list-group-item" class="list-group-item-action">
-                <img [src]="fix.homeLogo" style="max-height: 35px;">
+                <img [src]="fix.homeLogo!='Not available in demo' ? fix.homeLogo : '/assets/images/ball.png' " style="max-height: 35px;">
                 {{fix.homeTeam}}</a></td>
             <td width="75px" align="center" valign="middle">{{fix.score}}</td>
             <td width="220px" align="right" valign="middle"><a routerLink="/"
                 [queryParams]="{ teamID: fix.idAwayTeam} "
                  class="list-group-item" class="list-group-item-action">
                 {{fix.awayTeam}}
-                <img [src]="fix.awayLogo" style="max-height: 35px;"></a>
+                <img [src]="fix.awayLogo!='Not available in demo' ? fix.awayLogo : '/assets/images/ball.png' " style="max-height: 35px;"></a>
             </td>
             <td valign="middle">{{fix.round}}</td>
         </tr>
@@ -39,6 +36,6 @@
 
     </table>
 
-</div>
+
 
 </div>
